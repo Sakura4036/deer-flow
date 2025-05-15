@@ -53,7 +53,7 @@ class PatsnapAPIWrapper(BaseModel):
             logger.error(f"Error fetching results: {e}")
             import traceback
             logger.error(traceback.print_exc())
-            return
+            raise e
 
         if not patent_search_list:
             logger.warning("No results found.")

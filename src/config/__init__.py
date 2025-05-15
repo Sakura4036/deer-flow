@@ -1,7 +1,11 @@
 # Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 # SPDX-License-Identifier: MIT
 
-from .tools import SEARCH_MAX_RESULTS, SELECTED_SEARCH_ENGINE, SearchEngine, SEARCH_CONTENT_MAX_LENGTH
+from .tools import (
+    SEARCH_MAX_RESULTS, SELECTED_SEARCH_ENGINE, SearchEngine, SEARCH_CONTENT_MAX_LENGTH,
+    SELECTED_LITERATURE_SEARCH_ENGINE, LiteratureSearchEngine, 
+    SELECTED_PATENT_SEARCH_ENGINE, PatentSearchEngine
+)
 from .loader import load_yaml_config
 from .questions import BUILT_IN_QUESTIONS, BUILT_IN_QUESTIONS_ZH_CN
 
@@ -48,4 +52,8 @@ __all__ = [
     "SearchEngine",
     "BUILT_IN_QUESTIONS",
     "BUILT_IN_QUESTIONS_ZH_CN",
+    "SELECTED_PATENT_SEARCH_ENGINE",
+    "PatentSearchEngine",
+    "SELECTED_LITERATURE_SEARCH_ENGINE",
+    "LiteratureSearchEngine"
 ]

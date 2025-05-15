@@ -15,7 +15,20 @@ class SearchEngine(enum.Enum):
     ARXIV = "arxiv"
 
 
+class LiteratureSearchEngine(enum.Enum):
+    PUBMED = "pubmed"
+    SEMANTIC_SCHOLAR = "semantic_scholar"
+    ARXIV = "arxiv"
+
+class PatentSearchEngine(enum.Enum):
+    PATSNAP = "patsnap"
+
+
 # Tool configuration
 SELECTED_SEARCH_ENGINE = os.getenv("SEARCH_API", SearchEngine.TAVILY.value)
+SELECTED_LITERATURE_SEARCH_ENGINE = os.getenv("LITERATURE_SEARCH_API", LiteratureSearchEngine.PUBMED.value)
+SELECTED_PATENT_SEARCH_ENGINE = os.getenv("PATENT_SEARCH_API", PatentSearchEngine.PATSNAP.value)
+
 SEARCH_MAX_RESULTS = 3
 SEARCH_CONTENT_MAX_LENGTH = 2000
+
