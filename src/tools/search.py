@@ -14,6 +14,7 @@ from src.tools.tavily_search.tavily_search_results_with_images import (
     TavilySearchResultsWithImages,
 )
 from src.tools.patsnap import PatsnapAPIClient, PatsnapQueryRun, PatsnapAPIWrapper
+from src.tools.patents_view import PatentsViewAPIClient, PatentsViewQueryRun, PatentsViewAPIWrapper
 from src.tools.semantic_scholar import SemanticScholarAPIWrapper, SemanticScholarQueryRun
 from src.tools.decorators import create_logged_tool
 
@@ -47,7 +48,7 @@ brave_search_tool = LoggedBraveSearch(
 
 LoggedArxivSearch = create_logged_tool(ArxivQueryRun)
 arxiv_search_tool = LoggedArxivSearch(
-    name="web_search",
+    name="literature_search",
     api_wrapper=ArxivAPIWrapper(
         top_k_results=SEARCH_MAX_RESULTS,
         load_max_docs=SEARCH_MAX_RESULTS,
@@ -57,7 +58,7 @@ arxiv_search_tool = LoggedArxivSearch(
 
 LoggedPubmedSearch = create_logged_tool(PubmedQueryRun)
 pubmed_search_tool = LoggedPubmedSearch(
-    name="web_search",
+    name="literature_search",
     api_wrapper=PubMedAPIWrapper(
         top_k_results=SEARCH_MAX_RESULTS,
         doc_content_chars_max=SEARCH_CONTENT_MAX_LENGTH,
@@ -65,10 +66,9 @@ pubmed_search_tool = LoggedPubmedSearch(
     ),
 )
 
-
 LoggedSemanticScholarSearch = create_logged_tool(SemanticScholarQueryRun)
 semantic_scholar_search_tool = LoggedSemanticScholarSearch(
-    name="web_search",
+    name="literature_search",
     api_wrapper=SemanticScholarAPIWrapper(
         top_k_results=SEARCH_MAX_RESULTS,
         doc_content_chars_max=SEARCH_CONTENT_MAX_LENGTH,
@@ -76,14 +76,24 @@ semantic_scholar_search_tool = LoggedSemanticScholarSearch(
     ),
 )
 
-
 LoggedPatsnapSearch = create_logged_tool(PatsnapQueryRun)
 patsnap_search_tool = LoggedPatsnapSearch(
-    name="web_search",
+    name="patent_search",
     api_wrapper=PatsnapAPIWrapper(
         patsnap_client=PatsnapAPIClient(),
         top_k_results=SEARCH_MAX_RESULTS,
         doc_content_chars_max=SEARCH_CONTENT_MAX_LENGTH,
+    ),
+)
+
+LoggedPatentsViewSearch = create_logged_tool(PatentsViewQueryRun)
+patents_view_search_tool = LoggedPatentsViewSearch(
+    name="patent_search",
+    api_wrapper=PatentsViewAPIWrapper(
+        client=PatentsViewAPIClient(api_key=os.getenv("PATENTSVIEW_API_KEY")),
+        top_k_results=SEARCH_MAX_RESULTS,
+        doc_content_chars_max=SEARCH_CONTENT_MAX_LENGTH,
+        claims_content_chars_max=1000,
     ),
 )
 
@@ -104,3 +114,11 @@ if __name__ == "__main__":
     results = patsnap_search_tool.invoke("panda")
     print(results)
     print("-="*30+'\n\n')
+
+    if os.getenv("PATENTSVIEW_API_KEY"):
+        print("Testing PatentsView Search Tool...")
+        results_pv = patents_view_search_tool.invoke("CRISPR gene editing")
+        print(json.dumps(json.loads(results_pv), indent=2, ensure_ascii=False) if results_pv else "No results")
+        print("-="*30+'\n\n')
+    else:
+        print("PATENTSVIEW_API_KEY not set, skipping PatentsView test.")

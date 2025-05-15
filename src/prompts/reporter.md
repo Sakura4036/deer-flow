@@ -67,6 +67,7 @@ Structure your report in the following format:
 2. Formatting:
    - Use proper markdown syntax.
    - Include headers for sections.
+   
    - Prioritize using Markdown tables for data presentation and comparison.
    - **Including images from the previous steps in the report is very helpful.**
    - Use tables whenever presenting comparative data, statistics, features, or options.

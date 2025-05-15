@@ -22,23 +22,27 @@ if __name__ == "__main__":
     # Parse command line arguments
     parser = argparse.ArgumentParser(description="Run the DeerFlow API server")
     parser.add_argument(
+        '-re',
         "--reload",
         action="store_true",
         help="Enable auto-reload (default: True except on Windows)",
     )
     parser.add_argument(
+        '-host',
         "--host",
         type=str,
         default="localhost",
         help="Host to bind the server to (default: localhost)",
     )
     parser.add_argument(
+        '-p',
         "--port",
         type=int,
         default=8000,
         help="Port to bind the server to (default: 8000)",
     )
     parser.add_argument(
+        '-log',
         "--log-level",
         type=str,
         default="info",

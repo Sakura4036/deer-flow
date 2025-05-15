@@ -12,7 +12,8 @@ from .search import (
     arxiv_search_tool,
     pubmed_search_tool,
     semantic_scholar_search_tool,
-    patsnap_search_tool
+    patsnap_search_tool,
+    patents_view_search_tool
 )
 from .tts import VolcengineTTS
 from src.config import (
@@ -20,6 +21,10 @@ from src.config import (
     SELECTED_LITERATURE_SEARCH_ENGINE, LiteratureSearchEngine,
     SELECTED_PATENT_SEARCH_ENGINE, PatentSearchEngine
 )
+from .patsnap import PatsnapAPIClient, PatsnapAPIWrapper, PatsnapQueryRun
+from .patents_view import PatentsViewAPIClient, PatentsViewAPIWrapper, PatentsViewQueryRun
+from .semantic_scholar import SemanticScholarAPIWrapper, SemanticScholarQueryRun
+from .tavily_search import TavilySearchResultsWithImages
 
 # Map search engine names to their respective tools
 search_tool_mappings = {
@@ -37,6 +42,7 @@ literature_search_tool_mappings = {
 
 patent_search_tool_mappings = {
     PatentSearchEngine.PATSNAP.value: patsnap_search_tool,
+    PatentSearchEngine.PATENTS_VIEW.value: patents_view_search_tool,
 }
 
 web_search_tool = search_tool_mappings.get(SELECTED_SEARCH_ENGINE, tavily_search_tool)
@@ -50,4 +56,13 @@ __all__ = [
     "VolcengineTTS",
     "literature_search_tool",
     "patent_search_tool",
+    "PatsnapAPIClient",
+    "PatsnapAPIWrapper",
+    "PatsnapQueryRun",
+    "PatentsViewAPIClient",
+    "PatentsViewAPIWrapper",
+    "PatentsViewQueryRun",
+    "SemanticScholarAPIWrapper",
+    "SemanticScholarQueryRun",
+    "TavilySearchResultsWithImages",
 ]

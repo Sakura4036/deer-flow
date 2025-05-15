@@ -446,7 +446,7 @@ async def researcher_node(
         config,
         "researcher",
         research_agent,
-        [web_search_tool, crawl_tool, literature_search_tool, patsnap_search_tool],
+        [web_search_tool, crawl_tool, literature_search_tool],
     )
 
 
