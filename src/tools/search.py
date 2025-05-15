@@ -5,15 +5,16 @@ import json
 import logging
 import os
 
-from langchain_community.tools import BraveSearch, DuckDuckGoSearchResults
+from langchain_community.tools import BraveSearch, DuckDuckGoSearchResults, PubmedQueryRun
 from langchain_community.tools.arxiv import ArxivQueryRun
-from langchain_community.utilities import ArxivAPIWrapper, BraveSearchWrapper
+from langchain_community.utilities import ArxivAPIWrapper, BraveSearchWrapper, PubMedAPIWrapper
 
-from src.config import SEARCH_MAX_RESULTS, SearchEngine
+from src.config import SEARCH_MAX_RESULTS, SearchEngine, SEARCH_CONTENT_MAX_LENGTH
 from src.tools.tavily_search.tavily_search_results_with_images import (
     TavilySearchResultsWithImages,
 )
-
+from src.tools.patsnap import PatsnapAPIClient, PatsnapQueryRun, PatsnapAPIWrapper
+from src.tools.semantic_scholar import SemanticScholarAPIWrapper, SemanticScholarQueryRun
 from src.tools.decorators import create_logged_tool
 
 logger = logging.getLogger(__name__)
@@ -54,8 +55,52 @@ arxiv_search_tool = LoggedArxivSearch(
     ),
 )
 
+LoggedPubmedSearch = create_logged_tool(PubmedQueryRun)
+pubmed_search_tool = LoggedPubmedSearch(
+    name="web_search",
+    api_wrapper=PubMedAPIWrapper(
+        top_k_results=SEARCH_MAX_RESULTS,
+        doc_content_chars_max=SEARCH_CONTENT_MAX_LENGTH,
+        api_key=os.getenv("PUBMED_SEARCH_API_KEY", ""),
+    ),
+)
+
+
+LoggedSemanticScholarSearch = create_logged_tool(SemanticScholarQueryRun)
+semantic_scholar_search_tool = LoggedSemanticScholarSearch(
+    name="web_search",
+    api_wrapper=SemanticScholarAPIWrapper(
+        top_k_results=SEARCH_MAX_RESULTS,
+        doc_content_chars_max=SEARCH_CONTENT_MAX_LENGTH,
+        api_key=os.getenv("SEMANTIC_SCHOLAR_API_KEY", ""),
+    ),
+)
+
+
+LoggedPatsnapSearch = create_logged_tool(PatsnapQueryRun)
+patsnap_search_tool = LoggedPatsnapSearch(
+    name="web_search",
+    api_wrapper=PatsnapAPIWrapper(
+        patsnap_client=PatsnapAPIClient(),
+        top_k_results=SEARCH_MAX_RESULTS,
+        doc_content_chars_max=SEARCH_CONTENT_MAX_LENGTH,
+    ),
+)
+
 if __name__ == "__main__":
-    results = LoggedDuckDuckGoSearch(
-        name="web_search", max_results=SEARCH_MAX_RESULTS, output_format="list"
-    ).invoke("cute panda")
-    print(json.dumps(results, indent=2, ensure_ascii=False))
+    # results = LoggedDuckDuckGoSearch(
+    #     name="web_search", max_results=SEARCH_MAX_RESULTS, output_format="list"
+    # ).invoke("cute panda")
+    # print(json.dumps(results, indent=2, ensure_ascii=False))
+
+    # results = pubmed_search_tool.invoke("panda")
+    # print(results)
+    # print("-="*30+'\n\n')
+
+    # results = arxiv_search_tool.invoke("panda")
+    # print(results)
+    # print("-="*30+'\n\n')
+
+    results = patsnap_search_tool.invoke("panda")
+    print(results)
+    print("-="*30+'\n\n')
