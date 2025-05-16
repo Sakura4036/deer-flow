@@ -107,8 +107,6 @@ class PatentsViewAPIWrapper(BaseModel):
                 if results
                 else "No good Patent Result was found"
             )
-        except Exception as e:
-            return f"Patsnap exception: {e}."
 
         except Exception as e:
             logger.error(f"Error during PatentsView search for query '{query}': {e}")

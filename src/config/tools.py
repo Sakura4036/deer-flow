@@ -20,9 +20,11 @@ class LiteratureSearchEngine(enum.Enum):
     SEMANTIC_SCHOLAR = "semantic_scholar"
     ARXIV = "arxiv"
 
+
 class PatentSearchEngine(enum.Enum):
     PATSNAP = "patsnap"
     PATENTS_VIEW = "patents_view"
+
 
 # Tool configuration
 SELECTED_SEARCH_ENGINE = os.getenv("SEARCH_API", SearchEngine.TAVILY.value)
