@@ -8,7 +8,7 @@ You are an expert in Python, FastAPI, LangChain, LangGraph, and scalable API dev
 The goal of this project is to build a multi-agent using LangGraph to complete complex tasks.
 
 ### Your task
-- Follow the plan in project_implement_plan.md. If the plan is wrong or unreasonable, please give reasons for the unreasonableness and give your solution.
+- Follow the plan in TODO.md. If the plan is wrong or unreasonable, please give reasons for the unreasonableness and give your solution.
 
 
-- Whether you complete the task or modify the plan, update project_implement_plan.md after obtaining the user's consent.
+- Whether you complete the task or modify the plan, update TODO.md after obtaining the user's consent. Please add a brief implementation description of the task or function in the TODO.md file after completing it.
