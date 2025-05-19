@@ -77,7 +77,6 @@ class PatentsViewAPIClient:
             logger.error(f"Failed to decode JSON response: {json_err} - Response text: {response.text}")
             raise
 
-
     def _search_patents(self, query_obj: Dict[str, Any], fields: list[str]=None, options: Optional[Dict[str, Any]] = None, sortings: Optional[List[Dict[str, Any]]] = None) -> Dict[str, Any]:
         """
         Search for patents.
@@ -204,9 +203,16 @@ class PatentsViewAPIClient:
         }
         fields = ["patent_id", "patent_title", "patent_date", "inventors", "patent_abstract", "patent_type", "assignees"]
         options = {"size": max_results}
+        logger.info(f"query_obj: {query_obj}")
+        print(f"query_obj: {query_obj}")
+        logger.debug(f"fields: {fields}")
+        logger.debug(f"options: {options}")
         result = self._search_patents(query_obj, fields=fields, options=options)
 
         patents = result["patents"]
+
+        logger.info(f"len patents: {len(patents)}")
+        print(f"len patents: {len(patents)}")
 
         if get_claims:
             for patent in patents:
@@ -226,8 +232,8 @@ class PatentsViewAPIClient:
                 patent["inventors"] = [inventor.get("inventor_name_first", "") + " " + inventor.get("inventor_name_last", "") for inventor in inventors]
             if assignees:=patent.get("assignees", None):
                 patent["assignees"] = [
-                    "{} {},{}".format(assignee.get("assignee_organization", ""), assignee.get("assignee_city", ""), assignee.get("assignee_country", ""))
-                    for assignee in assignees if assignee.get("assignee_organization")
+                    "{} {},{} ; ".format(assignee.get("assignee_organization", ""), assignee.get("assignee_city", ""), assignee.get("assignee_country", ""))
+                    for assignee in assignees if assignee and assignee.get("assignee_organization")
                 ]
             if g_claims:=patent.get("g_claims", None):
                 g_claims = sorted(g_claims, key=lambda x: x.get("claim_sequence", 0))

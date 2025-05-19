@@ -22,9 +22,8 @@ class Observation(TypedDict):
     step_id: str  # Unique identifier for the observation
     title: str  # Title of the observation
     content: str  # Content of the observation
-    source: str  # Source of the observation (e.g., patent researcher)
+    source: str  # Source of the observation (e.g., researcher， patent researcher)
     relevance_score: float  # Relevance score of the observation
-    search_results: List[str]  # List of search result IDs
 
 
 class State(MessagesState):

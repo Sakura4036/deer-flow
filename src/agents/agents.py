@@ -41,9 +41,9 @@ research_agent = create_agent(
 )
 coder_agent = create_agent("coder", "coder", [python_repl_tool], "coder")
 literature_researcher_agent = create_agent(
-    "literature_researcher", "literature_researcher", [literature_search_tool], "literature_researcher"
+    "literature_researcher", "literature_researcher", [literature_search_tool, crawl_tool], "literature_researcher"
 )
 patent_researcher_agent = create_agent(
-    "patent_researcher", "patent_researcher", [patent_search_tool], "patent_researcher"
+    "patent_researcher", "patent_researcher", [patent_search_tool, crawl_tool], "patent_researcher"
 )
 

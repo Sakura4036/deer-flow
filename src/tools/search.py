@@ -103,22 +103,22 @@ if __name__ == "__main__":
     # ).invoke("cute panda")
     # print(json.dumps(results, indent=2, ensure_ascii=False))
 
-    # results = pubmed_search_tool.invoke("panda")
-    # print(results)
-    # print("-="*30+'\n\n')
+    results = pubmed_search_tool.invoke("Detergent cellulase")
+    print(results)
+    print("-="*30+'\n\n')
 
     # results = arxiv_search_tool.invoke("panda")
     # print(results)
     # print("-="*30+'\n\n')
 
-    results = patsnap_search_tool.invoke("panda")
-    print(results)
-    print("-="*30+'\n\n')
+    # results = patsnap_search_tool.invoke("洗涤剂 纤维素酶")
+    # print(results)
+    # print("-="*30+'\n\n')
 
-    if os.getenv("PATENTSVIEW_API_KEY"):
-        print("Testing PatentsView Search Tool...")
-        results_pv = patents_view_search_tool.invoke("CRISPR gene editing")
-        print(json.dumps(json.loads(results_pv), indent=2, ensure_ascii=False) if results_pv else "No results")
-        print("-="*30+'\n\n')
-    else:
-        print("PATENTSVIEW_API_KEY not set, skipping PatentsView test.")
+    # if os.getenv("PATENTSVIEW_API_KEY"):
+    #     print("Testing PatentsView Search Tool...")
+    #     results_pv = patents_view_search_tool.invoke("Detergent cellulase")
+    #     print(results_pv)
+    #     print("-="*30+'\n\n')
+    # else:
+    #     print("PATENTSVIEW_API_KEY not set, skipping PatentsView test.")

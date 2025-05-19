@@ -4,6 +4,7 @@
 import json
 import logging
 from typing import Annotated, Literal
+import asyncio
 
 from langchain_core.messages import AIMessage, HumanMessage
 from langchain_core.runnables import RunnableConfig
@@ -30,6 +31,7 @@ from src.utils.json_utils import repair_json_output
 
 from .types import State
 from ..config import SEARCH_MAX_RESULTS, SELECTED_SEARCH_ENGINE, SearchEngine
+from src.graph.context import ContextManager
 
 logger = logging.getLogger(__name__)
 
@@ -43,6 +45,39 @@ def handoff_to_planner(
     # This tool is not returning anything: we're just using it
     # as a way for LLM to signal that it needs to hand off to planner agent
     return
+
+
+@tool
+async def handoff_to_literature_researcher(
+    task_title: Annotated[str, "The title of the task to be handed off."],
+    task_description: Annotated[str, "The detail description of the task to be handed off."],
+    locale: Annotated[str, "The user's detected language locale (e.g., en-US, zh-CN)."],
+):
+    """Handoff to literature researcher agent to do literature research and return the result directly."""
+    # 构造输入
+    agent_input = {
+        "messages": [
+            HumanMessage(content=f"# Task\n\n{task_title}\n\n## Description\n\n{task_description}\n\n# Locale\n\n{locale}")
+        ]
+    }
+    result = await literature_researcher_agent.ainvoke(agent_input)
+    return result["messages"][-1].content
+
+
+@tool
+async def handoff_to_patent_researcher(
+    task_title: Annotated[str, "The title of the task to be handed off."],
+    task_description: Annotated[str, "The detail description of the task to be handed off."],
+    locale: Annotated[str, "The user's detected language locale (e.g., en-US, zh-CN)."],
+):
+    """Handoff to patent researcher agent to do patent research and return the result directly."""
+    agent_input = {
+        "messages": [
+            HumanMessage(content=f"# Task\n\n{task_title}\n\n## Description\n\n{task_description}\n\n# Locale\n\n{locale}")
+        ]
+    }
+    result = await patent_researcher_agent.ainvoke(agent_input)
+    return result["messages"][-1].content
 
 
 def background_investigation_node(state: State) -> Command[Literal["planner"]]:
@@ -266,10 +301,10 @@ def reporter_node(state: State):
         )
     )
 
-    for observation in observations:
+    for obs in observations:
         invoke_messages.append(
             HumanMessage(
-                content=f"Below are some observations for the research task:\n\n{observation}",
+                content=f"Below are some observations for the research task:\n\n{obs['content']}",
                 name="observation",
             )
         )
@@ -283,7 +318,7 @@ def reporter_node(state: State):
 
 def research_team_node(
     state: State,
-) -> Command[Literal["planner", "researcher", "literature_researcher", "patent_researcher", "coder"]]:
+) -> Command[Literal["planner", "researcher", "coder"]]:
     """Research team node that collaborates on tasks."""
     logger.info("Research team is collaborating on tasks.")
     current_plan = state.get("current_plan")
@@ -296,10 +331,6 @@ def research_team_node(
             break
     if step.step_type == StepType.RESEARCH:
         return Command(goto="researcher")
-    if step.step_type == StepType.LITERATURE_RESEARCH:
-        return Command(goto="literature_researcher")
-    if step.step_type == StepType.PATENT_RESEARCH:
-        return Command(goto="patent_researcher")
     if step.step_type == StepType.PROCESSING:
         return Command(goto="coder")
     return Command(goto="planner")
@@ -336,6 +367,15 @@ async def _execute_agent_step(
             completed_steps_info += f"## Existing Finding {i+1}: {step.title}\n\n"
             completed_steps_info += f"<finding>\n{step.execution_res}\n</finding>\n\n"
 
+    # 获取裁剪后的上下文 observations
+    relevant_observations = ContextManager.get_relevant_observations(
+        state,
+        current_step.step_type,
+        agent_name,
+        threshold=0.5,
+    )
+    context_str = ContextManager.format_context_for_agent(relevant_observations, agent_name)
+
     # Prepare the input for the agent with completed steps info
     agent_input = {
         "messages": [
@@ -344,6 +384,9 @@ async def _execute_agent_step(
             )
         ]
     }
+    # 将 observations 以 system message 形式传递给 agent
+    if context_str.strip():
+        agent_input["messages"].insert(0, HumanMessage(content=context_str, name="system"))
 
     # Add citation reminder for researcher agent
     if agent_name == "researcher":
@@ -365,6 +408,19 @@ async def _execute_agent_step(
     current_step.execution_res = response_content
     logger.info(f"Step '{current_step.title}' execution completed by {agent_name}")
 
+    # Create a structured Observation for this step
+    step_id = getattr(current_step, "id", None)
+    if not step_id:
+        # Use title+step_type as fallback unique id
+        step_id = f"{current_step.title}-{getattr(current_step, 'step_type', '')}"
+    observation = {
+        "step_id": step_id,
+        "title": current_step.title,
+        "content": response_content,
+        "source": agent_name,
+        "relevance_score": 1.0,  # default to 1.0, can be refined later
+    }
+
     return Command(
         update={
             "messages": [
@@ -373,7 +429,7 @@ async def _execute_agent_step(
                     name=agent_name,
                 )
             ],
-            "observations": observations + [response_content],
+            "observations": observations + [observation],
         },
         goto="research_team",
     )
@@ -432,10 +488,17 @@ async def _setup_and_execute_agent_step(
                         f"Powered by '{enabled_tools[tool.name]}'.\n{tool.description}"
                     )
                     loaded_tools.append(tool)
+            # researcher agent注入handoff工具
+            if agent_type == "researcher":
+                loaded_tools.extend([handoff_to_literature_researcher, handoff_to_patent_researcher])
             agent = create_agent(agent_type, agent_type, loaded_tools, agent_type)
             return await _execute_agent_step(state, agent, agent_type)
     else:
-        # Use default agent if no MCP servers are configured
+        # researcher agent注入handoff工具
+        if agent_type == "researcher":
+            loaded_tools = default_tools[:] + [handoff_to_literature_researcher, handoff_to_patent_researcher]
+            agent = create_agent(agent_type, agent_type, loaded_tools, agent_type)
+            return await _execute_agent_step(state, agent, agent_type)
         return await _execute_agent_step(state, default_agent, agent_type)
 
 

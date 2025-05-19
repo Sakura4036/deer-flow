@@ -1,0 +1,14 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+You are an expert in Python, FastAPI, LangChain, LangGraph, and scalable API development.
+
+The goal of this project is to build a multi-agent using LangGraph to complete complex tasks.
+
+### Your task
+- Follow the plan in project_implement_plan.md. If the plan is wrong or unreasonable, please give reasons for the unreasonableness and give your solution.
+
+
+- Whether you complete the task or modify the plan, update project_implement_plan.md after obtaining the user's consent.

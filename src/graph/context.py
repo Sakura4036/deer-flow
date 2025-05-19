@@ -4,29 +4,58 @@ from src.prompts.planner_model import StepType
 
 
 class ContextManager:
-    """管理传递给代理的上下文信息"""
+    """Manages context information passed to agents, including filtering and formatting observations."""
 
     @staticmethod
-    def get_relevant_observations(state: State, step_type: StepType, agent_type:str, threshold: float = 0.5) -> list[Observation]:
-        """获取与当前步骤相关的观察结果"""
+    def get_relevant_observations(
+        state: State,
+        step_type: StepType,
+        agent_type: str,
+        threshold: float = 0.5,
+        max_words: int = 64000,
+    ) -> list[Observation]:
+        """
+        Get relevant observations for the current step and agent.
+        Filters by agent_type/source, relevance_score, and trims to max_words.
+        """
         observations = state.get("observations", [])
 
-        # step可接受来源
+        # Map agent_type to allowed sources
         agent_type_observation_map = {
+            "researcher": ["researcher", "literature_researcher", "patent_researcher"],
+            "literature_researcher": ["researcher", "literature_researcher"],
+            "patent_researcher": ["researcher", "patent_researcher"],
+            "coder": ["coder"],
         }
+        allowed_sources = agent_type_observation_map.get(agent_type, [])
 
-        if step_type == StepType.RESEARCH:
-            pass
+        # Filter by source and relevance_score
+        filtered = [
+            obs for obs in observations
+            if (not allowed_sources or obs["source"] in allowed_sources)
+            and obs.get("relevance_score", 1.0) >= threshold
+        ]
 
-        pass
+        # Sort by relevance_score descending
+        filtered.sort(key=lambda x: x.get("relevance_score", 1.0), reverse=True)
+
+        # Trim to max_words (approximate, by content length)
+        total_words = 0
+        result = []
+        for obs in filtered:
+            word_count = len(obs["content"].split())
+            if total_words + word_count > max_words:
+                break
+            result.append(obs)
+            total_words += word_count
+        return result
 
     @staticmethod
     def format_context_for_agent(observations: list[Observation], agent_type: str) -> str:
-        """根据代理类型格式化上下文信息"""
-
-        # 根据不同代理类型定制格式  
+        """Format context for agent based on agent_type."""
         if agent_type == "researcher":
-            return "## Previous Research Findings\n\n" + "\n\n".join([f"- {obs.content}" for obs in observations])
+            return "## Previous Research Findings\n\n" + "\n\n".join([f"- {obs['content']}" for obs in observations])
         elif agent_type == "coder":
-            return "## Available Data\n\n" + "\n\n".join([f"```\n{obs.content}\n```" for obs in observations])
-            # 其他代理类型...
+            return "## Available Data\n\n" + "\n\n".join([f"```\n{obs['content']}\n```" for obs in observations])
+        # Add more agent types as needed
+        return "\n\n".join([obs['content'] for obs in observations])

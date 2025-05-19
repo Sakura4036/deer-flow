@@ -78,7 +78,8 @@ class PatentsViewAPIWrapper(BaseModel):
             patent_id, title, abstract, publication date, assignees, inventors, and claims.
         """
         try:
-            logger.debug(f"Searching patents with query: '{query}' using client.search_patents, top_k_results={self.top_k_results}")
+            logger.info(f"Searching patents with query: '{query}' using client.search_patents, top_k_results={self.top_k_results}")
+            print(f"Searching patents with query: '{query}' using client.search_patents, top_k_results={self.top_k_results}")
             
             # Call the modified search_patents method from the client
             # This method now handles query construction, field selection, claims fetching, and initial formatting.
