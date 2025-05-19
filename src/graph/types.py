@@ -1,12 +1,30 @@
 # Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 # SPDX-License-Identifier: MIT
 
-import operator
-from typing import Annotated
+from typing import List, Dict, Any, TypedDict
 
 from langgraph.graph import MessagesState
 
 from src.prompts.planner_model import Plan
+
+
+class SearchResult(TypedDict):
+    id: str  # Unique identifier for the search result
+    title: str  # Title of the search result
+    url: str  # URL of the search result
+    content: str  # Content of the search result
+    relevance_score: float  # Relevance score of the search result
+    raw: Dict[str, Any]  # Raw data from the search result
+    metadata: Dict[str, Any]  # Metadata associated with the search result
+
+
+class Observation(TypedDict):
+    step_id: str  # Unique identifier for the observation
+    title: str  # Title of the observation
+    content: str  # Content of the observation
+    source: str  # Source of the observation (e.g., patent researcher)
+    relevance_score: float  # Relevance score of the observation
+    search_results: List[str]  # List of search result IDs
 
 
 class State(MessagesState):
@@ -14,7 +32,7 @@ class State(MessagesState):
 
     # Runtime Variables
     locale: str = "en-US"
-    observations: list[str] = []
+    observations: list[Observation] = []
     plan_iterations: int = 0
     current_plan: Plan | str = None
     final_report: str = ""

@@ -1,10 +1,24 @@
 # Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 # SPDX-License-Identifier: MIT
-
+from enum import Enum
 from typing import Literal
 
 # Define available LLM types
 LLMType = Literal["basic", "reasoning", "vision"]
+
+
+class AgentType(str, Enum):
+    COORDINATOR = "coordinator"
+    PLANNER = "planner"
+    RESEARCHER = "researcher"
+    LITERATURE_RESEARCHER = "literature_researcher"
+    PATENT_RESEARCHER = "patent_researcher"
+    CODER = "coder"
+    REPORTER = "reporter"
+    PODCAST_SCRIPT_WRITER = "podcast_script_writer"
+    PPT_COMPOSER = "ppt_composer"
+    PROSE_WRITER = "prose_writer"
+
 
 # Define agent-LLM mapping
 AGENT_LLM_MAP: dict[str, LLMType] = {

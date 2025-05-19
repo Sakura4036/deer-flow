@@ -14,6 +14,8 @@ from .nodes import (
     coder_node,
     human_feedback_node,
     background_investigation_node,
+    literature_researcher_node,
+    patent_researcher_node,
 )
 
 
@@ -27,6 +29,8 @@ def _build_base_graph():
     builder.add_node("reporter", reporter_node)
     builder.add_node("research_team", research_team_node)
     builder.add_node("researcher", researcher_node)
+    builder.add_node("literature_researcher", literature_researcher_node)
+    builder.add_node("patent_researcher", patent_researcher_node)
     builder.add_node("coder", coder_node)
     builder.add_node("human_feedback", human_feedback_node)
     builder.add_edge("reporter", END)

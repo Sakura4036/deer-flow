@@ -11,8 +11,7 @@ from langchain_core.tools import tool
 from langgraph.types import Command, interrupt
 from langchain_mcp_adapters.client import MultiServerMCPClient
 
-from src.agents.agents import coder_agent, research_agent, create_agent
-
+from src.agents.agents import coder_agent, research_agent, create_agent, literature_researcher_agent, patent_researcher_agent
 from src.tools.search import LoggedTavilySearch
 from src.tools import (
     crawl_tool,
@@ -284,7 +283,7 @@ def reporter_node(state: State):
 
 def research_team_node(
     state: State,
-) -> Command[Literal["planner", "researcher", "coder"]]:
+) -> Command[Literal["planner", "researcher", "literature_researcher", "patent_researcher", "coder"]]:
     """Research team node that collaborates on tasks."""
     logger.info("Research team is collaborating on tasks.")
     current_plan = state.get("current_plan")
@@ -295,9 +294,13 @@ def research_team_node(
     for step in current_plan.steps:
         if not step.execution_res:
             break
-    if step.step_type and step.step_type == StepType.RESEARCH:
+    if step.step_type == StepType.RESEARCH:
         return Command(goto="researcher")
-    if step.step_type and step.step_type == StepType.PROCESSING:
+    if step.step_type == StepType.LITERATURE_RESEARCH:
+        return Command(goto="literature_researcher")
+    if step.step_type == StepType.PATENT_RESEARCH:
+        return Command(goto="patent_researcher")
+    if step.step_type == StepType.PROCESSING:
         return Command(goto="coder")
     return Command(goto="planner")
 
@@ -461,4 +464,36 @@ async def coder_node(
         "coder",
         coder_agent,
         [python_repl_tool],
+    )
+
+
+async def literature_researcher_node(
+    state: State, config: RunnableConfig
+) -> Command[Literal["research_team"]]:
+    """Literature Researcher node that handles academic literature research."""
+    logger.info("Literature Researcher node is researching literature.")
+    from src.agents.agents import literature_researcher_agent
+    from src.tools import literature_search_tool
+    return await _setup_and_execute_agent_step(
+        state,
+        config,
+        "literature_researcher",
+        literature_researcher_agent,
+        [literature_search_tool],
+    )
+
+
+async def patent_researcher_node(
+    state: State, config: RunnableConfig
+) -> Command[Literal["research_team"]]:
+    """Patent Researcher node that handles patent research."""
+    logger.info("Patent Researcher node is researching patents.")
+    from src.agents.agents import patent_researcher_agent
+    from src.tools import patent_search_tool
+    return await _setup_and_execute_agent_step(
+        state,
+        config,
+        "patent_researcher",
+        patent_researcher_agent,
+        [patent_search_tool],
     )

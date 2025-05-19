@@ -1,5 +1,6 @@
 # Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 # SPDX-License-Identifier: MIT
+from enum import Enum
 
 from langgraph.prebuilt import create_react_agent
 
@@ -16,6 +17,13 @@ from src.llms.llm import get_llm_by_type
 from src.config.agents import AGENT_LLM_MAP
 
 
+class ResearcherType(str, Enum):
+    """Enum for different types of researchers."""
+    RESEARCHER = "researcher"
+    LITERATURE_RESEARCHER = "literature_researcher"
+    PATENT_RESEARCHER = "patent_researcher"
+
+
 # Create agents using configured LLM types
 def create_agent(agent_name: str, agent_type: str, tools: list, prompt_template: str):
     """Factory function to create agents with consistent configuration."""
@@ -29,6 +37,13 @@ def create_agent(agent_name: str, agent_type: str, tools: list, prompt_template:
 
 # Create agents using the factory function
 research_agent = create_agent(
-    "researcher", "researcher", [web_search_tool, crawl_tool, literature_search_tool, patent_search_tool], "researcher"
+    "researcher", "researcher", [web_search_tool, crawl_tool], "researcher"
 )
 coder_agent = create_agent("coder", "coder", [python_repl_tool], "coder")
+literature_researcher_agent = create_agent(
+    "literature_researcher", "literature_researcher", [literature_search_tool], "literature_researcher"
+)
+patent_researcher_agent = create_agent(
+    "patent_researcher", "patent_researcher", [patent_search_tool], "patent_researcher"
+)
+

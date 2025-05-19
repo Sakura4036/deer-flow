@@ -64,7 +64,17 @@ Different types of steps have different web search requirements:
    - Researching current events or news
    - Finding statistical data or reports
 
-2. **Data Processing Steps** (`need_web_search: false`):
+2. **Literature Research Steps** (`step_type: "literature_research"`):
+   - Specialized in academic literature retrieval, analysis and synthesis
+   - Using academic databases and literature search tools to obtain papers, reviews, citations and other information
+   - Suitable for tasks requiring high-quality academic evidence, theoretical foundations, and cutting-edge progress
+
+3. **Patent Research Steps** (`step_type: "patent_research"`):
+   - Specialized in patent database retrieval, analysis and synthesis
+   - Retrieving patent applications, grants, legal status, technical solutions and other information
+   - Suitable for tasks related to innovation points, patent layout, technical protection and other related content
+
+4. **Data Processing Steps** (`need_web_search: false`):
    - API calls and data extraction
    - Database queries
    - Raw data collection from existing sources
@@ -159,7 +169,7 @@ interface Step {
   need_web_search: boolean;  // Must be explicitly set for each step
   title: string;
   description: string;  // Specify exactly what data to collect
-  step_type: "research" | "processing";  // Indicates the nature of the step
+  step_type: "research" | "processing" | "literature_research" | "patent_research";  // Indicates the nature of the step
 }
 
 interface Plan {

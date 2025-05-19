@@ -27,6 +27,26 @@ TEAM_MEMBER_CONFIGURATIONS = {
         ),
         "is_optional": False,
     },
+    "literature_researcher": {
+        "name": "literature_researcher",
+        "desc": (
+            "专门负责学术文献检索、分析与归纳，提供高质量学术证据和理论基础"
+        ),
+        "desc_for_llm": (
+            "Uses academic literature search tools and databases to gather, analyze, and summarize papers, reviews, and citations. Outputs a Markdown report focused on academic findings."
+        ),
+        "is_optional": True,
+    },
+    "patent_researcher": {
+        "name": "patent_researcher",
+        "desc": (
+            "专门负责专利数据库检索、分析与归纳，提供创新点、专利布局等相关内容"
+        ),
+        "desc_for_llm": (
+            "Uses patent search tools and databases to gather, analyze, and summarize patent applications, grants, and legal status. Outputs a Markdown report focused on patent findings."
+        ),
+        "is_optional": True,
+    },
     "coder": {
         "name": "coder",
         "desc": (
