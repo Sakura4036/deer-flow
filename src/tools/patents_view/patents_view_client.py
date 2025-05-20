@@ -6,6 +6,7 @@ from typing import Dict, Any, Optional, List
 
 logger = logging.getLogger(__name__)
 
+
 class PatentsViewAPIClient:
     """
     Client for interacting with the PatentsView API.
@@ -50,7 +51,7 @@ class PatentsViewAPIClient:
         """
         url = f"{self.base_url.rstrip('/')}/{endpoint.lstrip('/')}"
         logger.debug(f"Making {method} request to {url} with data: {data}")
-        
+
         try:
             if method.upper() == "POST":
                 response = requests.post(url, headers=self.headers, json=data, params=params)
@@ -68,7 +69,7 @@ class PatentsViewAPIClient:
                 err_details = response.json()
                 logger.error(f"PatentsView API error details: {err_details}")
             except json.JSONDecodeError:
-                pass # No JSON in error response
+                pass  # No JSON in error response
             raise
         except requests.exceptions.RequestException as req_err:
             logger.error(f"Request exception occurred: {req_err}")
@@ -77,7 +78,8 @@ class PatentsViewAPIClient:
             logger.error(f"Failed to decode JSON response: {json_err} - Response text: {response.text}")
             raise
 
-    def _search_patents(self, query_obj: Dict[str, Any], fields: list[str]=None, options: Optional[Dict[str, Any]] = None, sortings: Optional[List[Dict[str, Any]]] = None) -> Dict[str, Any]:
+    def _search_patents(self, query_obj: Dict[str, Any], fields: list[str] = None, options: Optional[Dict[str, Any]] = None,
+                        sortings: Optional[List[Dict[str, Any]]] = None) -> Dict[str, Any]:
         """
         Search for patents.
         Endpoint: /patent/
@@ -130,10 +132,10 @@ class PatentsViewAPIClient:
         else:
             payload["o"] = {"size": 10}
 
-        if sortings :
-            payload['s'] = sortings 
+        if sortings:
+            payload['s'] = sortings
         else:
-            payload['s'] = [{"patent_date":"desc"}]
+            payload['s'] = [{"patent_date": "desc"}]
         return self._request("POST", "patent/", data=payload)
 
     def get_patent_claims(self, patent_id: str, fields: Optional[list[str]] = None, options: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
@@ -170,17 +172,17 @@ class PatentsViewAPIClient:
         """
         query_obj = {"_eq": {"patent_id": patent_id}}
         fields_to_fetch = fields or ["claim_text", "claim_sequence"]
-        
+
         payload = {
             "q": query_obj,
             "f": fields_to_fetch
         }
         if options:
             payload["o"] = options
-            
+
         return self._request("POST", "g_claim/", data=payload)
 
-    def search_patents(self, query:str, max_results:int=10, fuzzy_search:bool=False, get_claims:bool=False) -> List[Dict[str, Any]]:
+    def search_patents(self, query: str, max_results: int = 10, fuzzy_search: bool = False, get_claims: bool = False) -> List[Dict[str, Any]]:
         """
         Search for patents.
         Args:
@@ -222,31 +224,32 @@ class PatentsViewAPIClient:
         # Format the results    
         patents = self._format_results(patents)
         return patents
-    
+
     def _format_results(self, patents: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         """
         Format the results to be more readable.
         """
         for patent in patents:
-            if inventors:=patent.get("inventors", None):
+            if inventors := patent.get("inventors", None):
                 patent["inventors"] = [inventor.get("inventor_name_first", "") + " " + inventor.get("inventor_name_last", "") for inventor in inventors]
-            if assignees:=patent.get("assignees", None):
+            if assignees := patent.get("assignees", None):
                 patent["assignees"] = [
                     "{} {},{} ; ".format(assignee.get("assignee_organization", ""), assignee.get("assignee_city", ""), assignee.get("assignee_country", ""))
                     for assignee in assignees if assignee and assignee.get("assignee_organization")
                 ]
-            if g_claims:=patent.get("g_claims", None):
+            if g_claims := patent.get("g_claims", None):
                 g_claims = sorted(g_claims, key=lambda x: x.get("claim_sequence", 0))
                 patent["g_claims"] = "\n".join([claim.get("claim_text", "") for claim in g_claims])
 
         return patents
+
 
 if __name__ == '__main__':
     # This is for basic testing of the client
     # Ensure PATENTSVIEW_API_KEY is set in your environment
     logging.basicConfig(level=logging.DEBUG)
     client = PatentsViewAPIClient()
-    
+
     if not client.api_key:
         print("PATENTSVIEW_API_KEY environment variable not set. Skipping live API test.")
     else:
@@ -262,4 +265,4 @@ if __name__ == '__main__':
                 print(f"Claims results: {json.dumps(claims_results, indent=2)}")
 
         except Exception as e:
-            print(f"An error occurred during testing: {e}") 
+            print(f"An error occurred during testing: {e}")

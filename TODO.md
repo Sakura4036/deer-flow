@@ -3,7 +3,7 @@
 
 ### 1. 增强工作流架构
   - [ ] 引入更多专业智能体: 
-    - [ ] 搜索专家(Web search agent): 使用搜索引擎工具和crawl工具搜索网络信息和读取网页信息
+    - [x] 搜索专家(Web search agent): 使用搜索引擎工具和crawl工具搜索网络信息和读取网页信息
     - [x] 文献研究专家：负责使用文献搜索工具完成文献搜索和分析总结
     - [x] 专利分析员：负责使用专利搜索工具完成专家搜索和分析总结
   - [ ] 提示词系统优化，根据任务类型和agent名称动态获取提示词文件中的提示词： 支持通用调研、产品调研、酶设计调研等3个调研任务类型的提示词
@@ -11,11 +11,11 @@
     - [ ] 通用调研工作流各agent提示词
     - [ ] 产品调研工作流各agent提示词
     - [ ] 酶设计调研工作流各agent提示词
-  - [ ] 优化增强research team， 改为researcher team subgraph：使用子图完成复杂任务
-    - [ ] router node：分析任务，生成任务计划每一步指定researcher，如web researcher, patent researcher等
-    - [ ] researcher node：根据任务step调用不同的researcher 完成任务
-    - [ ] summary_node: 总结与反思任务完成情况，如未完成回到router node，否则返回结果
-  - [ ] 优化State，添加必要信息字段和搜索结果
+  - [x] 优化增强research team， 改为researcher team subgraph：使用子图完成复杂任务
+    - [x] router node：分析任务，生成任务计划每一步指定researcher，如web researcher, patent researcher等
+    - [x] researcher node：根据任务step调用不同的researcher 完成任务
+    - [x] summary node: 总结与反思任务完成情况，如未完成回到router node，否则返回结果
+  - [x] 优化State，添加必要信息字段和搜索结果
 
 ### 2. 工具使用增强
   - [ ] 工具反思与选择：智能体能够反思并选择最适合特定任务的工具。
@@ -44,3 +44,14 @@
 
 ### 7. 蛋白设计
   - [ ] 蛋白设计研究员：负责使用专利设计工具，完成蛋白设计任务，如序列突变、序列挖掘等
+
+## 已完成任务
+
+### 研究团队子图 (2023-12-06)
+- [x] 实现了 research_team_subgraph，包含以下组件：
+  - Router节点：分析主任务，将其分解为子任务，并分配给适当的研究人员类型（web搜索、专利分析、文献研究、代码分析等）
+  - Researcher节点：根据子任务的类型调用不同的专业研究员，使用相应的工具完成任务
+  - Summary节点：评估和整合研究结果，判断任务是否完成，如需继续则生成新的研究建议
+- 集成了研究团队子图到主工作流中，使其能够处理更复杂的研究任务
+- 实现了错误处理和状态管理，确保即使单个子任务失败，整体工作流仍能继续执行
+- 添加了提示词模板文件，用于指导router和summary节点的行为

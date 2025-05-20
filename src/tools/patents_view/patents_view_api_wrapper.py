@@ -1,12 +1,13 @@
 import json
 import logging
-from typing import List, Dict, Any, Optional
-import os
+from typing import Dict, Any
+
 from pydantic import BaseModel, Field, ConfigDict
+
 from src.tools.patents_view.patents_view_client import PatentsViewAPIClient
-from src.config import SEARCH_MAX_RESULTS, SEARCH_CONTENT_MAX_LENGTH
 
 logger = logging.getLogger(__name__)
+
 
 class PatentsViewAPIWrapper(BaseModel):
     """
@@ -22,8 +23,8 @@ class PatentsViewAPIWrapper(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
     client: PatentsViewAPIClient = Field(default_factory=PatentsViewAPIClient)
-    top_k_results: int = SEARCH_MAX_RESULTS
-    doc_content_chars_max: int = SEARCH_CONTENT_MAX_LENGTH
+    top_k_results: int = 3
+    doc_content_chars_max: int = 4000
     get_claims: bool = False
     claims_content_chars_max: int = 1000
 
@@ -39,17 +40,18 @@ class PatentsViewAPIWrapper(BaseModel):
         # Use 'patent_date' as per user's uncommitted changes
         patent_date = patent_data.get("patent_date", "N/A")
 
-        assignees = patent_data.get("assignees", []) # Expected to be a list of strings
+        assignees = patent_data.get("assignees", [])  # Expected to be a list of strings
         assignees_str = ", ".join(assignees) if assignees else "N/A"
 
-        inventors = patent_data.get("inventors", []) # Expected to be a list of strings
+        inventors = patent_data.get("inventors", [])  # Expected to be a list of strings
         inventors_str = ", ".join(inventors) if inventors else "N/A"
-        
+
         # Use 'g_claims' as a string, as per user's uncommitted changes for the dictionary output
         # Defaulting to "N/A" if empty or not present for clearer output
-        claims_content = patent_data.get("g_claims", "") 
+        claims_content = patent_data.get("g_claims", "")
         claims_display_str = claims_content if claims_content else "N/A"
-        claims_display_str = claims_display_str[:self.claims_content_chars_max] if len(claims_display_str) > self.claims_content_chars_max else claims_display_str
+        claims_display_str = claims_display_str[:self.claims_content_chars_max] if len(
+            claims_display_str) > self.claims_content_chars_max else claims_display_str
 
         # Construct the formatted string
         # Each piece of information is on a new line.
@@ -60,7 +62,7 @@ class PatentsViewAPIWrapper(BaseModel):
             f"Publication Date: {patent_date}",
             f"Assignees: {assignees_str}",
             f"Inventors: {inventors_str}",
-            "Claims:", claims_display_str # This is the direct string content from g_claims or "N/A"
+            "Claims:", claims_display_str  # This is the direct string content from g_claims or "N/A"
         ]
         return "\n".join(lines)
 
@@ -80,7 +82,7 @@ class PatentsViewAPIWrapper(BaseModel):
         try:
             logger.info(f"Searching patents with query: '{query}' using client.search_patents, top_k_results={self.top_k_results}")
             print(f"Searching patents with query: '{query}' using client.search_patents, top_k_results={self.top_k_results}")
-            
+
             # Call the modified search_patents method from the client
             # This method now handles query construction, field selection, claims fetching, and initial formatting.
             # We pass fuzzy_search=True as the original wrapper implied it with _text_any.
@@ -88,10 +90,10 @@ class PatentsViewAPIWrapper(BaseModel):
             patents_data = self.client.search_patents(
                 query=query,
                 max_results=self.top_k_results,
-                fuzzy_search=True, 
+                fuzzy_search=True,
                 get_claims=self.get_claims
             )
-            
+
             # The client's search_patents method returns a list of already somewhat formatted patents.
             # It does not return total_hits directly, so logging is adjusted.
             logger.info(f"Received {len(patents_data)} patent results from client.search_patents.")
@@ -102,7 +104,7 @@ class PatentsViewAPIWrapper(BaseModel):
                     # _parse_patent_data now returns a formatted string for each patent
                     formatted_patent_string = self._parse_patent_data(patent_data_from_client)
                     results.append(formatted_patent_string)
-            
+
             return (
                 "\n\n".join(results)[:self.doc_content_chars_max]
                 if results

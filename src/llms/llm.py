@@ -4,10 +4,11 @@
 from pathlib import Path
 from typing import Any, Dict
 
+from langchain_core.language_models import BaseChatModel
 from langchain_openai import ChatOpenAI
 
 from src.config import load_yaml_config
-from src.config.agents import LLMType
+from src.config.agents import LLMType, AgentType, AGENT_LLM_MAP
 
 # Cache for LLM instances
 _llm_cache: dict[LLMType, ChatOpenAI] = {}
@@ -42,6 +43,15 @@ def get_llm_by_type(
     llm = _create_llm_use_conf(llm_type, conf)
     _llm_cache[llm_type] = llm
     return llm
+
+
+def get_agent_llm_type(agent_type: str | AgentType = None) -> BaseChatModel:
+    return AGENT_LLM_MAP.get(agent_type, "basic")
+
+
+def get_agent_llm(agent_type: str | AgentType = None) -> BaseChatModel:
+    llm_type = AGENT_LLM_MAP.get(agent_type, "basic")
+    return get_llm_by_type(llm_type)
 
 
 # Initialize LLMs for different purposes - now these will be cached

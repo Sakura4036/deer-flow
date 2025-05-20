@@ -14,22 +14,21 @@ from langgraph.types import Command, interrupt
 
 from src.agents import create_agent
 from src.config.agents import AGENT_LLM_MAP
+from src.llms.llm import get_agent_llm
 from src.config.configuration import Configuration
 from src.graph.context import ContextManager
-from src.llms.llm import get_llm_by_type
 from src.prompts.planner_model import Plan, StepType
 from src.prompts.template import apply_prompt_template
 from src.tools import (
     crawl_tool,
     get_web_search_tool,
     python_repl_tool,
-get_literature_search_tool,
-get_patent_search_tool,
 )
 from src.tools.search import LoggedTavilySearch
 from src.utils.json_utils import repair_json_output
-from .types import State
+from .types import State, Observation
 from ..config import SELECTED_SEARCH_ENGINE, SearchEngine
+from src.graph.research_team.subgraph import run_research_team_subgraph
 
 logger = logging.getLogger(__name__)
 
@@ -103,12 +102,12 @@ def planner_node(
         ]
 
     if AGENT_LLM_MAP["planner"] == "basic":
-        llm = get_llm_by_type(AGENT_LLM_MAP["planner"]).with_structured_output(
+        llm = get_agent_llm("planner").with_structured_output(
             Plan,
             method="json_mode",
         )
     else:
-        llm = get_llm_by_type(AGENT_LLM_MAP["planner"])
+        llm = get_agent_llm("planner")
 
     # if the plan iterations is greater than the max plan iterations, return the reporter node
     if plan_iterations >= configurable.max_plan_iterations:
@@ -211,7 +210,7 @@ def coordinator_node(
     logger.info("Coordinator talking.")
     messages = apply_prompt_template("coordinator", state)
     response = (
-        get_llm_by_type(AGENT_LLM_MAP["coordinator"])
+        get_agent_llm("coordinator")
         .bind_tools([handoff_to_planner])
         .invoke(messages)
     )
@@ -277,7 +276,7 @@ def reporter_node(state: State):
             )
         )
     logger.debug(f"Current invoke messages: {invoke_messages}")
-    response = get_llm_by_type(AGENT_LLM_MAP["reporter"]).invoke(invoke_messages)
+    response = get_agent_llm("reporter").invoke(invoke_messages)
     response_content = response.content
     logger.info(f"reporter response: {response_content}")
 
@@ -285,23 +284,82 @@ def reporter_node(state: State):
 
 
 def research_team_node(
-    state: State,
-) -> Command[Literal["planner", "researcher", "coder"]]:
-    """Research team node that collaborates on tasks."""
-    logger.info("Research team is collaborating on tasks.")
+    state: State, config: RunnableConfig
+) -> Command[Literal["planner", "reporter"]]:
+    """Research team node that uses the research team subgraph to process steps."""
+    logger.info("Research team subgraph is processing task")
+    
     current_plan = state.get("current_plan")
     if not current_plan or not current_plan.steps:
+        logger.warning("No plan or steps found, returning to planner")
         return Command(goto="planner")
-    if all(step.execution_res for step in current_plan.steps):
-        return Command(goto="planner")
+    
+    # Find the first unexecuted step
+    current_step = None
     for step in current_plan.steps:
         if not step.execution_res:
+            current_step = step
             break
-    if step.step_type == StepType.RESEARCH:
-        return Command(goto="researcher")
-    if step.step_type == StepType.PROCESSING:
-        return Command(goto="coder")
-    return Command(goto="planner")
+    
+    if not current_step:
+        logger.info("All steps executed, returning to planner")
+        return Command(goto="planner")
+    
+    # Extract the step information for the research team
+    step_id = getattr(current_step, "id", None)
+    if not step_id:
+        step_id = f"{current_step.title}-{current_step.step_type}"
+    
+    # Get existing observations for context
+    observations = state.get("observations", [])
+    
+    # Prepare the main task objective from the current step
+    task_description = f"# Research Task\n\n## Title\n{current_step.title}\n\n## Description\n{current_step.description}"
+    
+    # Run the research team subgraph
+    logger.info(f"Running research team subgraph for step: {current_step.title}")
+    try:
+        result = run_research_team_subgraph(task_description, observations)
+        
+        # Extract the final summary from the result
+        final_summary = result.get("task_summary")
+        if not final_summary:
+            logger.warning("No final summary produced by research team subgraph")
+            return Command(goto="planner")
+        
+        # Update the step with the execution result
+        current_step.execution_res = final_summary
+        
+        # Create a new observation for this research
+        new_observation = {
+            "id": step_id,
+            "title": current_step.title,
+            "content": final_summary,
+            "source": "research_team"
+        }
+        
+        # Update the observations in the state
+        observations.append(new_observation)
+        
+        # Check if all steps are now executed
+        all_executed = all(step.execution_res for step in current_plan.steps)
+        goto = "planner" if not all_executed else "reporter"
+        
+        return Command(
+            update={
+                "observations": observations,
+                "messages": [
+                    HumanMessage(
+                        content=f"Completed research step: {current_step.title}",
+                        name="research_team"
+                    )
+                ]
+            },
+            goto=goto
+        )
+    except Exception as e:
+        logger.error(f"Error in research team subgraph: {e}")
+        return Command(goto="planner")
 
 
 async def _execute_agent_step(
@@ -311,7 +369,7 @@ async def _execute_agent_step(
     current_plan = state.get("current_plan")
     observations = state.get("observations", [])
 
-    # Find the first unexecuted step
+    # Find the first un-executed step
     current_step = None
     completed_steps = []
     for step in current_plan.steps:
@@ -322,7 +380,7 @@ async def _execute_agent_step(
             completed_steps.append(step)
 
     if not current_step:
-        logger.warning("No unexecuted step found")
+        logger.warning("No un-executed step found")
         return Command(goto="research_team")
 
     logger.info(f"Executing step: {current_step.title}")
@@ -406,11 +464,10 @@ async def _execute_agent_step(
         # Use title+step_type as fallback unique id
         step_id = f"{current_step.title}-{getattr(current_step, 'step_type', '')}"
     observation = {
-        "step_id": step_id,
+        "id": step_id,
         "title": current_step.title,
         "content": response_content,
         "source": agent_name,
-        "relevance_score": 1.0,  # default to 1.0, can be refined later
     }
 
     return Command(
@@ -510,32 +567,4 @@ async def coder_node(
         config,
         "coder",
         [python_repl_tool],
-    )
-
-
-async def literature_researcher_node(
-    state: State, config: RunnableConfig
-) -> Command[Literal["research_team"]]:
-    """Literature Researcher node that handles academic literature research."""
-    logger.info("Literature Researcher node is researching literature.")
-    configurable = Configuration.from_runnable_config(config)
-    return await _setup_and_execute_agent_step(
-        state,
-        config,
-        "literature_researcher",
-        [get_literature_search_tool(configurable.max_search_results), crawl_tool],
-    )
-
-
-async def patent_researcher_node(
-    state: State, config: RunnableConfig
-) -> Command[Literal["research_team"]]:
-    """Patent Researcher node that handles patent research."""
-    logger.info("Patent Researcher node is researching patents.")
-    configurable = Configuration.from_runnable_config(config)
-    return await _setup_and_execute_agent_step(
-        state,
-        config,
-        "patent_researcher",
-        [get_patent_search_tool(configurable.max_search_results), crawl_tool]
     )

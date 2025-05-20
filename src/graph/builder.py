@@ -10,30 +10,47 @@ from .nodes import (
     planner_node,
     reporter_node,
     research_team_node,
-    researcher_node,
-    coder_node,
     human_feedback_node,
     background_investigation_node,
-    literature_researcher_node,
-    patent_researcher_node,
 )
 
+import logging
+from typing import Any, Dict, List, Optional, Type, TypeVar
 
-def _build_base_graph():
-    """Build and return the base state graph with all nodes and edges."""
+import structlog
+from langchain_core.runnables import RunnableConfig
+
+logger = logging.getLogger(__name__)
+structural_logger = structlog.get_logger()
+
+T = TypeVar("T", bound=State)
+
+
+def _build_base_graph() -> StateGraph:
+    """
+    Builds the main workflow graph with all nodes and their connections.
+    
+    Args:
+        state_type: The type for the graph state
+        configurable: Configuration options
+        
+    Returns:
+        The workflow state graph
+    """
+
+    # Create the graph with the specified state type
     builder = StateGraph(State)
+
     builder.add_edge(START, "coordinator")
     builder.add_node("coordinator", coordinator_node)
     builder.add_node("background_investigator", background_investigation_node)
     builder.add_node("planner", planner_node)
-    builder.add_node("reporter", reporter_node)
-    builder.add_node("research_team", research_team_node)
-    builder.add_node("researcher", researcher_node)
-    builder.add_node("literature_researcher", literature_researcher_node)
-    builder.add_node("patent_researcher", patent_researcher_node)
-    builder.add_node("coder", coder_node)
     builder.add_node("human_feedback", human_feedback_node)
+    builder.add_node("research_team", research_team_node)
+    builder.add_node("reporter", reporter_node)
+
     builder.add_edge("reporter", END)
+
     return builder
 
 
