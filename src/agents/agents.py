@@ -36,8 +36,8 @@ def create_agent(agent_name: str, agent_type: str, tools: list, prompt_template:
 
 
 # Create agents using the factory function
-research_agent = create_agent(
-    "researcher", "researcher", [web_search_tool, crawl_tool], "researcher"
+web_research_agent = create_agent(
+    "web_researcher", "web_researcher", [web_search_tool, crawl_tool], "web_researcher"
 )
 coder_agent = create_agent("coder", "coder", [python_repl_tool], "coder")
 literature_researcher_agent = create_agent(

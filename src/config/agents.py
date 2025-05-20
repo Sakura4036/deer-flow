@@ -11,6 +11,7 @@ class AgentType(str, Enum):
     COORDINATOR = "coordinator"
     PLANNER = "planner"
     RESEARCHER = "researcher"
+    WEB_RESEARCHER = "web_researcher"
     LITERATURE_RESEARCHER = "literature_researcher"
     PATENT_RESEARCHER = "patent_researcher"
     CODER = "coder"
@@ -25,6 +26,7 @@ AGENT_LLM_MAP: dict[str, LLMType] = {
     "coordinator": "basic",
     "planner": "reasoning",
     "researcher": "basic",
+    "web_researcher": "basic",
     "literature_researcher": "basic",
     "patent_researcher": "basic",
     "coder": "basic",
