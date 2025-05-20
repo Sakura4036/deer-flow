@@ -5,34 +5,31 @@ import json
 import logging
 import os
 from typing import Annotated, Literal
-import asyncio
 
 from langchain_core.messages import AIMessage, HumanMessage
 from langchain_core.runnables import RunnableConfig
 from langchain_core.tools import tool
-from langgraph.types import Command, interrupt
 from langchain_mcp_adapters.client import MultiServerMCPClient
+from langgraph.types import Command, interrupt
 
 from src.agents import create_agent
-from src.tools.search import LoggedTavilySearch
+from src.config.agents import AGENT_LLM_MAP
+from src.config.configuration import Configuration
+from src.graph.context import ContextManager
+from src.llms.llm import get_llm_by_type
+from src.prompts.planner_model import Plan, StepType
+from src.prompts.template import apply_prompt_template
 from src.tools import (
     crawl_tool,
     get_web_search_tool,
     python_repl_tool,
-    literature_search_tool,
-    patent_search_tool,
+get_literature_search_tool,
+get_patent_search_tool,
 )
-
-from src.config.agents import AGENT_LLM_MAP
-from src.config.configuration import Configuration
-from src.llms.llm import get_llm_by_type
-from src.prompts.planner_model import Plan, StepType
-from src.prompts.template import apply_prompt_template
+from src.tools.search import LoggedTavilySearch
 from src.utils.json_utils import repair_json_output
-
 from .types import State
 from ..config import SELECTED_SEARCH_ENGINE, SearchEngine
-from src.graph.context import ContextManager
 
 logger = logging.getLogger(__name__)
 
@@ -46,39 +43,6 @@ def handoff_to_planner(
     # This tool is not returning anything: we're just using it
     # as a way for LLM to signal that it needs to hand off to planner agent
     return
-
-
-@tool
-async def handoff_to_literature_researcher(
-    task_title: Annotated[str, "The title of the task to be handed off."],
-    task_description: Annotated[str, "The detail description of the task to be handed off."],
-    locale: Annotated[str, "The user's detected language locale (e.g., en-US, zh-CN)."],
-):
-    """Handoff to literature researcher agent to do literature research and return the result directly."""
-    # 构造输入
-    agent_input = {
-        "messages": [
-            HumanMessage(content=f"# Task\n\n{task_title}\n\n## Description\n\n{task_description}\n\n# Locale\n\n{locale}")
-        ]
-    }
-    result = await literature_researcher_agent.ainvoke(agent_input)
-    return result["messages"][-1].content
-
-
-@tool
-async def handoff_to_patent_researcher(
-    task_title: Annotated[str, "The title of the task to be handed off."],
-    task_description: Annotated[str, "The detail description of the task to be handed off."],
-    locale: Annotated[str, "The user's detected language locale (e.g., en-US, zh-CN)."],
-):
-    """Handoff to patent researcher agent to do patent research and return the result directly."""
-    agent_input = {
-        "messages": [
-            HumanMessage(content=f"# Task\n\n{task_title}\n\n## Description\n\n{task_description}\n\n# Locale\n\n{locale}")
-        ]
-    }
-    result = await patent_researcher_agent.ainvoke(agent_input)
-    return result["messages"][-1].content
 
 
 def background_investigation_node(state: State, config: RunnableConfig) -> Command[Literal["planner"]]:
@@ -514,9 +478,6 @@ async def _setup_and_execute_agent_step(
                         f"Powered by '{enabled_tools[tool.name]}'.\n{tool.description}"
                     )
                     loaded_tools.append(tool)
-            # researcher agent注入handoff工具
-            if agent_type == "researcher":
-                loaded_tools.extend([handoff_to_literature_researcher, handoff_to_patent_researcher])
             agent = create_agent(agent_type, agent_type, loaded_tools, agent_type)
             return await _execute_agent_step(state, agent, agent_type)
     else:
@@ -557,14 +518,12 @@ async def literature_researcher_node(
 ) -> Command[Literal["research_team"]]:
     """Literature Researcher node that handles academic literature research."""
     logger.info("Literature Researcher node is researching literature.")
-    from src.agents.agents import literature_researcher_agent
-    from src.tools import literature_search_tool
+    configurable = Configuration.from_runnable_config(config)
     return await _setup_and_execute_agent_step(
         state,
         config,
         "literature_researcher",
-        literature_researcher_agent,
-        [literature_search_tool],
+        [get_literature_search_tool(configurable.max_search_results), crawl_tool],
     )
 
 
@@ -573,12 +532,10 @@ async def patent_researcher_node(
 ) -> Command[Literal["research_team"]]:
     """Patent Researcher node that handles patent research."""
     logger.info("Patent Researcher node is researching patents.")
-    from src.agents.agents import patent_researcher_agent
-    from src.tools import patent_search_tool
+    configurable = Configuration.from_runnable_config(config)
     return await _setup_and_execute_agent_step(
         state,
         config,
         "patent_researcher",
-        patent_researcher_agent,
-        [patent_search_tool],
+        [get_patent_search_tool(configurable.max_search_results), crawl_tool]
     )

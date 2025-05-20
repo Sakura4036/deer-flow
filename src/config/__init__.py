@@ -3,8 +3,8 @@
 
 from .tools import (
     SELECTED_SEARCH_ENGINE, SearchEngine,
-    SELECTED_LITERATURE_SEARCH_ENGINE, LiteratureSearchEngine, 
-    SELECTED_PATENT_SEARCH_ENGINE, PatentSearchEngine
+    SELECTED_LITERATURE_ENGINE, LiteratureSearchEngine,
+    SELECTED_PATENT_ENGINE, PatentSearchEngine
 )
 from .loader import load_yaml_config
 from .questions import BUILT_IN_QUESTIONS, BUILT_IN_QUESTIONS_ZH_CN
@@ -71,8 +71,8 @@ __all__ = [
     "SearchEngine",
     "BUILT_IN_QUESTIONS",
     "BUILT_IN_QUESTIONS_ZH_CN",
-    "SELECTED_PATENT_SEARCH_ENGINE",
+    "SELECTED_PATENT_ENGINE",
     "PatentSearchEngine",
-    "SELECTED_LITERATURE_SEARCH_ENGINE",
+    "SELECTED_LITERATURE_ENGINE",
     "LiteratureSearchEngine"
 ]

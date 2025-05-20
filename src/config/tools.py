@@ -28,8 +28,8 @@ class PatentSearchEngine(enum.Enum):
 
 # Tool configuration
 SELECTED_SEARCH_ENGINE = os.getenv("SEARCH_API", SearchEngine.TAVILY.value)
-SELECTED_LITERATURE_SEARCH_ENGINE = os.getenv("LITERATURE_SEARCH_API", LiteratureSearchEngine.PUBMED.value)
-SELECTED_PATENT_SEARCH_ENGINE = os.getenv("PATENT_SEARCH_API", PatentSearchEngine.PATSNAP.value)
+SELECTED_LITERATURE_ENGINE = os.getenv("LITERATURE_SEARCH_API", LiteratureSearchEngine.PUBMED.value)
+SELECTED_PATENT_ENGINE = os.getenv("PATENT_SEARCH_API", PatentSearchEngine.PATSNAP.value)
 
 SEARCH_MAX_RESULTS = 5
 SEARCH_CONTENT_MAX_LENGTH = 4000
