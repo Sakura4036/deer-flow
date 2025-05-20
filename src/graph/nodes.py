@@ -283,7 +283,7 @@ def reporter_node(state: State):
     return {"final_report": response_content}
 
 
-def research_team_node(
+async def research_team_node(
     state: State, config: RunnableConfig
 ) -> Command[Literal["planner", "reporter"]]:
     """Research team node that uses the research team subgraph to process steps."""
@@ -319,7 +319,7 @@ def research_team_node(
     # Run the research team subgraph
     logger.info(f"Running research team subgraph for step: {current_step.title}")
     try:
-        result = run_research_team_subgraph(task_description, observations)
+        result = await run_research_team_subgraph(task_description, observations)
         
         # Extract the final summary from the result
         final_summary = result.get("task_summary")

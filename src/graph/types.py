@@ -118,7 +118,7 @@ class SummaryOutput(BaseModel):
     feedback: str = Field(description="If the task is not completed, this field contains feedback on what is missing or needs to be improved")
 
 
-class ResearchTeamSubgraphState(TypedDict):
+class ResearchTeamSubgraphState(MessagesState):
     """
     Manages the state for the Research Team subgraph. 
     

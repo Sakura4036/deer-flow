@@ -17,11 +17,8 @@ from .nodes import (
 import logging
 from typing import Any, Dict, List, Optional, Type, TypeVar
 
-import structlog
-from langchain_core.runnables import RunnableConfig
 
 logger = logging.getLogger(__name__)
-structural_logger = structlog.get_logger()
 
 T = TypeVar("T", bound=State)
 
