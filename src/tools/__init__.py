@@ -46,11 +46,13 @@ patent_search_tool_mappings = {
 web_search_tool = search_tool_mappings.get(SELECTED_SEARCH_ENGINE, tavily_search_tool)
 literature_search_tool = literature_search_tool_mappings.get(SELECTED_LITERATURE_SEARCH_ENGINE, pubmed_search_tool)
 patent_search_tool = patent_search_tool_mappings.get(SELECTED_PATENT_SEARCH_ENGINE, patsnap_search_tool)
+from .search import get_web_search_tool
+from .tts import VolcengineTTS
 
 __all__ = [
     "crawl_tool",
-    "web_search_tool",
     "python_repl_tool",
+    "get_web_search_tool",
     "VolcengineTTS",
     "literature_search_tool",
     "patent_search_tool",

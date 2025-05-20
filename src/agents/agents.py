@@ -5,14 +5,6 @@ from enum import Enum
 from langgraph.prebuilt import create_react_agent
 
 from src.prompts import apply_prompt_template
-from src.tools import (
-    crawl_tool,
-    python_repl_tool,
-    web_search_tool,
-    literature_search_tool,
-    patent_search_tool,
-)
-
 from src.llms.llm import get_llm_by_type
 from src.config.agents import AGENT_LLM_MAP
 
@@ -33,17 +25,3 @@ def create_agent(agent_name: str, agent_type: str, tools: list, prompt_template:
         tools=tools,
         prompt=lambda state: apply_prompt_template(prompt_template, state),
     )
-
-
-# Create agents using the factory function
-web_research_agent = create_agent(
-    "web_researcher", "web_researcher", [web_search_tool, crawl_tool], "web_researcher"
-)
-coder_agent = create_agent("coder", "coder", [python_repl_tool], "coder")
-literature_researcher_agent = create_agent(
-    "literature_researcher", "literature_researcher", [literature_search_tool, crawl_tool], "literature_researcher"
-)
-patent_researcher_agent = create_agent(
-    "patent_researcher", "patent_researcher", [patent_search_tool, crawl_tool], "patent_researcher"
-)
-

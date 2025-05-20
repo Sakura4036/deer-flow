@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MIT
 
 from .tools import (
-    SEARCH_MAX_RESULTS, SELECTED_SEARCH_ENGINE, SearchEngine, SEARCH_CONTENT_MAX_LENGTH,
+    SELECTED_SEARCH_ENGINE, SearchEngine,
     SELECTED_LITERATURE_SEARCH_ENGINE, LiteratureSearchEngine, 
     SELECTED_PATENT_SEARCH_ENGINE, PatentSearchEngine
 )
@@ -66,8 +66,7 @@ __all__ = [
     # Other configurations
     "TEAM_MEMBERS",
     "TEAM_MEMBER_CONFIGURATIONS",
-    "SEARCH_MAX_RESULTS",
-    "SEARCH_CONTENT_MAX_LENGTH",
+    "TEAM_MEMBER_CONFIGRATIONS",
     "SELECTED_SEARCH_ENGINE",
     "SearchEngine",
     "BUILT_IN_QUESTIONS",
