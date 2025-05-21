@@ -5,7 +5,7 @@ import json
 import logging
 import os
 
-from langchain_community.tools import BraveSearch, DuckDuckGoSearchResults, PubmedQueryRun
+from langchain_community.tools import BraveSearch, DuckDuckGoSearchResults
 from langchain_community.tools.arxiv import ArxivQueryRun
 from langchain_community.utilities import ArxivAPIWrapper, BraveSearchWrapper, PubMedAPIWrapper
 
@@ -16,6 +16,7 @@ from src.config import (SearchEngine, SELECTED_SEARCH_ENGINE,
 from src.tools.tavily_search.tavily_search_results_with_images import (
     TavilySearchResultsWithImages,
 )
+from src.tools.pubmed import MyPubmedQueryRun
 from src.tools.patsnap import PatsnapAPIClient, PatsnapQueryRun, PatsnapAPIWrapper
 from src.tools.patents_view import PatentsViewAPIClient, PatentsViewQueryRun, PatentsViewAPIWrapper
 from src.tools.semantic_scholar import SemanticScholarAPIWrapper, SemanticScholarQueryRun
@@ -63,7 +64,7 @@ def get_web_search_tool(max_search_results: int):
         raise ValueError(f"Unsupported search engine: {SELECTED_SEARCH_ENGINE}")
 
 
-LoggedPubmedSearch = create_logged_tool(PubmedQueryRun)
+LoggedPubmedSearch = create_logged_tool(MyPubmedQueryRun)
 LoggedSemanticScholarSearch = create_logged_tool(SemanticScholarQueryRun)
 
 

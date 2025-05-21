@@ -1,11 +1,17 @@
 import asyncio
-from typing import Optional
+from typing import Optional, Type
 
 from langchain_core.callbacks import CallbackManagerForToolRun
 from langchain_core.tools import BaseTool
-from pydantic import Field
+from pydantic import Field, BaseModel
 
 from src.tools.semantic_scholar.semantic_scholar_api_wrapper import SemanticScholarAPIWrapper
+
+
+class SemanticScholarInput(BaseModel):
+    """Input for the Semantic Scholar tool."""
+
+    query: str = Field(description="search query to look up")
 
 
 class SemanticScholarQueryRun(BaseTool):
@@ -18,6 +24,7 @@ class SemanticScholarQueryRun(BaseTool):
         "research, and scholarly literature. "
         "Input should be a search query."
     )
+    args_schema: Type[BaseModel] = SemanticScholarInput
     api_wrapper: SemanticScholarAPIWrapper = Field(default_factory=SemanticScholarAPIWrapper)
 
     def _run(

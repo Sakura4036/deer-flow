@@ -1,12 +1,17 @@
 import logging
-from typing import Optional
-from pydantic import Field
+from typing import Optional, Type
+from pydantic import Field, BaseModel
 from langchain_core.callbacks import CallbackManagerForToolRun
 from langchain_core.tools import BaseTool
-
 from src.tools.patents_view.patents_view_api_wrapper import PatentsViewAPIWrapper
 
 logger = logging.getLogger(__name__)
+
+
+class PatentsViewInput(BaseModel):
+    """Input for the PatentsView tool."""
+
+    query: str = Field(description="search query to look up")
 
 class PatentsViewQueryRun(BaseTool):
     """
@@ -18,10 +23,9 @@ class PatentsViewQueryRun(BaseTool):
     description: str = (
         "A patent search tool that queries the PatentsView database. "
         "Input should be a search query string. "
-        "Output is a string containing a list of patent information including: "
-        "patent_id, title, abstract, claims, assignee, inventors, and patent_date."
     )
     api_wrapper: PatentsViewAPIWrapper = Field(default_factory=PatentsViewAPIWrapper)
+    args_schema: Type[BaseModel] = PatentsViewInput
 
     def _run(
         self, 

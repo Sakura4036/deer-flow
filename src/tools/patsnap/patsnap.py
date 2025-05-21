@@ -1,10 +1,16 @@
-from typing import Optional
+from typing import Optional, Type
 
 from langchain_core.callbacks import CallbackManagerForToolRun
 from langchain_core.tools import BaseTool
-from pydantic import Field
+from pydantic import Field, BaseModel
 
 from .patsnap_api_wrapper import PatsnapAPIWrapper
+
+
+class PatsnapInput(BaseModel):
+    """Input for the Patsnap tool."""
+
+    query: str = Field(description="search query to look up")   
 
 
 class PatsnapQueryRun(BaseTool):  # type: ignore[override]
@@ -16,6 +22,7 @@ class PatsnapQueryRun(BaseTool):  # type: ignore[override]
         "Useful for when you need to answer questions about patent topics "
         "Input should be a search query."
     )
+    args_schema: Type[BaseModel] = PatsnapInput
     api_wrapper: PatsnapAPIWrapper = Field(default_factory=PatsnapAPIWrapper)  # type: ignore[arg-type]
 
     def _run(
