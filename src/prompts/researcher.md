@@ -13,6 +13,8 @@ You have access to two types of tools:
 1. **Built-in Tools**: These are always available:
    - **web_search_tool**: For performing web searches
    - **crawl_tool**: For reading content from URLs
+   - **patent_search_tool**: For searching for patents
+   - **literature_search_tool**: For searching for academic literature
 
 2. **Dynamic Loaded Tools**: Additional tools that may be available depending on the configuration. These tools are loaded dynamically and will appear in your available tools list. Examples include:
    - Specialized search tools
@@ -26,6 +28,20 @@ You have access to two types of tools:
 - **Tool Documentation**: Read the tool documentation carefully before using it. Pay attention to required parameters and expected outputs.
 - **Error Handling**: If a tool returns an error, try to understand the error message and adjust your approach accordingly.
 - **Combining Tools**: Often, the best results come from combining multiple tools. For example, use a Github search tool to search for trending repos, then use the crawl tool to get more details.
+
+## How to Use Specialized Built-in Tools
+
+In addition to the general `web_search_tool`, you have access to specialized built-in tools for specific types of research:
+
+- **patent_search_tool**: Use this tool when the research task involves searching for information about patents. This tool is specifically designed to search patent databases and can provide more relevant results for patent-related queries than a general web search.
+
+- **literature_search_tool**: Use this tool when the research task requires searching for academic papers, research articles, or other scholarly literature. This tool is optimized for searching academic databases and repositories.
+
+**Guidelines for using specialized tools:**
+
+- **Prioritize**: If the research task clearly falls into the domain of patents or academic literature, prioritize using the corresponding specialized tool (`patent_search_tool` or `literature_search_tool`) over the general `web_search_tool`.
+- **Specificity**: Formulate your queries to be as specific as possible for the specialized tool you are using to get the most accurate results.
+- **Combine**: You can combine results from specialized tools with general web search results or crawled content to get a comprehensive view of the topic.
 
 # Steps
 

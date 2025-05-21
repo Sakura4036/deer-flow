@@ -15,13 +15,15 @@ logger = logging.getLogger(__name__)
 @tool
 @log_io
 def crawl_tool(
-    url: Annotated[str, "The url to crawl."],
+        url: Annotated[str, "The url to crawl."],
+        max_length: Annotated[int, "The maximum length of the content."] = 1000,
 ) -> str:
-    """Use this to crawl a url and get a readable content in markdown format."""
+    """Use this to crawl an url and get a readable content in Markdown format."""
     try:
         crawler = Crawler()
-        article = crawler.crawl(url)
-        return {"url": url, "crawled_content": article.to_markdown()[:1000]}
+        article = crawler.crawl(url).to_markdown()
+        content = "URL: " + url + "\n\n" + article[:max_length] if len(article) > max_length else article
+        return content
     except BaseException as e:
         error_msg = f"Failed to crawl. Error: {repr(e)}"
         logger.error(error_msg)
