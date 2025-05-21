@@ -7,7 +7,7 @@ import logging
 from langchain_core.language_models import BaseChatModel
 from langchain_openai import ChatOpenAI
 from langchain.chat_models import init_chat_model
-
+from tenacity import retry, stop_after_attempt
 from src.config import load_yaml_config
 from src.config.agents import LLMType, AgentType, AGENT_LLM_MAP
 
@@ -57,6 +57,17 @@ def get_agent_llm(agent_type: str | AgentType = None) -> ChatOpenAI:
     llm_type = AGENT_LLM_MAP.get(agent_type, "basic")
     logger.info(f"get {llm_type} llm for {agent_type}")
     return get_llm_by_type(llm_type)
+
+
+@retry(stop=stop_after_attempt(3))
+def invoke_llm_with_retry(llm, messages, **kwargs):
+    response = llm.invoke(messages, **kwargs)
+    return response
+
+@retry(stop=stop_after_attempt(3))
+async def ainvoke_llm_with_retry(llm, messages, **kwargs):
+    response = await llm.ainvoke(messages, **kwargs)
+    return response
 
 
 # Initialize LLMs for different purposes - now these will be cached
