@@ -82,14 +82,9 @@ class SubTask(BaseModel):
         description="A detailed textual description of what needs to be accomplished for this sub-task. This includes specific instructions and requirements "
                     "for the assigned researcher. "
     )
-    assigned_researcher_type: str = Field(
+    researcher_type: str = Field(
         description="Specifies the type or role of the researcher designated to perform this sub-task (e.g., 'web_search_researcher', "
                     "'patent_analysis_researcher', 'coding_researcher'). This will be used for routing to the correct specialist node. "
-    )
-    input_data: Optional[Any] = Field(
-        default=None,
-        description="Specific input data, parameters, or context required exclusively for this sub-task. This can be derived from the main task objective or "
-                    "results of preceding sub-tasks. "
     )
     result: Optional[Any] = Field(
         default=None,

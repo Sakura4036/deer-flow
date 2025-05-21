@@ -285,7 +285,7 @@ def reporter_node(state: State):
 
 async def research_team_node(
     state: State, config: RunnableConfig
-) -> Command[Literal["planner", "reporter"]]:
+) -> Command[Literal["planner", "research_team"]]:
     """Research team node that uses the research team subgraph to process steps."""
     logger.info("Research team subgraph is processing task")
     
@@ -325,7 +325,7 @@ async def research_team_node(
         final_summary = result.get("task_summary")
         if not final_summary:
             logger.warning("No final summary produced by research team subgraph")
-            return Command(goto="planner")
+            return Command(goto="research_team")
         
         # Update the step with the execution result
         current_step.execution_res = final_summary
@@ -343,7 +343,7 @@ async def research_team_node(
         
         # Check if all steps are now executed
         all_executed = all(step.execution_res for step in current_plan.steps)
-        goto = "planner" if not all_executed else "reporter"
+        goto = "research_team" if not all_executed else "planner"
         
         return Command(
             update={
@@ -359,7 +359,7 @@ async def research_team_node(
         )
     except Exception as e:
         logger.error(f"Error in research team subgraph: {e}")
-        return Command(goto="planner")
+        return Command(goto="research_team")
 
 
 async def _execute_agent_step(

@@ -3,12 +3,15 @@
 
 from pathlib import Path
 from typing import Any, Dict
-
+import logging
 from langchain_core.language_models import BaseChatModel
 from langchain_openai import ChatOpenAI
+from langchain.chat_models import init_chat_model
 
 from src.config import load_yaml_config
 from src.config.agents import LLMType, AgentType, AGENT_LLM_MAP
+
+logger = logging.getLogger(__name__)
 
 # Cache for LLM instances
 _llm_cache: dict[LLMType, ChatOpenAI] = {}
@@ -25,7 +28,8 @@ def _create_llm_use_conf(llm_type: LLMType, conf: Dict[str, Any]) -> ChatOpenAI:
         raise ValueError(f"Unknown LLM type: {llm_type}")
     if not isinstance(llm_conf, dict):
         raise ValueError(f"Invalid LLM Conf: {llm_type}")
-    return ChatOpenAI(**llm_conf)
+    # return ChatOpenAI(**llm_conf)
+    return init_chat_model(**llm_conf, model_provider=llm_conf.get("provider", 'openai'))
 
 
 def get_llm_by_type(
@@ -45,17 +49,19 @@ def get_llm_by_type(
     return llm
 
 
-def get_agent_llm_type(agent_type: str | AgentType = None) -> BaseChatModel:
+def get_agent_llm_type(agent_type: str | AgentType = None) -> ChatOpenAI:
     return AGENT_LLM_MAP.get(agent_type, "basic")
 
 
-def get_agent_llm(agent_type: str | AgentType = None) -> BaseChatModel:
+def get_agent_llm(agent_type: str | AgentType = None) -> ChatOpenAI:
     llm_type = AGENT_LLM_MAP.get(agent_type, "basic")
+    logger.info(f"get {llm_type} llm for {agent_type}")
     return get_llm_by_type(llm_type)
 
 
 # Initialize LLMs for different purposes - now these will be cached
 basic_llm = get_llm_by_type("basic")
+reasoning_llm = get_llm_by_type("reasoning")
 
 # In the future, we will use reasoning_llm and vl_llm for different purposes
 # reasoning_llm = get_llm_by_type("reasoning")
@@ -63,4 +69,4 @@ basic_llm = get_llm_by_type("basic")
 
 
 if __name__ == "__main__":
-    print(basic_llm.invoke("Hello"))
+    print(reasoning_llm.invoke("Hello"))

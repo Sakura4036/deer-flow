@@ -16,6 +16,7 @@ from src.config.configuration import Configuration
 from src.graph.types import ResearchTeamSubgraphState, TaskPlan, SummaryOutput
 from src.llms.llm import get_agent_llm
 from src.prompts.template import apply_prompt_template
+from src.prose.graph import state
 from src.tools import get_web_search_tool, crawl_tool, python_repl_tool, get_patent_search_tool, get_literature_search_tool
 
 logger = logging.getLogger(__name__)
@@ -39,7 +40,6 @@ def router_node(
 
     # Apply prompt template for router
     messages = apply_prompt_template("research_team_router", state)
-
     # Add context from main graph observations if available
     if state.get("task_context"):
         context_message = "# Additional Context From Previous Research\n\n"
@@ -49,14 +49,14 @@ def router_node(
         messages.append(HumanMessage(content=context_message))
 
     # Prepare LLM with structured output for JSON response
-    llm = get_agent_llm("router").with_structured_output(
+    llm = get_agent_llm("research_team_router").with_structured_output(
         TaskPlan,
         method="json_mode",
     )
 
     # Invoke LLM to create sub-task plan
     response = llm.invoke(messages)
-    logger.debug(f"Router response: {response}")
+    logger.info(f"Router response: {response}")
 
     # Parse the response and validate
     sub_tasks = response.sub_tasks
@@ -94,7 +94,7 @@ def _get_tools_for_researcher(researcher_type: str, config: RunnableConfig) -> L
     elif researcher_type == "coding_researcher":
         return [python_repl_tool]
     else:
-        return [get_web_search_tool(configurable.max_search_results), crawl_tool]
+        raise ValueError(f"{researcher_type} are not supported!")
 
 
 async def researcher_node(
@@ -123,7 +123,7 @@ async def researcher_node(
         return Command(goto="summary")
 
     current_subtask = task_plan[current_index]
-    researcher_type = current_subtask.assigned_researcher_type
+    researcher_type = current_subtask.researcher_type
 
     logger.info(f"Executing subtask {current_index + 1}/{len(task_plan)}: {current_subtask.sub_task_id}")
     logger.info(f"Using researcher type: {researcher_type}")
@@ -143,7 +143,7 @@ async def researcher_node(
     agent_input = {
         "messages": [
             HumanMessage(
-                content=f"# Research Subtask\n\n## Task Description\n\n{current_subtask.description}\n\n"
+                content=f"# Research Subtask\n{state.get("task_description")}\n\n ## Your Task Description\n\n{current_subtask.description}\n\n Please do your task."
             )
         ]
     }
@@ -152,16 +152,8 @@ async def researcher_node(
     for obs in observations:
         agent_input["messages"].append(
             HumanMessage(
-                content=f"Below are some observations for the Subtask:\n\n{obs['content']}",
+                content=f"\nBelow are some observations for the Subtask:\n\n{obs['content']}",
                 name="observation",
-            )
-        )
-
-    # Add input data if available
-    if current_subtask.input_data:
-        agent_input["messages"].append(
-            HumanMessage(
-                content=f"## Additional Input Data\n\n```json\n{json.dumps(current_subtask.input_data, indent=2)}\n```"
             )
         )
 
@@ -172,8 +164,8 @@ async def researcher_node(
             config={"recursion_limit": 25}
         )
 
-        response_content = result["messages"][-1].content
-        logger.debug(f"Researcher response: {response_content}")
+        response_content = result.content
+        logger.info(f"Researcher response: {response_content}")
 
         # Update the subtask with results
         current_subtask.result = response_content
@@ -227,7 +219,7 @@ async def researcher_node(
         )
 
 
-def summary_node(
+async def summary_node(
         state: ResearchTeamSubgraphState, config: RunnableConfig
 ) -> Command[Literal["router"]]:
     """
@@ -259,7 +251,7 @@ def summary_node(
 
     for i, subtask in enumerate(task_plan):
         subtask_results += f"## Subtask {i + 1}: {subtask.sub_task_id}\n"
-        subtask_results += f"**Type**: {subtask.assigned_researcher_type}\n"
+        subtask_results += f"**Type**: {subtask.researcher_type}\n"
         subtask_results += f"**Description**: {subtask.description}\n"
         subtask_results += f"**Status**: {subtask.status}\n\n"
 
@@ -285,8 +277,8 @@ def summary_node(
     )
 
     # Invoke LLM to create summary
-    response = llm.invoke(messages)
-    logger.debug(f"Summary response: {response}")
+    response = await llm.ainvoke(messages)
+    logger.info(f"Summary response: {response}")
 
     summary = response.summary
 
