@@ -14,7 +14,7 @@ from langgraph.types import Command
 from src.agents import create_agent
 from src.config.configuration import Configuration
 from src.graph.types import ResearchTeamSubgraphState, TaskPlan, SummaryOutput
-from src.llms.llm import get_agent_llm
+from src.llms.llm import get_agent_llm, invoke_llm_with_retry, ainvoke_llm_with_retry
 from src.prompts.template import apply_prompt_template
 from src.prose.graph import state
 from src.tools import get_web_search_tool, crawl_tool, python_repl_tool, get_patent_search_tool, get_literature_search_tool
@@ -48,15 +48,11 @@ def router_node(
 
         messages.append(HumanMessage(content=context_message))
 
-    # Prepare LLM with structured output for JSON response
     llm = get_agent_llm("research_team_router").with_structured_output(
         TaskPlan,
         method="json_mode",
     )
-
-    # Invoke LLM to create sub-task plan
-    response = llm.invoke(messages)
-    logger.info(f"Router response: {response}")
+    response = invoke_llm_with_retry(llm, messages)
 
     # Parse the response and validate
     sub_tasks = response.sub_tasks
@@ -159,12 +155,14 @@ async def researcher_node(
 
     # Invoke the agent
     try:
-        result = await agent.ainvoke(
-            input=agent_input,
-            config={"recursion_limit": 25}
-        )
+        config = {"recursion_limit": 25}
+        try:
+            result = await ainvoke_llm_with_retry(agent, agent_input, config=config)
+        except Exception as e:
+            logger.error(f"Error invoking agent: {e}")
+            result = await agent.ainvoke(agent_input, config=config)
 
-        response_content = result.content
+        response_content = result["messages"][-1].content
         logger.info(f"Researcher response: {response_content}")
 
         # Update the subtask with results
@@ -271,33 +269,28 @@ async def summary_node(
         messages.append(HumanMessage(content=error_content))
 
     # Prepare LLM with structured output
-    llm = get_agent_llm("research_team_summary").with_structured_output(
-        SummaryOutput,
-        method="json_mode",
-    )
+    llm = get_agent_llm("research_team_summary")
 
     # Invoke LLM to create summary
-    response = await llm.ainvoke(messages)
+    response = invoke_llm_with_retry(llm, messages)
     logger.info(f"Summary response: {response}")
 
-    summary = response.summary
+    summary = response.content
 
-    # If task is complete, return final summary and end
-    if response.completed:
-        logger.info("Research task completed successfully")
-        return {"task_summary": summary}
+    logger.info("Research task completed successfully")
+    return {"task_summary": summary}
 
-    # If task is not complete, return to router with recommendations
-    logger.info("Research task incomplete, returning to router")
-    return Command(
-        update={
-            "feedback": response.feedback,
-            "task_summary": summary,
-            "task_plan": None,  # Reset the plan for new planning
-            "current_sub_task_index": 0
-        },
-        goto="router"
-    )
+    # # If task is not complete, return to router with recommendations
+    # logger.info("Research task incomplete, returning to router")
+    # return Command(
+    #     update={
+    #         "feedback": response.feedback,
+    #         "task_summary": summary,
+    #         "task_plan": None,  # Reset the plan for new planning
+    #         "current_sub_task_index": 0
+    #     },
+    #     goto="router"
+    # )
 
 
 def build_research_team_subgraph():
@@ -360,10 +353,8 @@ if __name__ == "__main__":
     import asyncio
 
     # 示例任务描述和上下文
-    task_description = "Research the latest advancements in quantum computing."
-    task_context = [
-        {"title": "Previous Finding", "content": "Quantum supremacy was demonstrated by Google in 2019."}
-    ]
+    task_description = "Write a market and application research report on ProteinA enzyme products"
+    task_context = []
     config = {
         "configurable": {
             "thread_id": "default",
