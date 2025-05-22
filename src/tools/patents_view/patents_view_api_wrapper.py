@@ -24,9 +24,9 @@ class PatentsViewAPIWrapper(BaseModel):
 
     client: PatentsViewAPIClient = Field(default_factory=PatentsViewAPIClient)
     top_k_results: int = 3
-    doc_content_chars_max: int = 4000
+    doc_content_chars_max: int = 0
     get_claims: bool = False
-    claims_content_chars_max: int = 1000
+    claims_content_chars_max: int = 2000
 
     def _parse_patent_data(self, patent_data: Dict[str, Any]) -> str:
         """
@@ -98,18 +98,22 @@ class PatentsViewAPIWrapper(BaseModel):
             # It does not return total_hits directly, so logging is adjusted.
             logger.info(f"Received {len(patents_data)} patent results from client.search_patents.")
 
-            results = []
+            docs = []
             if patents_data:
                 for patent_data_from_client in patents_data:
                     # _parse_patent_data now returns a formatted string for each patent
                     formatted_patent_string = self._parse_patent_data(patent_data_from_client)
-                    results.append(formatted_patent_string)
+                    docs.append(formatted_patent_string)
 
-            return (
-                "\n\n".join(results)[:self.doc_content_chars_max]
-                if results
-                else "No good Patent Result was found"
-            )
+            if docs:
+                docs_str = "\n\n".join(docs)
+            else:
+                docs_str = "No good Patent Result was found"
+            
+            if self.doc_content_chars_max and len(docs_str) > self.doc_content_chars_max:
+                return docs_str[:self.doc_content_chars_max]
+            
+            return docs_str
 
         except Exception as e:
             logger.error(f"Error during PatentsView search for query '{query}': {e}")

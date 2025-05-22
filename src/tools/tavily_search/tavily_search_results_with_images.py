@@ -95,6 +95,7 @@ class TavilySearchResultsWithImages(TavilySearchResults):  # type: ignore[overri
 
     Default is False.
     """
+    max_raw_content_length: int = 4000
 
     api_wrapper: EnhancedTavilySearchAPIWrapper = Field(default_factory=EnhancedTavilySearchAPIWrapper)  # type: ignore[arg-type]
 
@@ -119,7 +120,7 @@ class TavilySearchResultsWithImages(TavilySearchResults):  # type: ignore[overri
             )
         except Exception as e:
             return repr(e), {}
-        cleaned_results = self.api_wrapper.clean_results_with_images(raw_results)
+        cleaned_results = self.api_wrapper.clean_results_with_images(raw_results, self.max_raw_content_length)
         print("sync", json.dumps(cleaned_results, indent=2, ensure_ascii=False))
         return cleaned_results, raw_results
 
@@ -143,6 +144,6 @@ class TavilySearchResultsWithImages(TavilySearchResults):  # type: ignore[overri
             )
         except Exception as e:
             return repr(e), {}
-        cleaned_results = self.api_wrapper.clean_results_with_images(raw_results)
+        cleaned_results = self.api_wrapper.clean_results_with_images(raw_results, self.max_raw_content_length)
         print("async", json.dumps(cleaned_results, indent=2, ensure_ascii=False))
         return cleaned_results, raw_results
