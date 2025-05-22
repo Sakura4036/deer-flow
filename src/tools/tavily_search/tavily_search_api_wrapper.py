@@ -82,7 +82,7 @@ class EnhancedTavilySearchAPIWrapper(OriginalTavilySearchAPIWrapper):
         return json.loads(results_json_str)
 
     def clean_results_with_images(
-        self, raw_results: Dict[str, List[Dict]]
+        self, raw_results: Dict[str, List[Dict]], max_raw_content_length: int=4000
     ) -> List[Dict]:
         results = raw_results["results"]
         """Clean results from Tavily Search API."""
@@ -96,6 +96,8 @@ class EnhancedTavilySearchAPIWrapper(OriginalTavilySearchAPIWrapper):
                 "score": result["score"],
             }
             if raw_content := result.get("raw_content"):
+                if len(raw_content) > max_raw_content_length:
+                    raw_content = raw_content[:max_raw_content_length] + '...'
                 clean_result["raw_content"] = raw_content
             clean_results.append(clean_result)
         images = raw_results["images"]

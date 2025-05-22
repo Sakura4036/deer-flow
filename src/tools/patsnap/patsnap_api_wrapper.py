@@ -24,7 +24,8 @@ class PatsnapAPIWrapper(BaseModel):
 
     sleep_time: float = 0.2
 
-    doc_content_chars_max: int = 4000
+    doc_content_chars_max: int = 0
+    claims_content_chars_max: int = 2000
 
     def run(self, query: str) -> str:
         try:
@@ -32,11 +33,16 @@ class PatsnapAPIWrapper(BaseModel):
                 self._format_patent(patent) for patent in self.load(query)
             ]
 
-            return (
-                "\n\n".join(docs)[:self.doc_content_chars_max]
-                if docs
-                else "No good Patent Result was found"
-            )
+            if docs:
+                docs_str = "\n\n".join(docs)
+            else:
+                docs_str = "No good Patent Result was found"
+            
+            if self.doc_content_chars_max and len(docs_str) > self.doc_content_chars_max:
+                return docs_str[:self.doc_content_chars_max]
+            
+            return docs_str
+
         except Exception as e:
             return f"Patsnap exception: {e}."
 
@@ -80,6 +86,11 @@ class PatsnapAPIWrapper(BaseModel):
         patent_str += f"Inventor: {patent['inventor']}\n"
         patent_str += f"Current Assignee: {patent.get('current_assignee', 'N/A')}\n"
         patent_str += f"Abstract: {patent.get('abstract', 'N/A')}\n"
+
+        if claims:= patent.get("claims"):
+            if len(claims) > self.claims_content_chars_max:
+                claims = claims[:self.claims_content_chars_max]
+                patent['claims'] = claims
 
         for key, value in patent.items():
             if key not in ['patent_id', 'pn', 'title', 'inventor', 'current_assignee', 'Abstract']:

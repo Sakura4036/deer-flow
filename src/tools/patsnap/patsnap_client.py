@@ -60,13 +60,14 @@ class PatsnapAPIClient:
     api_key: str = os.environ.get("PATSNAP_API_KEY")
     api_secret: str = os.environ.get("PATSNAP_API_SECRET")
     _token: str = None
-    _token_expire: int = None
+    _token_expire: float = None
 
     def __init__(self, api_key: str = None, api_secret: str = None) -> None:
         if api_key:
             self.api_key = api_key
         if api_secret:
             self.api_secret = api_secret
+        self._token_expire = time.time()
 
     def get_bearer_token(self) -> str:
         """Get bearer token"""
@@ -93,9 +94,9 @@ class PatsnapAPIClient:
     @property
     def token(self):
         # Check if token doesn't exist or has expired
-        if not self._token or (self._token_expire and self._token_expire < time.time()):
-            return self.get_bearer_token()
-        return self._token
+        if self._token and self._token_expire > time.time():
+            return self._token
+        return self.get_bearer_token()
 
     def patent_search(
             self,

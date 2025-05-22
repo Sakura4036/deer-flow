@@ -94,14 +94,16 @@ LoggedPatsnapSearch = create_logged_tool(PatsnapQueryRun)
 LoggedPatentsViewSearch = create_logged_tool(PatentsViewQueryRun)
 
 
-def get_patent_search_tool(max_search_results: int, max_content_length: int = 4000):
+def get_patent_search_tool(max_search_results: int, max_content_length: int = 0):
     if SELECTED_PATENT_ENGINE == PatentSearchEngine.PATSNAP.value:
         return LoggedPatsnapSearch(
             name="patent_search",
             api_wrapper=PatsnapAPIWrapper(
                 patsnap_client=PatsnapAPIClient(),
                 top_k_results=max_search_results,
+                get_claims=True,
                 doc_content_chars_max=max_content_length,
+                claims_content_chars_max=4000,
             ),
         )
     elif SELECTED_PATENT_ENGINE == PatentSearchEngine.PATENTS_VIEW.value:
@@ -110,7 +112,8 @@ def get_patent_search_tool(max_search_results: int, max_content_length: int = 40
             api_wrapper=PatentsViewAPIWrapper(
                 client=PatentsViewAPIClient(api_key=os.getenv("PATENTSVIEW_API_KEY")),
                 top_k_results=max_search_results,
-                doc_content_chars_max=max_content_length,
+                doc_content_chars_max=0,
+                get_claims=True,
                 claims_content_chars_max=2000,
             ),
         )
@@ -119,7 +122,32 @@ def get_patent_search_tool(max_search_results: int, max_content_length: int = 40
 
 
 if __name__ == "__main__":
-    results = LoggedDuckDuckGoSearch(
-        name="web_search", max_results=3, output_format="list"
-    ).invoke("cute panda")
-    print(json.dumps(results, indent=2, ensure_ascii=False))
+    # results = LoggedDuckDuckGoSearch(
+    #     name="web_search", max_results=3, output_format="list"
+    # ).invoke("cute panda")
+    # print(json.dumps(results, indent=2, ensure_ascii=False))
+
+    tool = get_patent_search_tool(3)
+    print(tool)
+
+    # import requests
+    # PATSNAP_API_KEY="e34qALFkudSGeulVxupYXDywO6k81uR9PTn9AyDjJf2meqlP" # Required only if LITERATURE_SEARCH_API is patsnap
+    # PATSNAP_API_SECRET="ZopZtkrmMYTcDNc2TalqDnzbyH4Uo6hC2AmiOOK0G9wCLUlhAPEzr4C0WPulXZVT" # Required only if LITERATURE_SEARCH_API is patsnap
+    # # url = f"https://{PATSNAP_API_KEY}:{PATSNAP_API_SECRET}@connect.zhihuiya.com/oauth/token"
+    # # payload = "grant_type=client_credentials"
+    # # headers = {
+    # #     "content-type": "application/x-www-form-urlencoded"
+    # # }
+    # # response = requests.request("POST", url, data=payload, headers=headers)
+
+    # # print(response.text)
+
+    # url = "https://connect.zhihuiya.com/oauth/token"
+    # headers = {"Content-Type": "application/x-www-form-urlencoded"}
+    # data = "grant type=client credentials"
+    # auth = (PATSNAP_API_KEY, PATSNAP_API_SECRET)
+
+    # response = requests.post(url, headers=headers, data=data, auth=auth)
+    # response.raise_for_status()
+    # response = response.json()
+    # print(response)
