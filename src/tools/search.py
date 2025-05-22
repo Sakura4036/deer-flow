@@ -127,27 +127,5 @@ if __name__ == "__main__":
     # ).invoke("cute panda")
     # print(json.dumps(results, indent=2, ensure_ascii=False))
 
-    tool = get_patent_search_tool(3)
-    print(tool)
-
-    # import requests
-    # PATSNAP_API_KEY="e34qALFkudSGeulVxupYXDywO6k81uR9PTn9AyDjJf2meqlP" # Required only if LITERATURE_SEARCH_API is patsnap
-    # PATSNAP_API_SECRET="ZopZtkrmMYTcDNc2TalqDnzbyH4Uo6hC2AmiOOK0G9wCLUlhAPEzr4C0WPulXZVT" # Required only if LITERATURE_SEARCH_API is patsnap
-    # # url = f"https://{PATSNAP_API_KEY}:{PATSNAP_API_SECRET}@connect.zhihuiya.com/oauth/token"
-    # # payload = "grant_type=client_credentials"
-    # # headers = {
-    # #     "content-type": "application/x-www-form-urlencoded"
-    # # }
-    # # response = requests.request("POST", url, data=payload, headers=headers)
-
-    # # print(response.text)
-
-    # url = "https://connect.zhihuiya.com/oauth/token"
-    # headers = {"Content-Type": "application/x-www-form-urlencoded"}
-    # data = "grant type=client credentials"
-    # auth = (PATSNAP_API_KEY, PATSNAP_API_SECRET)
-
-    # response = requests.post(url, headers=headers, data=data, auth=auth)
-    # response.raise_for_status()
-    # response = response.json()
-    # print(response)
+    result = get_literature_search_tool(3).invoke("monoclonal antibody production ProteinA")
+    print(result)
