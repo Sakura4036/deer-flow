@@ -74,7 +74,7 @@ Structure your report in the following format:
    - Structure tables with clear headers and aligned columns.
    - Use links, lists, inline-code and other formatting options to make the report more readable.
    - Add emphasis for important points.
-   - DO NOT include inline citations in the text.
+   - Include inline citations in the text, for example using `[1]` format, corresponding to the numbered list in the 'Key Citations' section.
    - Use horizontal rules (---) to separate major sections.
    - Track the sources of information but keep the main text clean and readable.
 
@@ -96,7 +96,7 @@ Structure your report in the following format:
 
 ```markdown
 | Header 1 | Header 2 | Header 3 |
-|----------|----------|----------|
+| -------- | -------- | -------- |
 | Data 1   | Data 2   | Data 3   |
 | Data 4   | Data 5   | Data 6   |
 ```
@@ -105,7 +105,7 @@ Structure your report in the following format:
 
 ```markdown
 | Feature/Option | Description | Pros | Cons |
-|----------------|-------------|------|------|
+| -------------- | ----------- | ---- | ---- |
 | Feature 1      | Description | Pros | Cons |
 | Feature 2      | Description | Pros | Cons |
 ```
@@ -114,7 +114,7 @@ Structure your report in the following format:
 
 - If uncertain about any information, acknowledge the uncertainty.
 - Only include verifiable facts from the provided source material.
-- Place all citations in the "Key Citations" section at the end, not inline in the text.
+- Include inline citations in the text, for example using `[1]` format, corresponding to the numbered list in the 'Key Citations' section.
 - For each citation, use the format: `- [Source Title](URL)`
 - Include an empty line between each citation for better readability.
 - Include images using `![Image Description](image_url)`. The images should be in the middle of the report, not at the end or separate section.

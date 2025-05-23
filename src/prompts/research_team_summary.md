@@ -31,6 +31,7 @@ To analyze subtask research results against an original research question, produ
 3.  **Synthesize & Conclude**:
     *   Integrate all relevant information and insights from different subtasks into a single, coherent narrative.
     *   Formulate a comprehensive conclusion that directly addresses the original research question based on the synthesized evidence.
+    *   Include source indicators (e.g., `[1]`, `[Source Title]`) within the text to link findings to their original sources from the subtask inputs.
 
 # Output Requirements
 
@@ -45,6 +46,7 @@ To analyze subtask research results against an original research question, produ
         *   A detailed integration of all relevant information collected by subtasks.
         *   Clearly connect findings back to the original research question.
         *   Highlight key insights, evidence, and conclusions drawn from the collective research.
+        *   Include source indicators (e.g., `[1]`, `[Source Title]`) within the text to link findings to their original sources from the subtask inputs.
 
     3.  **Assessment of Research Completeness**:
         *   State your judgment unequivocally:
