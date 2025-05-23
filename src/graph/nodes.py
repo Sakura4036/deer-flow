@@ -17,17 +17,15 @@ from src.config.agents import AGENT_LLM_MAP
 from src.llms.llm import get_agent_llm
 from src.config.configuration import Configuration
 from src.graph.context import ContextManager
-from src.prompts.planner_model import Plan, StepType
+from src.prompts.planner_model import Plan
 from src.prompts.template import apply_prompt_template
 from src.tools import (
     crawl_tool,
     get_web_search_tool,
     python_repl_tool,
 )
-from src.tools.search import LoggedTavilySearch
 from src.utils.json_utils import repair_json_output
-from .types import State, Observation
-from ..config import SELECTED_SEARCH_ENGINE, SearchEngine
+from .types import State
 
 logger = logging.getLogger(__name__)
 
@@ -508,31 +506,31 @@ async def _setup_and_execute_agent_step(
         return await _execute_agent_step(state, agent, agent_type)
 
 
-async def researcher_node(
-        state: State, config: RunnableConfig
-) -> Command[Literal["research_team"]]:
-    """Researcher node that do research"""
-    logger.info("Researcher node is researching.")
-    configurable = Configuration.from_runnable_config(config)
-    return await _setup_and_execute_agent_step(
-        state,
-        config,
-        "researcher",
-        [get_web_search_tool(configurable.max_search_results), crawl_tool],
-    )
+# async def researcher_node(
+#         state: State, config: RunnableConfig
+# ) -> Command[Literal["research_team"]]:
+#     """Researcher node that do research"""
+#     logger.info("Researcher node is researching.")
+#     configurable = Configuration.from_runnable_config(config)
+#     return await _setup_and_execute_agent_step(
+#         state,
+#         config,
+#         "researcher",
+#         [get_web_search_tool(configurable.max_search_results), crawl_tool],
+#     )
 
 
-async def coder_node(
-        state: State, config: RunnableConfig
-) -> Command[Literal["research_team"]]:
-    """Coder node that do code analysis."""
-    logger.info("Coder node is coding.")
-    return await _setup_and_execute_agent_step(
-        state,
-        config,
-        "coder",
-        [python_repl_tool],
-    )
+# async def coder_node(
+#         state: State, config: RunnableConfig
+# ) -> Command[Literal["research_team"]]:
+#     """Coder node that do code analysis."""
+#     logger.info("Coder node is coding.")
+#     return await _setup_and_execute_agent_step(
+#         state,
+#         config,
+#         "coder",
+#         [python_repl_tool],
+#     )
 
 
 def reporter_node(state: State):

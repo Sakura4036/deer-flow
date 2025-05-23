@@ -53,32 +53,6 @@ Before creating a detailed plan, assess if there is sufficient context to answer
      - The volume of information is too limited for a comprehensive report
    - When in doubt, always err on the side of gathering more information
 
-## Step Types and Web Search
-
-Different types of steps have different web search requirements:
-
-1. **Research Steps** (`need_web_search: true`):
-   - Gathering market data or industry trends
-   - Finding historical information
-   - Collecting competitor analysis
-   - Researching current events or news
-   - Finding statistical data or reports
-
-2. **Data Processing Steps** (`need_web_search: false`):
-   - API calls and data extraction
-   - Database queries
-   - Raw data collection from existing sources
-   - Mathematical calculations and analysis
-   - Statistical computations and data processing
-
-## Exclusions
-
-- **No Direct Calculations in Research Steps**:
-    - Research steps should only gather data and information
-    - All mathematical calculations must be handled by processing steps
-    - Numerical analysis must be delegated to processing steps
-    - Research steps focus on information gathering only
-
 ## Analysis Framework
 
 When planning information gathering, consider these key aspects and ensure COMPREHENSIVE coverage:
@@ -142,9 +116,6 @@ When planning information gathering, consider these key aspects and ensure COMPR
     - Create NO MORE THAN {{ max_step_num }} focused and comprehensive steps that cover the most essential aspects
     - Ensure each step is substantial and covers related information categories
     - Prioritize breadth and depth within the {{ max_step_num }}-step constraint
-    - For each step, carefully assess if web search is needed:
-        - Research and external data gathering: Set `need_web_search: true`
-        - Internal data processing: Set `need_web_search: false`
 - Specify the exact data to be collected in step's `description`. Include a `note` if necessary.
 - Prioritize depth and volume of relevant information - limited information is not acceptable.
 - Use the same language as the user to generate the plan.
@@ -156,10 +127,8 @@ Directly output the raw JSON format of `Plan` without "```json". The `Plan` inte
 
 ```ts
 interface Step {
-  need_web_search: boolean;  // Must be explicitly set for each step
   title: string;
   description: string;  // Specify exactly what data to collect
-  step_type: "research" | "processing";  // Indicates the nature of the step
 }
 
 interface Plan {
@@ -173,14 +142,10 @@ interface Plan {
 
 # Notes
 
-- Focus on information gathering in research steps - delegate all calculations to processing steps
 - Ensure each step has a clear, specific data point or information to collect
 - Create a comprehensive data collection plan that covers the most critical aspects within {{ max_step_num }} steps
 - Prioritize BOTH breadth (covering essential aspects) AND depth (detailed information on each aspect)
 - Never settle for minimal information - the goal is a comprehensive, detailed final report
 - Limited or insufficient information will lead to an inadequate final report
-- Carefully assess each step's web search requirement based on its nature:
-    - Research steps (`need_web_search: true`) for gathering information
-    - Processing steps (`need_web_search: false`) for calculations and data processing
 - Default to gathering more information unless the strictest sufficient context criteria are met
 - Always use the language specified by the locale = **{{ locale }}**.
