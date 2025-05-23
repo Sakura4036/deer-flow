@@ -5,13 +5,13 @@ import json
 import logging
 import os
 from typing import Annotated, Literal
-
+import uuid
 from langchain_core.messages import AIMessage, HumanMessage
 from langchain_core.runnables import RunnableConfig
 from langchain_core.tools import tool
 from langchain_mcp_adapters.client import MultiServerMCPClient
 from langgraph.types import Command, interrupt
-
+from langgraph.constants import Send
 from src.agents import create_agent
 from src.config.agents import AGENT_LLM_MAP
 from src.llms.llm import get_agent_llm
@@ -28,15 +28,14 @@ from src.tools.search import LoggedTavilySearch
 from src.utils.json_utils import repair_json_output
 from .types import State, Observation
 from ..config import SELECTED_SEARCH_ENGINE, SearchEngine
-from src.graph.research_team.subgraph import run_research_team_subgraph
 
 logger = logging.getLogger(__name__)
 
 
 @tool
 def handoff_to_planner(
-    task_title: Annotated[str, "The title of the task to be handed off."],
-    locale: Annotated[str, "The user's detected language locale (e.g., en-US, zh-CN)."],
+        task_title: Annotated[str, "The title of the task to be handed off."],
+        locale: Annotated[str, "The user's detected language locale (e.g., en-US, zh-CN)."],
 ):
     """Handoff to planner agent to do plan."""
     # This tool is not returning anything: we're just using it
@@ -44,40 +43,98 @@ def handoff_to_planner(
     return
 
 
+def coordinator_node(
+        state: State,
+) -> Command[Literal["planner", "background_investigator", "__end__"]]:
+    """Coordinator node that communicate with customers."""
+    logger.info("Coordinator talking.")
+    messages = apply_prompt_template("coordinator", state)
+    response = (
+        get_agent_llm("coordinator")
+            .bind_tools([handoff_to_planner])
+            .invoke(messages)
+    )
+    logger.debug(f"Current state messages: {state['messages']}")
+
+    goto = "__end__"
+    locale = state.get("locale", "en-US")  # Default locale if not specified
+
+    if len(response.tool_calls) > 0:
+        goto = "planner"
+        if state.get("enable_background_investigation"):
+            # if the search_before_planning is True, add the web search tool to the planner agent
+            goto = "background_investigator"
+        try:
+            for tool_call in response.tool_calls:
+                if tool_call.get("name", "") != "handoff_to_planner":
+                    continue
+                if tool_locale := tool_call.get("args", {}).get("locale"):
+                    locale = tool_locale
+                    break
+        except Exception as e:
+            logger.error(f"Error processing tool calls: {e}")
+    else:
+        logger.warning(
+            "Coordinator response contains no tool calls. Terminating workflow execution."
+        )
+        logger.debug(f"Coordinator response: {response}")
+
+    return Command(
+        update={"locale": locale},
+        goto=goto,
+    )
+
+
 def background_investigation_node(state: State, config: RunnableConfig) -> Command[Literal["planner"]]:
+    """
+    Use the background_investigator agent to perform background investigation with web_search and crawl_tool.
+    The agent should focus on providing accurate and effective background information, especially the concept, definition, and essential context of the subject.
+    """
     logger.info("background investigation node is running.")
     configurable = Configuration.from_runnable_config(config)
-    query = state["messages"][-1].content
-    if SELECTED_SEARCH_ENGINE == SearchEngine.TAVILY:
-        searched_content = LoggedTavilySearch(
-            max_results=configurable.max_search_results
-        ).invoke({"query": query})
-        background_investigation_results = None
-        if isinstance(searched_content, list):
-            background_investigation_results = [
-                {"title": elem["title"], "content": elem["content"]}
-                for elem in searched_content
-            ]
+    try:
+        # Create the background_investigator agent with web_search and crawl_tool
+        agent = create_agent(
+            agent_name="background_investigator",
+            agent_type="background_investigator",
+            tools=[get_web_search_tool(configurable.max_search_results), crawl_tool],
+            prompt_template="background_investigator"
+        )
+        # Prepare input for the agent
+        agent_input = {"messages": state["messages"]}
+        # Run the agent (sync, as background_investigation_node is sync)
+        result = agent.invoke(agent_input)
+        # Extract the content from the agent's response
+        if isinstance(result, dict) and "messages" in result and result["messages"]:
+            response_content = result["messages"][-1].content
+        elif hasattr(result, "content"):
+            response_content = result.content
         else:
-            logger.error(
-                f"Tavily search returned malformed response: {searched_content}"
-            )
-    else:
-        background_investigation_results = get_web_search_tool(
-            configurable.max_search_results
-        ).invoke(query)
+            response_content = str(result)
+        logger.info(f"background_investigator agent response: {response_content}")
+        background_investigation_results = response_content
+    except Exception as e:
+        logger.error(f"Error in background_investigation_node: {e}")
+        background_investigation_results = f"[ERROR] {e}"
+
+    new_observation = {
+        "id": uuid.uuid4(),
+        "title": "background_investigation",
+        "content": background_investigation_results,
+        "source": "background_investigator"
+    }
+
     return Command(
         update={
-            "background_investigation_results": json.dumps(
-                background_investigation_results, ensure_ascii=False
-            )
+            "background_investigation_results": background_investigation_results,
+            "observations": [new_observation]
         },
         goto="planner",
     )
 
 
 def planner_node(
-    state: State, config: RunnableConfig
+        state: State, config: RunnableConfig
 ) -> Command[Literal["human_feedback", "reporter"]]:
     """Planner node that generate the full plan."""
     logger.info("Planner generating full plan")
@@ -86,17 +143,18 @@ def planner_node(
     messages = apply_prompt_template("planner", state, configurable)
 
     if (
-        plan_iterations == 0
-        and state.get("enable_background_investigation")
-        and state.get("background_investigation_results")
+            plan_iterations == 0
+            and state.get("enable_background_investigation")
+            and state.get("background_investigation_results")
     ):
         messages += [
             {
                 "role": "user",
                 "content": (
-                    "background investigation results of user query:\n"
-                    + state["background_investigation_results"]
-                    + "\n"
+                        "background investigation results of user query:\n"
+                        + state["background_investigation_results"]
+                        + "\n"
+                        + "**Analyze the background investigation results and generate a more detailed research plan.**\n"
                 ),
             }
         ]
@@ -152,8 +210,8 @@ def planner_node(
 
 
 def human_feedback_node(
-    state,
-) -> Command[Literal["planner", "research_team", "reporter", "__end__"]]:
+        state,
+) -> Command[Literal["planner", "prepare_research_team", "reporter", "__end__"]]:
     current_plan = state.get("current_plan", "")
     # check if the plan is auto accepted
     auto_accepted_plan = state.get("auto_accepted_plan", False)
@@ -177,7 +235,7 @@ def human_feedback_node(
 
     # if the plan is accepted, run the following node
     plan_iterations = state["plan_iterations"] if state.get("plan_iterations", 0) else 0
-    goto = "research_team"
+    goto = "prepare_research_team"
     try:
         current_plan = repair_json_output(current_plan)
         # increment the plan iterations
@@ -192,178 +250,85 @@ def human_feedback_node(
             return Command(goto="reporter")
         else:
             return Command(goto="__end__")
-
+    current_plan = Plan.model_validate(new_plan)
+    current_plan_description = f"### Plan Title: {current_plan.title}\n ### Planner Thought: {current_plan.thought}"
     return Command(
         update={
-            "current_plan": Plan.model_validate(new_plan),
+            "current_plan": current_plan,
             "plan_iterations": plan_iterations,
+            "current_plan_description": current_plan_description,
             "locale": new_plan["locale"],
         },
         goto=goto,
     )
 
 
-def coordinator_node(
-    state: State,
-) -> Command[Literal["planner", "background_investigator", "__end__"]]:
-    """Coordinator node that communicate with customers."""
-    logger.info("Coordinator talking.")
-    messages = apply_prompt_template("coordinator", state)
-    response = (
-        get_agent_llm("coordinator")
-        .bind_tools([handoff_to_planner])
-        .invoke(messages)
-    )
-    logger.debug(f"Current state messages: {state['messages']}")
-
-    goto = "__end__"
-    locale = state.get("locale", "en-US")  # Default locale if not specified
-
-    if len(response.tool_calls) > 0:
-        goto = "planner"
-        if state.get("enable_background_investigation"):
-            # if the search_before_planning is True, add the web search tool to the planner agent
-            goto = "background_investigator"
-        try:
-            for tool_call in response.tool_calls:
-                if tool_call.get("name", "") != "handoff_to_planner":
-                    continue
-                if tool_locale := tool_call.get("args", {}).get("locale"):
-                    locale = tool_locale
-                    break
-        except Exception as e:
-            logger.error(f"Error processing tool calls: {e}")
-    else:
-        logger.warning(
-            "Coordinator response contains no tool calls. Terminating workflow execution."
-        )
-        logger.debug(f"Coordinator response: {response}")
-
-    return Command(
-        update={"locale": locale},
-        goto=goto,
-    )
-
-
-def reporter_node(state: State):
-    """Reporter node that write a final report."""
-    logger.info("Reporter write final report")
-    current_plan = state.get("current_plan")
-    input_ = {
-        "messages": [
-            HumanMessage(
-                f"# Research Requirements\n\n## Task\n\n{current_plan.title}\n\n## Description\n\n{current_plan.thought}"
-            )
-        ],
-        "locale": state.get("locale", "en-US"),
-    }
-    invoke_messages = apply_prompt_template("reporter", input_)
-    observations = state.get("observations", [])
-
-    # Add a reminder about the new report format, citation style, and table usage
-    invoke_messages.append(
-        HumanMessage(
-            content="IMPORTANT: Structure your report according to the format in the prompt. Remember to include:\n\n1. Key Points - A bulleted list of the most important findings\n2. Overview - A brief introduction to the topic\n3. Detailed Analysis - Organized into logical sections\n4. Survey Note (optional) - For more comprehensive reports\n5. Key Citations - List all references at the end\n\nFor citations, DO NOT include inline citations in the text. Instead, place all citations in the 'Key Citations' section at the end using the format: `- [Source Title](URL)`. Include an empty line between each citation for better readability.\n\nPRIORITIZE USING MARKDOWN TABLES for data presentation and comparison. Use tables whenever presenting comparative data, statistics, features, or options. Structure tables with clear headers and aligned columns. Example table format:\n\n| Feature | Description | Pros | Cons |\n|---------|-------------|------|------|\n| Feature 1 | Description 1 | Pros 1 | Cons 1 |\n| Feature 2 | Description 2 | Pros 2 | Cons 2 |",
-            name="system",
-        )
-    )
-
-    for obs in observations:
-        invoke_messages.append(
-            HumanMessage(
-                content=f"Below are some observations for the research task:\n\n{obs['content']}",
-                name="observation",
-            )
-        )
-    logger.debug(f"Current invoke messages: {invoke_messages}")
-    response = get_agent_llm("reporter").invoke(invoke_messages)
-    response_content = response.content
-    logger.info(f"reporter response: {response_content}")
-
-    return {"final_report": response_content}
-
-
-async def research_team_node(
-    state: State, config: RunnableConfig
+async def prepare_research_team_state_node(
+        state: State, config: RunnableConfig
 ) -> Command[Literal["planner", "research_team"]]:
     """Research team node that uses the research team subgraph to process steps."""
     logger.info("Research team subgraph is processing task")
-    
+
     current_plan = state.get("current_plan")
+    current_plan_description = state.get("current_plan_description")
     if not current_plan or not current_plan.steps:
         logger.warning("No plan or steps found, returning to planner")
         return Command(goto="planner")
-    
+
     # Find the first unexecuted step
     current_step = None
     for step in current_plan.steps:
         if not step.execution_res:
             current_step = step
             break
-    
+
     if not current_step:
         logger.info("All steps executed, returning to planner")
         return Command(goto="planner")
-    
-    # Extract the step information for the research team
-    step_id = getattr(current_step, "id", None)
-    if not step_id:
-        step_id = f"{current_step.title}-{current_step.step_type}"
-    
-    # Get existing observations for context
-    observations = state.get("observations", [])
-    
-    # Prepare the main task objective from the current step
-    task_description = f"# Research Task\n\n## Title\n{current_step.title}\n\n## Description\n{current_step.description}"
-    
-    # Run the research team subgraph
-    logger.info(f"Running research team subgraph for step: {current_step.title}")
-    try:
-        result = await run_research_team_subgraph(task_description, observations)
-        
-        # Extract the final summary from the result
-        final_summary = result.get("task_summary")
-        if not final_summary:
-            logger.warning("No final summary produced by research team subgraph")
-            return Command(goto="research_team")
-        
-        # Update the step with the execution result
-        current_step.execution_res = final_summary
-        
-        # Create a new observation for this research
-        new_observation = {
-            "id": step_id,
-            "title": current_step.title,
-            "content": final_summary,
-            "source": "research_team"
-        }
-        
-        # Update the observations in the state
-        observations.append(new_observation)
-        
-        # Check if all steps are now executed
-        all_executed = all(step.execution_res for step in current_plan.steps)
-        goto = "research_team" if not all_executed else "planner"
-        
-        return Command(
-            update={
-                "observations": observations,
-                "messages": [
-                    HumanMessage(
-                        content=f"Completed research step: {current_step.title}",
-                        name="research_team"
-                    )
-                ]
-            },
-            goto=goto
-        )
-    except Exception as e:
-        logger.error(f"Error in research team subgraph: {e}")
-        return Command(goto="research_team")
+
+    return Command(goto=Send("research_team", {"current_step": current_step, "current_plan_description":current_plan_description}))
+
+
+def sync_research_team_result_node(
+        state: State, config: RunnableConfig
+) -> Command[Literal["planner", "prepare_research_team"]]:
+    """
+    Sync the result from research_team_state back to main state after subgraph execution.
+    """
+    current_step = state.get("current_step")
+    current_step_result = state.get("current_step_result")
+    current_plan = state.get("current_plan")
+    # Update the step with the execution result
+    current_step.execution_res = current_step_result
+
+    # Create a new observation for this research
+    new_observation = {
+        "id": current_step.id,
+        "title": current_step.title,
+        "content": current_step_result,
+        "source": "research_team"
+    }
+
+    # Check if all steps are now executed
+    all_executed = all(step.execution_res for step in current_plan.steps)
+    goto = "prepare_research_team" if not all_executed else "planner"
+
+    return Command(
+        update={
+            "observations": [new_observation],
+            "messages": [
+                HumanMessage(
+                    content=f"Completed research step: {current_step.title}",
+                    name="research_team"
+                )
+            ]
+        },
+        goto=goto
+    )
 
 
 async def _execute_agent_step(
-    state: State, agent, agent_name: str
+        state: State, agent, agent_name: str
 ) -> Command[Literal["research_team"]]:
     """Helper function to execute a step using the specified agent."""
     current_plan = state.get("current_plan")
@@ -390,7 +355,7 @@ async def _execute_agent_step(
     if completed_steps:
         completed_steps_info = "# Existing Research Findings\n\n"
         for i, step in enumerate(completed_steps):
-            completed_steps_info += f"## Existing Finding {i+1}: {step.title}\n\n"
+            completed_steps_info += f"## Existing Finding {i + 1}: {step.title}\n\n"
             completed_steps_info += f"<finding>\n{step.execution_res}\n</finding>\n\n"
 
     # 获取裁剪后的上下文 observations
@@ -485,10 +450,10 @@ async def _execute_agent_step(
 
 
 async def _setup_and_execute_agent_step(
-    state: State,
-    config: RunnableConfig,
-    agent_type: str,
-    default_tools: list,
+        state: State,
+        config: RunnableConfig,
+        agent_type: str,
+        default_tools: list,
 ) -> Command[Literal["research_team"]]:
     """Helper function to set up an agent with appropriate tools and execute a step.
 
@@ -514,8 +479,8 @@ async def _setup_and_execute_agent_step(
     if configurable.mcp_settings:
         for server_name, server_config in configurable.mcp_settings["servers"].items():
             if (
-                server_config["enabled_tools"]
-                and agent_type in server_config["add_to_agents"]
+                    server_config["enabled_tools"]
+                    and agent_type in server_config["add_to_agents"]
             ):
                 mcp_servers[server_name] = {
                     k: v
@@ -544,7 +509,7 @@ async def _setup_and_execute_agent_step(
 
 
 async def researcher_node(
-    state: State, config: RunnableConfig
+        state: State, config: RunnableConfig
 ) -> Command[Literal["research_team"]]:
     """Researcher node that do research"""
     logger.info("Researcher node is researching.")
@@ -558,7 +523,7 @@ async def researcher_node(
 
 
 async def coder_node(
-    state: State, config: RunnableConfig
+        state: State, config: RunnableConfig
 ) -> Command[Literal["research_team"]]:
     """Coder node that do code analysis."""
     logger.info("Coder node is coding.")
@@ -568,3 +533,41 @@ async def coder_node(
         "coder",
         [python_repl_tool],
     )
+
+
+def reporter_node(state: State):
+    """Reporter node that write a final report."""
+    logger.info("Reporter write final report")
+    current_plan = state.get("current_plan")
+    input_ = {
+        "messages": [
+            HumanMessage(
+                f"# Research Requirements\n\n## Task\n\n{current_plan.title}\n\n## Description\n\n{current_plan.thought}"
+            )
+        ],
+        "locale": state.get("locale", "en-US"),
+    }
+    invoke_messages = apply_prompt_template("reporter", input_)
+    observations = state.get("observations", [])
+
+    # Add a reminder about the new report format, citation style, and table usage
+    invoke_messages.append(
+        HumanMessage(
+            content="IMPORTANT: Structure your report according to the format in the prompt. Remember to include:\n\n1. Key Points - A bulleted list of the most important findings\n2. Overview - A brief introduction to the topic\n3. Detailed Analysis - Organized into logical sections\n4. Survey Note (optional) - For more comprehensive reports\n5. Key Citations - List all references at the end\n\nFor citations, DO NOT include inline citations in the text. Instead, place all citations in the 'Key Citations' section at the end using the format: `- [Source Title](URL)`. Include an empty line between each citation for better readability.\n\nPRIORITIZE USING MARKDOWN TABLES for data presentation and comparison. Use tables whenever presenting comparative data, statistics, features, or options. Structure tables with clear headers and aligned columns. Example table format:\n\n| Feature | Description | Pros | Cons |\n|---------|-------------|------|------|\n| Feature 1 | Description 1 | Pros 1 | Cons 1 |\n| Feature 2 | Description 2 | Pros 2 | Cons 2 |",
+            name="system",
+        )
+    )
+
+    for obs in observations:
+        invoke_messages.append(
+            HumanMessage(
+                content=f"Below are some observations for the research task:\n\n{obs['content']}",
+                name="observation",
+            )
+        )
+    logger.debug(f"Current invoke messages: {invoke_messages}")
+    response = get_agent_llm("reporter").invoke(invoke_messages)
+    response_content = response.content
+    logger.info(f"reporter response: {response_content}")
+
+    return {"final_report": response_content}

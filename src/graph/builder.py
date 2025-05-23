@@ -9,10 +9,12 @@ from .nodes import (
     coordinator_node,
     planner_node,
     reporter_node,
-    research_team_node,
+    prepare_research_team_state_node,
+    sync_research_team_result_node,
     human_feedback_node,
     background_investigation_node,
 )
+from .research_team.subgraph import build_research_team_subgraph
 
 import logging
 from typing import Any, Dict, List, Optional, Type, TypeVar
@@ -43,9 +45,11 @@ def _build_base_graph() -> StateGraph:
     builder.add_node("background_investigator", background_investigation_node)
     builder.add_node("planner", planner_node)
     builder.add_node("human_feedback", human_feedback_node)
-    builder.add_node("research_team", research_team_node)
+    builder.add_node("prepare_research_team", prepare_research_team_state_node)
+    builder.add_node("research_team", build_research_team_subgraph())
+    builder.add_node("sync_research_team_result", sync_research_team_result_node)
     builder.add_node("reporter", reporter_node)
-
+    builder.add_edge("research_team", "sync_research_team_result")
     builder.add_edge("reporter", END)
 
     return builder
@@ -68,5 +72,3 @@ def build_graph():
     builder = _build_base_graph()
     return builder.compile()
 
-
-graph = build_graph()

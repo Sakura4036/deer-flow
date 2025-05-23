@@ -36,3 +36,51 @@ DeerFlow 实现了一个模块化的多智能体系统架构，专为自动化�
    - 汇总研究团队的发现
    - 处理和组织收集的信息
    - 生成全面的研究报告
+  
+
+```mermaid
+%%{init: {'flowchart': {'curve': 'linear'}}}%%
+graph TD;
+        __start__([<p>__start__</p>]):::first
+        coordinator(coordinator)
+        background_investigator(background_investigator)
+        planner(planner)
+        human_feedback(human_feedback)
+        prepare_research_team(prepare_research_team)
+        sync_research_team_result(sync_research_team_result)
+        reporter(reporter)
+        __end__([<p>__end__</p>]):::last
+        research_team___start__(<p>__start__</p>)
+        research_team_router(router)
+        research_team_researcher(researcher)
+        research_team_summary(summary)
+        research_team___end__(<p>__end__</p>)
+        __start__ --> coordinator;
+        background_investigator -.-> planner;
+        coordinator -.-> __end__;
+        coordinator -.-> background_investigator;
+        coordinator -.-> planner;
+        human_feedback -.-> __end__;
+        human_feedback -.-> planner;
+        human_feedback -.-> prepare_research_team;
+        human_feedback -.-> reporter;
+        planner -.-> human_feedback;
+        planner -.-> reporter;
+        prepare_research_team -.-> planner;
+        prepare_research_team -.-> research_team___start__;
+        research_team___end__ --> sync_research_team_result;
+        sync_research_team_result -.-> planner;
+        sync_research_team_result -.-> prepare_research_team;
+        reporter --> __end__;
+        subgraph research_team
+        research_team___start__ --> research_team_router;
+        research_team_researcher -.-> research_team_summary;
+        research_team_router -.-> research_team_researcher;
+        research_team_summary -.-> research_team_router;
+        research_team_router -.-> research_team___end__;
+        research_team_researcher -.-> research_team_researcher;
+        end
+        classDef default fill:#f2f0ff,line-height:1.2
+        classDef first fill-opacity:0
+        classDef last fill:#bfb6fc
+```

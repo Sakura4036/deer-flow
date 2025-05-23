@@ -11,7 +11,7 @@ from src.tools.semantic_scholar.semantic_scholar_api_wrapper import SemanticScho
 class SemanticScholarInput(BaseModel):
     """Input for the Semantic Scholar tool."""
 
-    query: str = Field(description="search query to look up")
+    query: str = Field(description="Analytics search query to look up")
 
 
 class SemanticScholarQueryRun(BaseTool):
@@ -22,7 +22,7 @@ class SemanticScholarQueryRun(BaseTool):
         "A wrapper around Semantic Scholar. "
         "Useful for when you need to answer questions about academic papers, "
         "research, and scholarly literature. "
-        "Input should be a search query."
+        "Input should be a Analytics search query."
     )
     args_schema: Type[BaseModel] = SemanticScholarInput
     api_wrapper: SemanticScholarAPIWrapper = Field(default_factory=SemanticScholarAPIWrapper)

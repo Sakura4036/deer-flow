@@ -68,7 +68,7 @@ LoggedPubmedSearch = create_logged_tool(MyPubmedQueryRun)
 LoggedSemanticScholarSearch = create_logged_tool(SemanticScholarQueryRun)
 
 
-def get_literature_search_tool(max_search_results: int, max_content_length: int = 4000):
+def get_literature_search_tool(max_search_results: int, max_content_length: int = 16000):
     if SELECTED_LITERATURE_ENGINE == LiteratureSearchEngine.PUBMED.value:
         return LoggedPubmedSearch(
             name="literature_search",
@@ -101,7 +101,7 @@ def get_patent_search_tool(max_search_results: int, max_content_length: int = 0)
             api_wrapper=PatsnapAPIWrapper(
                 patsnap_client=PatsnapAPIClient(),
                 top_k_results=max_search_results,
-                get_claims=True,
+                get_claims=False,
                 doc_content_chars_max=max_content_length,
                 claims_content_chars_max=4000,
             ),
@@ -125,7 +125,6 @@ if __name__ == "__main__":
     # results = LoggedDuckDuckGoSearch(
     #     name="web_search", max_results=3, output_format="list"
     # ).invoke("cute panda")
-    # print(json.dumps(results, indent=2, ensure_ascii=False))
 
-    result = get_literature_search_tool(3).invoke("monoclonal antibody production ProteinA")
+    result = get_patent_search_tool(3).invoke('TACD:(artificial intelligence AND medical diagnosis)')
     print(result)

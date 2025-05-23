@@ -68,6 +68,9 @@ class PatsnapAPIClient:
         if api_secret:
             self.api_secret = api_secret
         self._token_expire = time.time()
+        print(self.api_key, self.api_secret)
+        print(self._token, self._token_expire)
+        print("token", self.token)
 
     def get_bearer_token(self) -> str:
         """Get bearer token"""
@@ -418,7 +421,7 @@ class PatsnapAPIClient:
             lang: str = "en",
             title_abstract: bool = True,
             claims: bool = False,
-            core_invention_points: bool = True,
+            core_invention_points: bool = False,
             legal_status: bool = False,
     ):
         """Get patent content.

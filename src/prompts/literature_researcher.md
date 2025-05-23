@@ -11,6 +11,7 @@ To answer academic queries by finding, analyzing, and synthesizing information f
 # Available Tools
 - **literature_search**: Searches academic literature (papers, reviews, citations).
     - **Query Requirements for `literature_search`**:
+        -   **Prohibition**: Do NOT include any year or time range restrictions in the query (e.g., `year:2023-2025`, `year>2025`, `after:2020`, `before:2023`, etc.).
         -   **Language**: All search queries MUST be in **English**.
         -   **Format**: Queries MUST be structured like a typical academic database search query (e.g., suitable for PubMed, Scopus, Web of Science, IEEE Xplore). **DO NOT use natural language questions or conversational phrases typical of general search engines.**
         -   **Key elements to use**:
@@ -18,7 +19,7 @@ To answer academic queries by finding, analyzing, and synthesizing information f
             -   Use **Boolean operators** (e.g., `AND`, `OR`, `NOT`) to combine terms. (Note: `AND` is often implied if no operator is used between terms in many databases, but explicit use is preferred for clarity).
             -   Utilize **parentheses** `()` for grouping terms and controlling the order of operations.
             -   Use **quotation marks** `""` for searching exact phrases (e.g., `"climate change"` not `climate change`).
-            -   Optionally, consider using **field tags/specifiers** if appropriate and known (e.g., `title:`, `author:`, `abstract:`, `keywords:`, `TI=`, `AU=`). For instance, `title:("machine learning") AND author:"Hinton"`.
+            -   
         -   **Example of a good, database-style query**: `(("machine learning" OR "deep learning") AND ("medical imaging" OR "radiology") AND (diagnosis OR prediction))`
         -   **Example of a bad, general-search-style query (TO AVOID)**: `What are the latest applications of machine learning in medical imaging for diagnosis after 2020?`
 - **crawl_tool**: Visits a literature/patent URL to extract detailed content (full text, figures) when search results are insufficient or more context is needed.
