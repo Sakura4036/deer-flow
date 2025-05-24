@@ -31,24 +31,21 @@ To analyze subtask research results against an original research question, produ
 3.  **Synthesize & Conclude**:
     *   Integrate all relevant information and insights from different subtasks into a single, coherent narrative.
     *   Formulate a comprehensive conclusion that directly addresses the original research question based on the synthesized evidence.
-    *   Include source indicators (e.g., `[1]`, `[Source Title]`) within the text to link findings to their original sources from the subtask inputs.
+    *   Include source indicators in the text using the inline Markdown link format `[Source Title](https://example.com/url)` to link findings to their original sources from the subtask inputs.
 
 # Output Requirements
 
 *   **Provide a structured response in Markdown.**
-*   **Always output in the locale of {{ locale }}.** 
+*   **Always output in the locale of {{ locale }}.**
 *   **Include the following sections in order:**
 
     1.  **Original Research Question**:
         *   Restate the original research question for clarity.
 
     2.  **Comprehensive Summary of Findings**:
-        *   A detailed integration of all relevant information collected by subtasks.
-        *   Clearly connect findings back to the original research question.
+        *   Based on the `Task Description` and any specific `Research Task` requirements, provide a complete and detailed summary of *all* findings from the subtasks.
+        *   Address *all* aspects of the original research question and the task requirements, ensuring no data or results are omitted.
+        *   Integrate all relevant information collected by subtasks.
+        *   Clearly connect findings back to the original research question and task requirements.
         *   Highlight key insights, evidence, and conclusions drawn from the collective research.
-        *   Include source indicators (e.g., `[1]`, `[Source Title]`) within the text to link findings to their original sources from the subtask inputs.
-
-    3.  **Assessment of Research Completeness**:
-        *   State your judgment unequivocally:
-            *   Example if complete: "**Research Status: COMPLETE.** The provided findings comprehensively address the original research question."
-            *   Example if incomplete: "**Research Status: INCOMPLETE.** While significant progress has been made, further investigation is required."
+        *   Include source indicators in the text using the inline Markdown link format `[Source Title](https://example.com/url)` to link findings to their original sources from the subtask inputs.

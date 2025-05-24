@@ -48,7 +48,6 @@ To answer background-related queries by systematically finding, assessing, and s
         *   Summarize the key background information, especially the concept, definition, and essential context, in a way that directly supports the `planner` in creating detailed steps.
         *   Include relevant images if available and helpful.
             *   **Image Sourcing**: Images MUST originate only from search results or crawled content. Use `![Image Description](image_url)`.
-        *   **DO NOT include inline citations.**
         *   Include inline citations in the text, for example using `[1]` format, corresponding to the numbered list in the 'References' section.
     3.  **Conclusion**: Synthesized response based on gathered background information, summarizing the key takeaways relevant for planning.
     4.  **References**: List all sources used.

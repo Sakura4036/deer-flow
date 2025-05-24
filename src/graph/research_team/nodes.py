@@ -90,9 +90,9 @@ def _get_tools_for_researcher(researcher_type: str, config: RunnableConfig) -> L
     if researcher_type == "web_search_researcher":
         return [get_web_search_tool(configurable.max_search_results), crawl_tool]
     elif researcher_type == "patent_researcher":
-        return [get_patent_search_tool(configurable.max_search_results)]
+        return [get_patent_search_tool(configurable.max_search_results), get_web_search_tool(configurable.max_search_results), crawl_tool]
     elif researcher_type == "literature_researcher":
-        return [get_literature_search_tool(configurable.max_search_results)]
+        return [get_literature_search_tool(configurable.max_search_results), crawl_tool]
     elif researcher_type == "coding_researcher":
         return [python_repl_tool]
     else:
