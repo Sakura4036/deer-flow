@@ -24,7 +24,7 @@ from src.tools import (
 
 from src.config.agents import AGENT_LLM_MAP
 from src.config.configuration import Configuration
-from src.llms.llm import get_llm_by_type
+from src.llms.llm import get_llm_by_type, invoke_llm_with_retry, ainvoke_llm_with_retry
 from src.prompts.planner_model import Plan, StepType
 from src.prompts.template import apply_prompt_template
 from src.utils.json_utils import repair_json_output
@@ -119,10 +119,10 @@ def planner_node(
 
     full_response = ""
     if AGENT_LLM_MAP["planner"] == "basic":
-        response = llm.invoke(messages)
+        response = invoke_llm_with_retry(llm, messages)
         full_response = response.model_dump_json(indent=4, exclude_none=True)
     else:
-        response = llm.stream(messages)
+        response = invoke_llm_with_retry(llm, messages, stream=True)
         for chunk in response:
             full_response += chunk.content
     logger.debug(f"Current state messages: {state['messages']}")
@@ -213,11 +213,11 @@ def coordinator_node(
     """Coordinator node that communicate with customers."""
     logger.info("Coordinator talking.")
     messages = apply_prompt_template("coordinator", state)
-    response = (
+    llm = (
         get_llm_by_type(AGENT_LLM_MAP["coordinator"])
         .bind_tools([handoff_to_planner])
-        .invoke(messages)
     )
+    response= invoke_llm_with_retry(llm, messages)
     logger.debug(f"Current state messages: {state['messages']}")
 
     goto = "__end__"
@@ -280,7 +280,8 @@ def reporter_node(state: State):
             )
         )
     logger.debug(f"Current invoke messages: {invoke_messages}")
-    response = get_llm_by_type(AGENT_LLM_MAP["reporter"]).invoke(invoke_messages)
+    llm = get_llm_by_type(AGENT_LLM_MAP["reporter"])
+    response = invoke_llm_with_retry(llm, invoke_messages)
     response_content = response.content
     logger.info(f"reporter response: {response_content}")
 
@@ -379,8 +380,7 @@ async def _execute_agent_step(
         )
         recursion_limit = default_recursion_limit
 
-    result = await agent.ainvoke(
-        input=agent_input, config={"recursion_limit": recursion_limit}
+    result = await ainvoke_llm_with_retry(agent, agent_input, config={"recursion_limit": recursion_limit}
     )
 
     # Process the result

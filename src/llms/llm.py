@@ -3,11 +3,15 @@
 
 from pathlib import Path
 from typing import Any, Dict
-
+import logging
+from langchain_core.language_models import BaseChatModel
 from langchain_openai import ChatOpenAI
-
+from langchain.chat_models import init_chat_model
+from tenacity import retry, stop_after_attempt
 from src.config import load_yaml_config
-from src.config.agents import LLMType
+from src.config.agents import LLMType, AgentType, AGENT_LLM_MAP
+
+logger = logging.getLogger(__name__)
 
 # Cache for LLM instances
 _llm_cache: dict[LLMType, ChatOpenAI] = {}
@@ -43,6 +47,27 @@ def get_llm_by_type(
     _llm_cache[llm_type] = llm
     return llm
 
+def get_agent_llm_type(agent_type: str | AgentType = None) -> ChatOpenAI:
+    return AGENT_LLM_MAP.get(agent_type, "basic")
+
+
+def get_agent_llm(agent_type: str | AgentType = None) -> ChatOpenAI:
+    llm_type = AGENT_LLM_MAP.get(agent_type, "basic")
+    logger.info(f"get {llm_type} llm for {agent_type}")
+    return get_llm_by_type(llm_type)
+
+
+@retry(stop=stop_after_attempt(3))
+def invoke_llm_with_retry(llm, messages, stream:bool=False, **kwargs):
+    if stream:
+        return llm.stream(messages, **kwargs)
+    else:
+        return llm.invoke(messages, **kwargs)
+
+@retry(stop=stop_after_attempt(3))
+async def ainvoke_llm_with_retry(llm, messages, **kwargs):
+    response = await llm.ainvoke(messages, **kwargs)
+    return response
 
 # Initialize LLMs for different purposes - now these will be cached
 basic_llm = get_llm_by_type("basic")
