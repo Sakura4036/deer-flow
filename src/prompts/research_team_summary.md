@@ -33,9 +33,9 @@ To analyze subtask research results against an original research question, produ
     *   Formulate a comprehensive conclusion that directly addresses the original research question based on the synthesized evidence.
     *   Include source indicators in the text using the inline Markdown link format `[Source Title](https://example.com/url)` to link findings to their original sources from the subtask inputs.
 
-# Output Requirements
+# Output Summary Requirements
 
-*   **Provide a structured response in Markdown.**
+*   **Provide a structured summary in Markdown.**
 *   **Always output in the locale of {{ locale }}.**
 *   **Include the following sections in order:**
 
@@ -49,3 +49,21 @@ To analyze subtask research results against an original research question, produ
         *   Clearly connect findings back to the original research question and task requirements.
         *   Highlight key insights, evidence, and conclusions drawn from the collective research.
         *   Include source indicators in the text using the inline Markdown link format `[Source Title](https://example.com/url)` to link findings to their original sources from the subtask inputs.
+
+## JSON Output Format
+
+Your final output MUST be a JSON object that strictly conforms to the `SummaryOutput` schema. The JSON object should contain the following keys:
+
+*   `summary`: (string) A detailed summary consolidating all subtask findings, do not missing any key information.
+*   `completed`: (boolean) Set to `true` if the main task objective has been sufficiently addressed based on the findings, `false` otherwise.
+*   `feedback`: (string) If `completed` is `false`, this field MUST contain feedback on what is missing or needs to be improved to complete the task. Otherwise, it can be an empty string.
+
+Example JSON Output:
+
+```json
+{
+  "summary": "...",
+  "completed": true,
+  "feedback": ""
+}
+```

@@ -18,9 +18,8 @@ class PatsnapQueryRun(BaseTool):  # type: ignore[override]
 
     name: str = "patsnap"
     description: str = (
-        "A wrapper around Patsnap. "
-        "Useful for when you need to answer questions about patent topics "
-        "Input should be a search query."
+        "Useful for searching patents and retrieving patent information including title, date, applicant, abstract, claims and other basic details from Patsnap Patent Database. "
+        "Input should be a search query to find relevant patents."
     )
     args_schema: Type[BaseModel] = PatsnapInput
     api_wrapper: PatsnapAPIWrapper = Field(default_factory=PatsnapAPIWrapper)  # type: ignore[arg-type]

@@ -53,6 +53,8 @@ def router_node(
 
         messages.append(HumanMessage(content=context_message))
 
+    messages.append(HumanMessage(content="please gernerate subtask plan for the Researcher task."))
+
     llm = get_agent_llm("research_team_router").with_structured_output(
         TaskPlan,
         method="json_mode",
@@ -147,13 +149,15 @@ async def researcher_node(
         "messages": [
             HumanMessage(
                 content=f"# Task\n{task_description}\n\n ## Your SubTask Description\n\n{current_subtask.description}\n\n" \
-                        "Please analyze your task and requirements based on the existing information and try your best to finish it."
+                        "Please analyze your task and requirements based on the existing information and try your best to finish it by using tools."
             )
         ]
     }
 
     task_observations = state.get("task_observations", [])
     if task_observations:
+        # only get observations from same reseacher 
+        task_observations = [obs for obs in task_observations if obs['source'] == researcher_type]
         context_message = "# Additional Context From Previous Research\n\n"
         for obs in task_observations:
             context_message += f"## {obs.get('title', 'Observation')}\n{obs.get('content', '')}\nSource: {obs.get('source')}\n\n"
@@ -271,11 +275,15 @@ async def summary_node(
         messages.append(HumanMessage(content=error_content))
 
     # Prepare LLM with structured output
-    llm = get_agent_llm("research_team_summary")
+    llm = get_agent_llm("research_team_summary").with_structured_output(SummaryOutput, method='json_mode')
 
     # Invoke LLM to create summary
     response = invoke_llm_with_retry(llm, messages)
     logger.info(f"Summary response: {response}")
     logger.info("Research task completed successfully")
 
-    return {"current_step_result": response.content}
+    if response.completed:
+        return {"current_step_result": response.summary}
+    else:
+        return Command(goto="router",update={"current_step_result":response.summary, "feedback":response.feedback})
+

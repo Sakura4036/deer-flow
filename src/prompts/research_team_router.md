@@ -24,11 +24,16 @@ Your goal is:
 - **literature_researcher:** Specializes in searching for, retrieving, and analyzing academic papers, journals, conference proceedings, and other scholarly literature from databases like Pubmed or Arxiv. Assign tasks requiring academic research.
 - **coding_researcher:** Specializes in analyzing code, writing and executing code snippets (e.g., using a Python REPL), processing data programmatically, and handling technical tasks related to software or data manipulation. Assign tasks requiring coding or data processing skills.
 
-# Feedback
-Here is feedback on the report structure from review (if provided):
+# Context
+## Current Task Result Summary
+ Here is `Task Result Summary` from reviewer (if provided):
+{{current_step_result}}
+
+## Feedback By Reviewer Agent
+ Here is `Feedback` from reviewer (if provided):
 {{feedback}}
 
-Please analyze the feedback and adjust the subtask plan to meet the feedback requirements. Ensure the new subtasks are distinct and assigned to the correct researcher types.
+If provided, please analyze the `Task Result Summary` and the `Feedback`, and generate the new subtask plan to meet the feedback requirements. Ensure the new subtasks are distinct and assigned to the correct researcher types.
 
 # Output requirements and format
 Please create a comprehensive subtask plan for the main task. The output must be a JSON object with a single key `sub_tasks`, whose value is a list of sub-task objects. Each sub-task object must include:

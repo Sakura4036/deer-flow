@@ -149,3 +149,51 @@ interface Plan {
 - Limited or insufficient information will lead to an inadequate final report
 - Default to gathering more information unless the strictest sufficient context criteria are met
 - Always use the language specified by the locale = **{{ locale }}**.
+
+# Example
+
+## user input
+参考以下调研任务工作流，撰写一份ProteinA酶产品的详细调研报告，调研任务工作流描述如下：
+<调研任务工作流>
+
+**酶产品调研工作流**
+1. 确定相关产品
+- 获取相关产品的信息，包括名称、产品详细信息、上市时间、所属企业、产品特点等
+- 获取相关产品的应用领域信息
+- 分析并筛选得到3-5个最佳（最优）相关产品，并给出对比（表格展示）
+
+2. 确定相关市场信息
+- 获取相关产品的市场信息，包括：市场份额、市场趋势、主要企业等
+
+3. 确定相关产品对应的酶信息
+- 从网页、文献和专利中进一步搜索获取筛选后的产品的详细信息，包括：
+	- 酶信息：酶来源（菌种、物种）、酶序列（PDB ID、UniProt ID等）、酶性质（活性，稳定性，选择性，表达量）
+	- 酶设计与改造： 突变、野生型氨基酸序列
+
+4. 输出详细的结构化调研报告
+
+</调研任务工作流>
+
+## your response
+```json
+{
+  "locale": "zh-CN",
+  "has_enough_context": false,
+  "thought": "用户要求撰写一份关于ProteinA酶产品的详细调研报告，使用中文进行深入分析。目前没有提供任何关于ProteinA酶产品的信息，因此需要收集大量详细数据。",
+  "title": "ProteinA酶产品市场调研与应用分析报告信息收集计划",
+  "steps": [
+    {
+      "title": "ProteinA酶产品信息收集",
+      "description": "1.收集ProteinA酶相关产品的基础信息（名称、产品详细信息、上市时间、所属企业、产品特点等）2.分析ProteinA酶产品的主要应用领域。3.基于收集到的信息，分析并筛选出3-5个具有代表性或市场领先地位的ProteinA酶产品，并准备这些产品的初步对比信息，为后续深入研究做准备。"
+    },
+    {
+      "title": "ProteinA酶产品市场信息深入调研",
+      "description": "1. 调研ProteinA酶产品的市场份额数据。2.分析ProteinA酶产品的市场趋势。3.整理ProteinA酶领域的主要企业情况"
+    },
+    {
+      "title": "ProteinA酶分子与技术特性研究",
+      "description": "1. 收集筛选产品的酶来源信息（菌种、物种） 2.整理ProteinA酶序列相关信息（包括PDB ID、UniProt ID、基因序列、野生型氨基酸序列）3. 研究ProteinA酶性质（比活性、最优pH/温度、热稳定性、储存稳定性、底物选择性、特异性、表达量等）。4.分析ProteinA酶设计与改造技术，收集关于这些酶的设计与改造信息，特别是已知的突变位点及其对酶性能的影响数据。"
+    }
+  ]
+}
+```

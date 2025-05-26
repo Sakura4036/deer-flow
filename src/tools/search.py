@@ -94,7 +94,7 @@ LoggedPatsnapSearch = create_logged_tool(PatsnapQueryRun)
 LoggedPatentsViewSearch = create_logged_tool(PatentsViewQueryRun)
 
 
-def get_patent_search_tool(max_search_results: int, max_content_length: int = 0):
+def get_patent_search_tool(max_search_results: int, max_content_length: int = 32000):
     if SELECTED_PATENT_ENGINE == PatentSearchEngine.PATSNAP.value:
         return LoggedPatsnapSearch(
             name="patent_search",
@@ -112,9 +112,9 @@ def get_patent_search_tool(max_search_results: int, max_content_length: int = 0)
             api_wrapper=PatentsViewAPIWrapper(
                 client=PatentsViewAPIClient(api_key=os.getenv("PATENTSVIEW_API_KEY")),
                 top_k_results=max_search_results,
-                doc_content_chars_max=0,
+                doc_content_chars_max=max_content_length,
                 get_claims=True,
-                claims_content_chars_max=2000,
+                claims_content_chars_max=4000,
             ),
         )
     else:
