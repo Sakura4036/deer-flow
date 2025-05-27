@@ -24,7 +24,7 @@ class AgentType(str, Enum):
 # Define agent-LLM mapping
 AGENT_LLM_MAP: dict[str, LLMType] = {
     "coordinator": "basic",
-    "planner": "reasoning",
+    "planner": "basic",
     "researcher": "basic",
     "web_researcher": "basic",
     "literature_researcher": "basic",

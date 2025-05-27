@@ -284,7 +284,11 @@ async def prepare_research_team_state_node(
         logger.info("All steps executed, returning to planner")
         return Command(goto="planner")
 
-    return Command(goto=Send("research_team", {"current_step": current_step, "current_plan_description":current_plan_description}))
+    return Command(goto=Send("research_team", {
+        "current_step": current_step, 
+        "current_plan_description":current_plan_description,
+        "locale": state.get("locale", "en-US")
+        }))
 
 
 def sync_research_team_result_node(

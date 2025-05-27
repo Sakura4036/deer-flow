@@ -5,10 +5,11 @@ import base64
 import json
 import logging
 import os
+import aiofiles
 from typing import List, cast
 from uuid import uuid4
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Body
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response, StreamingResponse
 from langchain_core.messages import AIMessageChunk, ToolMessage, BaseMessage
@@ -31,6 +32,9 @@ from src.server.mcp_utils import load_mcp_tools
 from src.tools import VolcengineTTS
 
 logger = logging.getLogger(__name__)
+
+# Define the base directory for storing replay files
+REPLAYS_BASE_DIR = "web/public/replay"
 
 app = FastAPI(
     title="DeerFlow API",
@@ -72,16 +76,20 @@ async def chat_stream(request: ChatRequest):
 
 
 async def _astream_workflow_generator(
-    messages: List[ChatMessage],
-    thread_id: str,
-    max_plan_iterations: int,
-    max_step_num: int,
-    max_search_results: int,
-    auto_accepted_plan: bool,
-    interrupt_feedback: str,
-    mcp_settings: dict,
-    enable_background_investigation,
+        messages: List[ChatMessage],
+        thread_id: str,
+        max_plan_iterations: int,
+        max_step_num: int,
+        max_search_results: int,
+        auto_accepted_plan: bool,
+        interrupt_feedback: str,
+        mcp_settings: dict,
+        enable_background_investigation,
 ):
+    # Ensure the replay directory exists
+    os.makedirs(REPLAYS_BASE_DIR, exist_ok=True)
+    replay_file_path = os.path.join(REPLAYS_BASE_DIR, f"{thread_id}.txt")
+
     input_ = {
         "messages": messages,
         "plan_iterations": 0,
@@ -97,72 +105,92 @@ async def _astream_workflow_generator(
         if messages:
             resume_msg += f" {messages[-1]['content']}"
         input_ = Command(resume=resume_msg)
-    async for agent, _, event_data in graph.astream(
-        input_,
-        config={
-            "thread_id": thread_id,
-            "max_plan_iterations": max_plan_iterations,
-            "max_step_num": max_step_num,
-            "max_search_results": max_search_results,
-            "mcp_settings": mcp_settings,
-            "recursion_limit": 50
-        },
-        stream_mode=["messages", "updates"],
-        subgraphs=True,
-    ):
-        if isinstance(event_data, dict):
-            if "__interrupt__" in event_data:
-                yield _make_event(
-                    "interrupt",
-                    {
-                        "thread_id": thread_id,
-                        "id": event_data["__interrupt__"][0].ns[0],
-                        "role": "assistant",
-                        "content": event_data["__interrupt__"][0].value,
-                        "finish_reason": "interrupt",
-                        "options": [
-                            {"text": "Edit plan", "value": "edit_plan"},
-                            {"text": "Start research", "value": "accepted"},
-                        ],
-                    },
-                )
-            continue
-        message_chunk, message_metadata = cast(
-            tuple[BaseMessage, dict[str, any]], event_data
-        )
-        event_stream_message: dict[str, any] = {
-            "thread_id": thread_id,
-            "agent": agent[0].split(":")[0],
-            "id": message_chunk.id,
-            "role": "assistant",
-            "content": message_chunk.content,
-        }
-        if message_chunk.response_metadata.get("finish_reason"):
-            event_stream_message["finish_reason"] = message_chunk.response_metadata.get(
-                "finish_reason"
+
+    # Open the replay file in append mode for asynchronous writing
+    async with aiofiles.open(replay_file_path, mode="a", encoding="utf-8") as f:
+        async for agent, _, event_data in graph.astream(
+                input_,
+                config={
+                    "thread_id": thread_id,
+                    "max_plan_iterations": max_plan_iterations,
+                    "max_step_num": max_step_num,
+                    "max_search_results": max_search_results,
+                    "mcp_settings": mcp_settings,
+                    "recursion_limit": 50
+                },
+                stream_mode=["messages", "updates"],
+                subgraphs=True,
+        ):
+            event_to_write = None
+            if isinstance(event_data, dict):
+                if "__interrupt__" in event_data:
+                    event_to_write = _make_event(
+                        "interrupt",
+                        {
+                            "thread_id": thread_id,
+                            "id": event_data["__interrupt__"][0].ns[0],
+                            "role": "assistant",
+                            "content": event_data["__interrupt__"][0].value,
+                            "finish_reason": "interrupt",
+                            "options": [
+                                {"text": "Edit plan", "value": "edit_plan"},
+                                {"text": "Start research", "value": "accepted"},
+                            ],
+                        },
+                    )
+                    yield event_to_write
+                if event_to_write:
+                    await f.write(event_to_write) # Write the event to the file
+                continue
+            message_chunk, message_metadata = cast(
+                tuple[BaseMessage, dict[str, any]], event_data
             )
-        if isinstance(message_chunk, ToolMessage):
-            # Tool Message - Return the result of the tool call
-            event_stream_message["tool_call_id"] = message_chunk.tool_call_id
-            yield _make_event("tool_call_result", event_stream_message)
-        elif isinstance(message_chunk, AIMessageChunk):
-            # AI Message - Raw message tokens
-            if message_chunk.tool_calls:
-                # AI Message - Tool Call
-                event_stream_message["tool_calls"] = message_chunk.tool_calls
-                event_stream_message["tool_call_chunks"] = (
-                    message_chunk.tool_call_chunks
-                )
-                yield _make_event("tool_calls", event_stream_message)
-            elif message_chunk.tool_call_chunks:
-                # AI Message - Tool Call Chunks
-                event_stream_message["tool_call_chunks"] = (
-                    message_chunk.tool_call_chunks
-                )
-                yield _make_event("tool_call_chunks", event_stream_message)
+            # logger.info(f"Agent: {agent}")
+            if agent:
+                agent_name = agent[0].split(":")[0] if len(agent) == 1 else agent[1].split(":")[0]
             else:
+                agent_name = "assistant"
+
+            event_stream_message: dict[str, any] = {
+                "thread_id": thread_id,
+                "agent": agent_name,
+                "id": message_chunk.id,
+                "role": "assistant",
+                "content": message_chunk.content,
+            }
+            if message_chunk.response_metadata.get("finish_reason"):
+                event_stream_message["finish_reason"] = message_chunk.response_metadata.get(
+                    "finish_reason"
+                )
+            if isinstance(message_chunk, ToolMessage):
+                # Tool Message - Return the result of the tool call
+                event_stream_message["tool_call_id"] = message_chunk.tool_call_id
+                event_to_write = _make_event("tool_call_result", event_stream_message)
+                yield event_to_write
+            elif isinstance(message_chunk, AIMessageChunk):
                 # AI Message - Raw message tokens
-                yield _make_event("message_chunk", event_stream_message)
+                if message_chunk.tool_calls:
+                    # AI Message - Tool Call
+                    event_stream_message["tool_calls"] = message_chunk.tool_calls
+                    event_stream_message["tool_call_chunks"] = (
+                        message_chunk.tool_call_chunks
+                    )
+                    event_to_write = _make_event("tool_calls", event_stream_message)
+                    yield event_to_write
+                elif message_chunk.tool_call_chunks:
+                    # AI Message - Tool Call Chunks
+                    event_stream_message["tool_call_chunks"] = (
+                        message_chunk.tool_call_chunks
+                    )
+                    event_to_write = _make_event("tool_call_chunks", event_stream_message)
+                    yield event_to_write
+                else:
+                    # AI Message - Raw message tokens
+                    event_to_write = _make_event("message_chunk", event_stream_message)
+                    yield event_to_write
+            
+            if event_to_write:
+                await f.write(event_to_write) # Write the event to the file
 
 
 def _make_event(event_type: str, data: dict[str, any]):
@@ -320,3 +348,54 @@ async def mcp_server_metadata(request: MCPServerMetadataRequest):
             logger.exception(f"Error in MCP server metadata endpoint: {str(e)}")
             raise HTTPException(status_code=500, detail=str(e))
         raise
+
+
+@app.get("/api/replay/list")
+async def list_replays():
+    """Get a list of all available replay files."""
+    try:
+        # Ensure the replay directory exists
+        os.makedirs(REPLAYS_BASE_DIR, exist_ok=True)
+        
+        # Get all files in the replay directory
+        replay_files = []
+        for filename in os.listdir(REPLAYS_BASE_DIR):
+            if filename.endswith(".txt"):
+                file_path = os.path.join(REPLAYS_BASE_DIR, filename)
+                # Get file creation time and size
+                stats = os.stat(file_path)
+                # Get the first line of content to extract title if available
+                title = filename.replace(".txt", "")
+                try:
+                    async with aiofiles.open(file_path, "r", encoding="utf-8") as f:
+                        content = await f.read(500)  # Read first 500 chars
+                        # Try to find the first message chunk which often contains the title
+                        if "event: message_chunk" in content:
+                            data_parts = content.split("data: ", 2)
+                            if len(data_parts) > 1:
+                                try:
+                                    data_json = json.loads(data_parts[1].split("\n\n")[0])
+                                    if "content" in data_json and data_json["content"]:
+                                        # Use first 50 chars of content as title
+                                        title = data_json["content"][:100]
+                                        if len(data_json["content"]) > 50:
+                                            title += "..."
+                                except:
+                                    pass  # Use filename as title if parsing fails
+                except:
+                    pass  # Use filename as title if file can't be read
+                
+                replay_files.append({
+                    "id": filename.replace(".txt", ""),
+                    "title": title,
+                    "created_at": stats.st_ctime,
+                    "size": stats.st_size,
+                })
+        
+        # Sort by creation time, newest first
+        replay_files.sort(key=lambda x: x["created_at"], reverse=True)
+        
+        return {"replays": replay_files}
+    except Exception as e:
+        logger.exception(f"Error listing replay files: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))

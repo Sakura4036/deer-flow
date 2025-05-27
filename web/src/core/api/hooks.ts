@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { useReplay } from "../replay";
 
-import { fetchReplayTitle } from "./chat";
+import { fetchReplayList, fetchReplayTitle } from "./chat";
 
 export function useReplayMetadata() {
   const { isReplay } = useReplay();
@@ -38,4 +38,34 @@ export function useReplayMetadata() {
       });
   }, [isLoading, isReplay, title]);
   return { title, isLoading, hasError: error };
+}
+
+export function useReplayList() {
+  const [replays, setReplays] = useState<Array<{
+    id: string;
+    title: string;
+    created_at: number;
+    size: number;
+  }>>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchReplays = async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const data = await fetchReplayList();
+      setReplays(data);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to fetch replays");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchReplays();
+  }, []);
+
+  return { replays, isLoading, error, refetch: fetchReplays };
 }

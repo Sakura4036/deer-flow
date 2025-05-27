@@ -131,6 +131,8 @@ class ResearchTeamSubgraphState(MessagesState):
     current_plan_description: str
     # step task for research team
     current_step: Step
+    # locale
+    locale: str
 
     # A list of 'Observation' objects from the parent main graph, 
     # providing broader context to the subgraph's router node. Initializes to an empty list.

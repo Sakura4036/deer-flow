@@ -29,7 +29,7 @@ def _create_llm_use_conf(llm_type: LLMType, conf: Dict[str, Any]) -> ChatOpenAI:
     if not isinstance(llm_conf, dict):
         raise ValueError(f"Invalid LLM Conf: {llm_type}")
     # return ChatOpenAI(**llm_conf)
-    return init_chat_model(**llm_conf, model_provider=llm_conf.get("provider", 'openai'))
+    return init_chat_model(**llm_conf, model_provider=llm_conf.get("model_provider", 'openai'))
 
 
 def get_llm_by_type(

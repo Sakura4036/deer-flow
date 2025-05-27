@@ -50,7 +50,7 @@ export function MessagesBlock({ className }: { className?: string }) {
             abortSignal: abortController.signal,
           },
         );
-      } catch {}
+      } catch { }
     },
     [feedback],
   );
@@ -68,9 +68,22 @@ export function MessagesBlock({ className }: { className?: string }) {
     setFeedback(null);
   }, [setFeedback]);
   const handleStartReplay = useCallback(() => {
+    console.log("Starting replay...");
     setReplayStarted(true);
-    void sendMessage();
-  }, [setReplayStarted]);
+
+    // 重置响应状态，确保回放可以重新开始
+    if (responding) {
+      handleCancel();
+    }
+
+    void sendMessage()
+      .then(() => {
+        console.log("Replay completed successfully");
+      })
+      .catch((err) => {
+        console.error("Error during replay:", err);
+      });
+  }, [setReplayStarted, responding, handleCancel]);
   const [fastForwarding, setFastForwarding] = useState(false);
   const handleFastForwardReplay = useCallback(() => {
     setFastForwarding(!fastForwarding);
@@ -127,16 +140,22 @@ export function MessagesBlock({ className }: { className?: string }) {
                   <CardHeader>
                     <CardTitle>
                       <RainbowText animated={responding}>
-                        {responding ? "Replaying" : `${replayTitle}`}
+                        {responding
+                          ? "Replaying"
+                          : replayHasError
+                            ? "Replay Error"
+                            : replayTitle || "Untitled Replay"}
                       </RainbowText>
                     </CardTitle>
                     <CardDescription>
                       <RainbowText animated={responding}>
                         {responding
                           ? "DeerFlow is now replaying the conversation..."
-                          : replayStarted
-                            ? "The replay has been stopped."
-                            : `You're now in DeerFlow's replay mode. Click the "Play" button on the right to start.`}
+                          : replayHasError
+                            ? "There was an error loading this replay. Please try another one."
+                            : replayStarted && !responding
+                              ? "The replay has been completed. Click Play to watch again."
+                              : `You're now in DeerFlow's replay mode. Click the "Play" button on the right to start.`}
                       </RainbowText>
                     </CardDescription>
                   </CardHeader>
@@ -153,7 +172,7 @@ export function MessagesBlock({ className }: { className?: string }) {
                         Fast Forward
                       </Button>
                     )}
-                    {!replayStarted && (
+                    {(!replayStarted || (replayStarted && !responding)) && (
                       <Button className="w-24" onClick={handleStartReplay}>
                         <Play size={16} />
                         Play

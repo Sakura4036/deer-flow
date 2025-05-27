@@ -12,6 +12,7 @@ import { mergeMessage } from "../messages";
 import { parseJSON } from "../utils";
 
 import { getChatStreamSettings } from "./settings-store";
+import { MessageActivatedAgents } from "~/core/messages";
 
 const THREAD_ID = nanoid();
 
@@ -180,9 +181,7 @@ function findMessageByToolCallId(toolCallId: string) {
 
 function appendMessage(message: Message) {
   if (
-    message.agent === "coder" ||
-    message.agent === "reporter" ||
-    message.agent === "researcher"
+    MessageActivatedAgents.includes(message.agent)
   ) {
     if (!getOngoingResearchId()) {
       const id = message.id;

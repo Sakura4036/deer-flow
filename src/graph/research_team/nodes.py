@@ -40,11 +40,17 @@ def router_node(
     current_plan_description = state.get("current_plan_description", "")
     current_step = state.get('current_step')
     observations = state.get("observations")
-    state['task_description'] = f"## Plan Description\n{current_plan_description}\n\n " \
-                                f"## Research Task for Research Team\n### Title\n{current_step.title}\n\n### Description\n{current_step.description}"
+    state['task_description'] = f"# Current Research Task for Research Team\n\n## Title\n{current_step.title}\n\n## Task Description\n{current_step.description}"
 
     # Apply prompt template for router
-    messages = apply_prompt_template("research_team_router", state)
+    _input_state = {
+        "messages":[],
+        "locale": state.get("locale", "en-US"),
+        "task_description": state['task_description'],
+        "feedback": state.get("feedback", ""),
+        "current_step_result": state.get("current_step_result", ""),
+    }
+    messages = apply_prompt_template("research_team_router", _input_state)
     # Add context from main graph observations if available
     if observations:
         context_message = "# Additional Context From Previous Research\n\n"
@@ -53,7 +59,7 @@ def router_node(
 
         messages.append(HumanMessage(content=context_message))
 
-    messages.append(HumanMessage(content="please gernerate subtask plan for the Researcher task."))
+    messages.append(HumanMessage(content="You should think step by step and provide a detailed plan for the Research task."))
 
     llm = get_agent_llm("research_team_router").with_structured_output(
         TaskPlan,
@@ -148,20 +154,20 @@ async def researcher_node(
     agent_input = {
         "messages": [
             HumanMessage(
-                content=f"# Task\n{task_description}\n\n ## Your SubTask Description\n\n{current_subtask.description}\n\n" \
-                        "Please analyze your task and requirements based on the existing information and try your best to finish it by using tools."
+                content=f"{task_description}\n\n ## Your SubTask Description\n\n{current_subtask.description}\n\n"
+                        "You should think step by step to solve the task. "
             )
         ]
     }
 
     task_observations = state.get("task_observations", [])
     if task_observations:
-        # only get observations from same reseacher 
-        task_observations = [obs for obs in task_observations if obs['source'] == researcher_type]
+        # only get observations from same researcher
+        # task_observations = [obs for obs in task_observations if obs['source'] == researcher_type]
         context_message = "# Additional Context From Previous Research\n\n"
         for obs in task_observations:
             context_message += f"## {obs.get('title', 'Observation')}\n{obs.get('content', '')}\nSource: {obs.get('source')}\n\n"
-
+    
         agent_input["messages"].append(
             HumanMessage(content=context_message, name="observations")
         )
@@ -197,6 +203,10 @@ async def researcher_node(
 
         return Command(
             update={
+                # "messages": [HumanMessage(
+                #     content=response_content,
+                #     name=researcher_type
+                # )],
                 "current_sub_task_index": next_index,
                 "task_observations": task_observations,
                 "task_plan": task_plan  # Update with the completed task
@@ -222,6 +232,10 @@ async def researcher_node(
 
         return Command(
             update={
+                # "messages": [HumanMessage(
+                #     content=f"Error executing subtask {current_subtask.sub_task_id}:\n {e}\n",
+                #     name=researcher_type
+                # )],
                 "current_sub_task_index": next_index,
                 "error_log": error_log,
                 "task_plan": task_plan  # Update with the failed task
@@ -232,7 +246,7 @@ async def researcher_node(
 
 async def summary_node(
         state: ResearchTeamSubgraphState, config: RunnableConfig
-) -> Dict[str, any]:
+) -> Dict[str, any] | Command[Literal["router"]]:
     """
     Summary node evaluates all subtask results, summarizes findings,
     and determines if the task is complete or needs more research.
@@ -246,25 +260,22 @@ async def summary_node(
     """
     logger.info("Summary node evaluating research results")
 
+    task_description = state.get("task_description", "")
+
     # Apply prompt template for summary
     messages = apply_prompt_template("research_team_summary", state)
 
-    # Add all subtask results
+    messages.append(HumanMessage(content=task_description))
+
+    # # Add all subtask results
     task_plan = state.get("task_plan", [])
-    subtask_results = "# Subtask Results\n\n"
-
+    context = "# Below are the results of each subtask performed by the research team.\n\n"
     for i, subtask in enumerate(task_plan):
-        subtask_results += f"## Subtask {i + 1}: {subtask.sub_task_id}\n"
-        subtask_results += f"**Type**: {subtask.researcher_type}\n"
-        subtask_results += f"**Description**: {subtask.description}\n"
-        subtask_results += f"**Status**: {subtask.status}\n\n"
+        context += f"## Subtask {i + 1}: {subtask.sub_task_id}\n"
+        context += f"Researcher Type: {subtask.researcher_type}\n\n"
+        context += f"**Results**:\n{subtask.result if subtask.result else 'No results available'}\n\n"
 
-        if subtask.result:
-            subtask_results += f"**Results**:\n{subtask.result}\n\n"
-        else:
-            subtask_results += "**Results**: No results available\n\n"
-
-    messages.append(HumanMessage(content=subtask_results))
+    messages.append(HumanMessage(content=context, name="observations"))
 
     # Add errors if any
     error_log = state.get("error_log", [])
@@ -272,7 +283,7 @@ async def summary_node(
         error_content = "# Errors Encountered\n\n"
         for error in error_log:
             error_content += f"- Subtask {error.get('subtask_id')}: {error.get('error')}\n"
-        messages.append(HumanMessage(content=error_content))
+        messages.append(HumanMessage(content=error_content, name="observations"))
 
     # Prepare LLM with structured output
     llm = get_agent_llm("research_team_summary").with_structured_output(SummaryOutput, method='json_mode')
@@ -285,5 +296,4 @@ async def summary_node(
     if response.completed:
         return {"current_step_result": response.summary}
     else:
-        return Command(goto="router",update={"current_step_result":response.summary, "feedback":response.feedback})
-
+        return Command(goto="router", update={"current_step_result": response.summary, "feedback": response.feedback})

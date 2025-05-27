@@ -93,7 +93,7 @@ class PatsnapAPIWrapper(BaseModel):
                 patent['claims'] = claims
 
         for key, value in patent.items():
-            if key not in ['patent_id', 'pn', 'title', 'inventor', 'current_assignee', 'Abstract']:
-                patent_str += f"{key.replace('_', ' ').upper()}: {value}\n"
+            if key.lower() not in ['patent_id', 'pn', 'title', 'inventor', 'current_assignee', 'abstract']:
+                patent_str += f"{key.replace('_', ' ').capitalize()}: {value}\n"
 
         return patent_str

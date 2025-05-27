@@ -83,7 +83,7 @@ This phase is iterative. Expect to perform multiple searches and refinements usi
 # Output Requirements
 
 *   **Format**: Structured response in **Markdown**. Use appropriate heading levels (e.g., `#` for main title, `##` for sections, `###` for sub-sections).
-*   **Language**: Always output in the locale of **{{ locale }}**.
+*   **Language**: Always output in the locale of {{ locale }}.
 *   **Mandatory Sections**:
     1.  **`## 1. Problem Statement`**: Concisely restate the patent problem or query.
     2.  **`## 2. Patent Findings & Analysis`**: (Title adjusted slightly for broader scope)
