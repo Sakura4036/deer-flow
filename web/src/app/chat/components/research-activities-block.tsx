@@ -25,7 +25,7 @@ import {
 } from "~/components/ui/accordion";
 import { Skeleton } from "~/components/ui/skeleton";
 import { findMCPTool } from "~/core/mcp";
-import type { ToolCallRuntime } from "~/core/messages";
+import type { Message, ToolCallRuntime } from "~/core/messages";
 import { useMessage, useStore } from "~/core/store";
 import { parseJSON } from "~/core/utils";
 import { cn } from "~/lib/utils";
@@ -69,10 +69,68 @@ export function ResearchActivitiesBlock({
   );
 }
 
+function RouterMessage({ message }: { message: Message }) {
+  const task_plan = useMemo<{
+    sub_tasks?: { sub_task_id?: string; description?: string; researcher_type?: string }[];
+  }>(() => {
+    return parseJSON(message.content ?? "", {});
+  }, [message.content]);
+  return (
+    <div className="px-4 py-2">
+      <Markdown className="opacity-80" animated>
+        ### Generated task plan:
+      </Markdown>
+      {task_plan.sub_tasks && (
+        <ul className="my-2 flex list-decimal flex-col gap-4 border-l-[2px] pl-8">
+          {task_plan.sub_tasks.map((task, i) => (
+            <li key={`task-${task.sub_task_id}-${i}`}>
+              <h3 className="mb text-lg font-medium">
+                <Markdown animated>{task.description}</Markdown>
+              </h3>
+              <div className="text-muted-foreground text-sm">
+                <Markdown animated>{`Assigned to ${task.researcher_type}`}</Markdown>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+function SummaryMessage({ message }: { message: Message }) {
+  const summary = useMemo<{
+    summary?: string;
+    feedback?: string;
+  }>(() => {
+    return parseJSON(message.content ?? "", {});
+  }, [message.content]);
+  return (
+    <div className="px-4 py-2">
+      <Markdown animated checkLinkCredibility>
+        ### Summary:
+        {summary.summary}
+      </Markdown>
+      {summary.feedback && (
+        <Markdown animated>
+          ### Feedback:
+          {summary.feedback}
+        </Markdown>
+      )}
+    </div>
+  );
+}
+
 function ActivityMessage({ messageId }: { messageId: string }) {
   const message = useMessage(messageId);
   if (message?.agent && message.content) {
-    if (message.agent !== "reporter" && message.agent !== "planner") {
+    if (message.agent === "router") {
+      return <RouterMessage message={message} />;
+    }
+    // else if (message.agent === "summary") {
+    //   return <SummaryMessage message={message} />;
+    // }
+    else if (message.agent !== "reporter" && message.agent !== "planner") {
       return (
         <div className="px-4 py-2">
           <Markdown animated checkLinkCredibility>
@@ -108,16 +166,16 @@ function ActivityListItem({ messageId }: { messageId: string }) {
 const __pageCache = new LRUCache<string, string>({ max: 100 });
 type SearchResult =
   | {
-      type: "page";
-      title: string;
-      url: string;
-      content: string;
-    }
+    type: "page";
+    title: string;
+    url: string;
+    content: string;
+  }
   | {
-      type: "image";
-      image_url: string;
-      image_description: string;
-    };
+    type: "image";
+    image_url: string;
+    image_description: string;
+  };
 function WebSearchToolCall({ toolCall }: { toolCall: ToolCallRuntime }) {
   const searching = useMemo(() => {
     return toolCall.result === undefined;

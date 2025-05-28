@@ -32,6 +32,7 @@ dependencies = [
     "arxiv>=2.2.0",
     "mcp>=1.6.0",
     "langchain-mcp-adapters>=0.0.9",
+    "aiofiles>=24.1.0",
 ]
 
 [project.optional-dependencies]
@@ -68,3 +69,6 @@ extend-exclude = '''
 # in the root of the project.
 ^/build/
 '''
+
+[tool.uv]
+index-url = "https://pypi.tuna.tsinghua.edu.cn/simple/"

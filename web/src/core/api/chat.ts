@@ -65,13 +65,13 @@ async function* chatReplayStream(
     max_search_results?: number;
     interrupt_feedback?: string;
   } = {
-    thread_id: "__mock__",
-    auto_accepted_plan: false,
-    max_plan_iterations: 3,
-    max_step_num: 1,
-    max_search_results: 3,
-    interrupt_feedback: undefined,
-  },
+      thread_id: "__mock__",
+      auto_accepted_plan: false,
+      max_plan_iterations: 3,
+      max_step_num: 1,
+      max_search_results: 3,
+      interrupt_feedback: undefined,
+    },
   options: { abortSignal?: AbortSignal } = {},
 ): AsyncIterable<ChatEvent> {
   const urlParams = new URLSearchParams(window.location.search);
@@ -106,7 +106,6 @@ async function* chatReplayStream(
     const [eventRaw, dataRaw] = chunk.split("\n") as [string, string];
     const [, event] = eventRaw.split("event: ", 2) as [string, string];
     const [, data] = dataRaw.split("data: ", 2) as [string, string];
-
     try {
       const chatEvent = {
         type: event,
@@ -182,4 +181,13 @@ export async function sleepInReplay(ms: number) {
 let fastForwardReplaying = false;
 export function fastForwardReplay(value: boolean) {
   fastForwardReplaying = value;
+}
+
+export async function fetchReplayList() {
+  const res = await fetch(resolveServiceURL("replay/list"));
+  if (!res.ok) {
+    throw new Error(`Failed to fetch replay list: ${res.statusText}`);
+  }
+  const data = await res.json();
+  return data.replays;
 }

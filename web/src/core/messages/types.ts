@@ -7,12 +7,18 @@ export interface Message {
   id: string;
   threadId: string;
   agent?:
-    | "coordinator"
-    | "planner"
-    | "researcher"
-    | "coder"
-    | "reporter"
-    | "podcast";
+  | "coordinator"
+  | "planner"
+  | "researcher"
+  | "coder"
+  | "reporter"
+  | "podcast"
+  | "research_team"
+  | "summary"
+  | "patent_researcher"
+  | "literature_researcher"
+  | "coding_researcher"
+  | "router";
   role: MessageRole;
   isStreaming?: boolean;
   content: string;
@@ -35,3 +41,15 @@ export interface ToolCallRuntime {
   argsChunks?: string[];
   result?: string;
 }
+
+export const MessageActivatedAgents = [
+  "researcher",
+  "coder",
+  "reporter",
+  "research_team",
+  "summary",
+  "patent_researcher",
+  "literature_researcher",
+  "coding_researcher",
+  "router",
+]
