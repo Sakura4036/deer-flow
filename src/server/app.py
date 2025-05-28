@@ -105,9 +105,12 @@ async def _astream_workflow_generator(
         if messages:
             resume_msg += f" {messages[-1]['content']}"
         input_ = Command(resume=resume_msg)
-
+    
+    user_input = messages[-1]['content']
+    add_first_message = True
     # Open the replay file in append mode for asynchronous writing
     async with aiofiles.open(replay_file_path, mode="a", encoding="utf-8") as f:
+
         async for agent, _, event_data in graph.astream(
                 input_,
                 config={
@@ -158,6 +161,12 @@ async def _astream_workflow_generator(
                 "role": "assistant",
                 "content": message_chunk.content,
             }
+            if add_first_message:
+                # add the first user message to the replay file
+                first_message = {"thread_id": thread_id, "id": message_chunk.id, "role": "user", "content": f"{user_input}", "finish_reason": "stop"}
+                event_to_write = _make_event("message_chunk", first_message)
+                await f.write(event_to_write) # Write the event to the file
+                add_first_message = False
             if message_chunk.response_metadata.get("finish_reason"):
                 event_stream_message["finish_reason"] = message_chunk.response_metadata.get(
                     "finish_reason"
