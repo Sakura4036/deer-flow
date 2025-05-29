@@ -150,7 +150,7 @@ async def _astream_workflow_generator(
             )
             # logger.info(f"Agent: {agent}")
             if agent:
-                agent_name = agent[0].split(":")[0] if len(agent) == 1 else agent[1].split(":")[0]
+                agent_name = agent[-1].split(":")[0]
             else:
                 agent_name = "assistant"
 

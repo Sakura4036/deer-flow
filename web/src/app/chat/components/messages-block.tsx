@@ -3,7 +3,7 @@
 
 import { motion } from "framer-motion";
 import { FastForward, Play } from "lucide-react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 import { RainbowText } from "~/components/deer-flow/rainbow-text";
 import { Button } from "~/components/ui/button";
@@ -35,15 +35,6 @@ export function MessagesBlock({ className }: { className?: string }) {
   const [replayStarted, setReplayStarted] = useState(false);
   const abortControllerRef = useRef<AbortController | null>(null);
   const [feedback, setFeedback] = useState<{ option: Option } | null>(null);
-
-  // 清除之前的消息，确保回放从头开始
-  useEffect(() => {
-    if (isReplay) {
-      // 重置消息状态，确保回放可以正确显示
-      useStore.getState().updateMessages([]);
-    }
-  }, [isReplay]);
-
   const handleSend = useCallback(
     async (message: string, options?: { interruptFeedback?: string }) => {
       const abortController = new AbortController();
@@ -77,26 +68,9 @@ export function MessagesBlock({ className }: { className?: string }) {
     setFeedback(null);
   }, [setFeedback]);
   const handleStartReplay = useCallback(() => {
-    console.log("Starting replay...");
     setReplayStarted(true);
-
-    // 重置响应状态，确保回放可以重新开始
-    if (responding) {
-      handleCancel();
-    }
-
-    // 清除现有消息，确保回放从头开始
-    useStore.getState().updateMessages([]);
-
-    // 发送空消息触发回放流程
-    void sendMessage(undefined, {}, {})
-      .then(() => {
-        console.log("Replay completed successfully");
-      })
-      .catch((err) => {
-        console.error("Error during replay:", err);
-      });
-  }, [setReplayStarted, responding, handleCancel]);
+    void sendMessage();
+  }, [setReplayStarted]);
   const [fastForwarding, setFastForwarding] = useState(false);
   const handleFastForwardReplay = useCallback(() => {
     setFastForwarding(!fastForwarding);
@@ -153,22 +127,16 @@ export function MessagesBlock({ className }: { className?: string }) {
                   <CardHeader>
                     <CardTitle>
                       <RainbowText animated={responding}>
-                        {responding
-                          ? "Replaying"
-                          : replayHasError
-                            ? "Replay Error"
-                            : replayTitle || "Untitled Replay"}
+                        {responding ? "Replaying" : `${replayTitle}`}
                       </RainbowText>
                     </CardTitle>
                     <CardDescription>
                       <RainbowText animated={responding}>
                         {responding
                           ? "DeerFlow is now replaying the conversation..."
-                          : replayHasError
-                            ? "There was an error loading this replay. Please try another one."
-                            : replayStarted && !responding
-                              ? "The replay has been completed. Click Play to watch again."
-                              : `You're now in DeerFlow's replay mode. Click the "Play" button on the right to start.`}
+                          : replayStarted
+                            ? "The replay has been stopped."
+                            : `You're now in DeerFlow's replay mode. Click the "Play" button on the right to start.`}
                       </RainbowText>
                     </CardDescription>
                   </CardHeader>
@@ -185,7 +153,7 @@ export function MessagesBlock({ className }: { className?: string }) {
                         Fast Forward
                       </Button>
                     )}
-                    {(!replayStarted || (replayStarted && !responding)) && (
+                    {!replayStarted && (
                       <Button className="w-24" onClick={handleStartReplay}>
                         <Play size={16} />
                         Play

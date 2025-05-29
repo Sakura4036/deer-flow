@@ -24,13 +24,12 @@ from src.tools import (
 
 from src.config.agents import AGENT_LLM_MAP
 from src.config.configuration import Configuration
-from src.llms.llm import get_llm_by_type, invoke_llm_with_retry, ainvoke_llm_with_retry
+from src.llms.llm import get_llm_by_type, invoke_llm_with_retry, ainvoke_llm_with_retry, get_agent_llm
 from src.prompts.planner_model import Plan, StepType
 from src.prompts.template import apply_prompt_template
 from src.utils.json_utils import repair_json_output
 
 from .types import State
-from ..config import SELECTED_SEARCH_ENGINE, SearchEngine
 
 logger = logging.getLogger(__name__)
 
@@ -45,36 +44,57 @@ def handoff_to_planner(
     # as a way for LLM to signal that it needs to hand off to planner agent
     return
 
+def convert_search_result_to_str(search_results: list[dict] | str) -> str:
+    if isinstance(search_results, str):
+        return search_results
+    if isinstance(search_results, list):
+        results = [
+            {"title": elem.get("title", ""), "url": elem.get("url", ""), "content": elem.get("content", "")}
+            for elem in search_results
+        ]
+        results = json.dumps(results, ensure_ascii=False)
+    else:
+        logger.error(f"Web search tool returned unexpected type: {type(search_results)}. Content: {search_results}")
+        results = ""
+    return results
 
 def background_investigation_node(
     state: State, config: RunnableConfig
 ) -> Command[Literal["planner"]]:
     logger.info("background investigation node is running.")
     configurable = Configuration.from_runnable_config(config)
-    query = state["messages"][-1].content
-    if SELECTED_SEARCH_ENGINE == SearchEngine.TAVILY:
-        searched_content = LoggedTavilySearch(
-            max_results=configurable.max_search_results
-        ).invoke({"query": query})
-        background_investigation_results = None
-        if isinstance(searched_content, list):
-            background_investigation_results = [
-                {"title": elem["title"], "content": elem["content"]}
-                for elem in searched_content
-            ]
-        else:
-            logger.error(
-                f"Tavily search returned malformed response: {searched_content}"
-            )
+    user_query = state["user_query"]
+    investigator_messages = apply_prompt_template("background_investigator", state=state)
+    investigator_llm = get_agent_llm("background_investigator")
+    
+    investigator_response = invoke_llm_with_retry(investigator_llm, investigator_messages)
+    
+    if hasattr(investigator_response, 'content'):
+        search_query = investigator_response.content.strip()
     else:
-        background_investigation_results = get_web_search_tool(
+        search_query = str(investigator_response).strip()
+
+    logger.info(f"Generated search query by background_investigator: '{search_query}'")
+
+    # 2. Perform Web Search with the generated query
+    if not search_query:
+        logger.warning("Background investigator returned an empty search query. Using original user query.")
+        search_query = user_query
+
+    background_investigation_results = None
+    try:
+        search_results_raw = get_web_search_tool( 
             configurable.max_search_results
-        ).invoke(query)
+        ).invoke(search_query)
+        background_investigation_results = convert_search_result_to_str(search_results_raw)
+    except Exception as e:
+        logger.error(f"Error during web search: {e}")
+        background_investigation_results = ""
+
+    # 3. Update state and go to planner
     return Command(
         update={
-            "background_investigation_results": json.dumps(
-                background_investigation_results, ensure_ascii=False
-            )
+            "background_investigation_results": background_investigation_results
         },
         goto="planner",
     )
@@ -213,6 +233,7 @@ def coordinator_node(
     """Coordinator node that communicate with customers."""
     logger.info("Coordinator talking.")
     messages = apply_prompt_template("coordinator", state)
+    user_query = messages[-1].content
     llm = (
         get_llm_by_type(AGENT_LLM_MAP["coordinator"])
         .bind_tools([handoff_to_planner])
@@ -244,7 +265,7 @@ def coordinator_node(
         logger.debug(f"Coordinator response: {response}")
 
     return Command(
-        update={"locale": locale},
+        update={"locale": locale, "user_query": user_query},
         goto=goto,
     )
 

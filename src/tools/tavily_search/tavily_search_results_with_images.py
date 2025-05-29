@@ -89,10 +89,14 @@ class TavilySearchResultsWithImages(TavilySearchResults):  # type: ignore[overri
             )
 
     """  # noqa: E501
+    description: str = (
+        "A web search engine optimized for comprehensive, accurate, and trusted results. "
+        "Useful for when you need to answer questions about current events. "
+        "Input should be a search query. No more than 5 entries."
+    )
 
     include_image_descriptions: bool = False
     """Include a image descriptions in the response.
-
     Default is False.
     """
     max_raw_content_length: int = 4000

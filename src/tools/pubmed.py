@@ -14,6 +14,20 @@ class PubmedInput(BaseModel):
 
 class MyPubmedQueryRun(PubmedQueryRun):
     args_schema: Type[BaseModel] = PubmedInput
+    description: str = ("""For searching academic literature from databases. Guidelines:
+Language: All search queries MUST be in **English**.
+Format: Queries MUST be structured like a typical academic database search query (e.g., suitable for PubMed, Scopus, Web of Science). **DO NOT use natural language questions or conversational phrases.**
+Key elements:
+    Employ precise **keywords** and **key phrases**.
+    Use **Boolean operators** (e.g., `AND`, `OR`, `NOT`). Explicit use is preferred.
+    Utilize **parentheses** `()` for grouping.
+    Use **quotation marks** `""` for exact phrases (e.g., `"climate change"`).
+Time/Year Restrictions in Queries:
+    General Rule: By default, **DO NOT** include year or time range restrictions (e.g., `year:2023-2025`, `year>2025`, `after:2020`) in the search query string itself, 
+    If the user's request implies a time constraint (e.g., "latest research," "recent findings") but doesn't provide specific years, prioritize recent publications when selecting from search results, but do not arbitrarily add date filters to the query.
+Good Query Example: `(("machine learning" OR "deep learning") AND ("medical imaging" OR "radiology") AND (diagnosis OR prediction))`
+Bad Query Example (AVOID): `What are the latest applications of machine learning in medical imaging for diagnosis after 2020?`
+""")
 
     def _run(
         self,

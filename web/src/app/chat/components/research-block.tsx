@@ -57,11 +57,15 @@ export function ResearchBlock({
     if (!report) {
       return;
     }
-    void navigator.clipboard.writeText(report.content);
-    setCopied(true);
-    setTimeout(() => {
-      setCopied(false);
-    }, 1000);
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      void navigator.clipboard.writeText(report.content);
+      setCopied(true);
+      setTimeout(() => {
+        setCopied(false);
+      }, 1000);
+    } else {
+      console.error("Clipboard API not available.");
+    }
   }, [reportId]);
 
   const handleEdit = useCallback(() => {

@@ -12,7 +12,6 @@ import { mergeMessage } from "../messages";
 import { parseJSON } from "../utils";
 
 import { getChatStreamSettings } from "./settings-store";
-import { MessageActivatedAgents } from "~/core/messages";
 
 const THREAD_ID = nanoid();
 
@@ -105,7 +104,6 @@ export async function sendMessage(
         settings.enableBackgroundInvestigation ?? true,
       max_plan_iterations: settings.maxPlanIterations,
       max_step_num: settings.maxStepNum,
-      max_search_results: settings.maxSearchResults,
       mcp_settings: settings.mcpSettings,
     },
     options,
@@ -181,7 +179,9 @@ function findMessageByToolCallId(toolCallId: string) {
 
 function appendMessage(message: Message) {
   if (
-    MessageActivatedAgents.includes(message.agent)
+    message.agent === "coder" ||
+    message.agent === "reporter" ||
+    message.agent === "researcher"
   ) {
     if (!getOngoingResearchId()) {
       const id = message.id;
@@ -202,10 +202,6 @@ function updateMessage(message: Message) {
     useStore.getState().setOngoingResearch(null);
   }
   useStore.getState().updateMessage(message);
-}
-
-export function updateMessages(messages: Message[]) {
-  useStore.getState().updateMessages(messages);
 }
 
 function getOngoingResearchId() {

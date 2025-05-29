@@ -12,13 +12,7 @@ export interface Message {
   | "researcher"
   | "coder"
   | "reporter"
-  | "podcast"
-  | "research_team"
-  | "summary"
-  | "patent_researcher"
-  | "literature_researcher"
-  | "coding_researcher"
-  | "router";
+  | "podcast";
   role: MessageRole;
   isStreaming?: boolean;
   content: string;
@@ -27,6 +21,7 @@ export interface Message {
   options?: Option[];
   finishReason?: "stop" | "interrupt" | "tool_calls";
   interruptFeedback?: string;
+  resources?: Array<Resource>;
 }
 
 export interface Option {
@@ -42,14 +37,7 @@ export interface ToolCallRuntime {
   result?: string;
 }
 
-export const MessageActivatedAgents = [
-  "researcher",
-  "coder",
-  "reporter",
-  "research_team",
-  "summary",
-  "patent_researcher",
-  "literature_researcher",
-  "coding_researcher",
-  "router",
-]
+export interface Resource {
+  uri: string;
+  title: string;
+}
