@@ -15,15 +15,17 @@ class AgentType(str, Enum):
     PODCAST_SCRIPT_WRITER = "podcast_script_writer"
     PPT_COMPOSER = "ppt_composer"
     PROSE_WRITER = "prose_writer"
+    ENZYME_RETRIEVER = "enzyme_retriever"
 
 # Define agent-LLM mapping
 AGENT_LLM_MAP: dict[str, LLMType] = {
     "coordinator": "basic",
     "planner": "reasoning",
-    "researcher": "basic",
+    "researcher": "reasoning",
     "coder": "basic",
     "reporter": "reasoning",
     "podcast_script_writer": "basic",
     "ppt_composer": "basic",
     "prose_writer": "basic",
+    "enzyme_retriever": "reasoning",
 }

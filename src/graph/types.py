@@ -2,11 +2,20 @@
 # SPDX-License-Identifier: MIT
 
 import operator
-from typing import Annotated
+from typing import Annotated, Optional
 
 from langgraph.graph import MessagesState
+from pydantic import BaseModel
 
 from src.prompts.planner_model import Plan
+
+
+class ProteinSequence(BaseModel):
+    protein_name:str
+    accession:Optional[str] = None
+    organism_name:Optional[str] = None
+    sequence:str
+    gene_name: Optional[str] = None
 
 
 class State(MessagesState):
@@ -22,3 +31,4 @@ class State(MessagesState):
     auto_accepted_plan: bool = False
     enable_background_investigation: bool = True
     background_investigation_results: str = None
+    enzyme_retriever_results: str = ""

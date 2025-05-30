@@ -169,7 +169,10 @@ class PatsnapAPIClient:
             raise Exception(data["error_msg"])
         data = data["data"]
         # total = data['total_search_result_count']
-        data = data["results"]
+        if 'results' in data:
+            data = data["results"]
+        else:
+            data = []
         return data
 
     def get_patent_title_abstract(

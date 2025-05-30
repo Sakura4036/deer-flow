@@ -148,15 +148,10 @@ async def _astream_workflow_generator(
             message_chunk, message_metadata = cast(
                 tuple[BaseMessage, dict[str, any]], event_data
             )
-            # logger.info(f"Agent: {agent}")
-            if agent:
-                agent_name = agent[-1].split(":")[0]
-            else:
-                agent_name = "assistant"
 
             event_stream_message: dict[str, any] = {
                 "thread_id": thread_id,
-                "agent": agent_name,
+                "agent": agent[0].split(":")[0],
                 "id": message_chunk.id,
                 "role": "assistant",
                 "content": message_chunk.content,

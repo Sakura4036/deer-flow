@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 @log_io
 def crawl_tool(
         url: Annotated[str, "The url to crawl."],
-        max_length: Annotated[int, "The maximum length of the content."] = 1000,
+        max_length: Annotated[int, "The maximum length of the content. Default is 4000 characters."] = 4000,
 ) -> str:
     """Use this to crawl an url and get a readable content in Markdown format."""
     try:

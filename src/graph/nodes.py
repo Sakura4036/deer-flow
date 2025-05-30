@@ -11,9 +11,8 @@ from langchain_core.runnables import RunnableConfig
 from langchain_core.tools import tool
 from langgraph.types import Command, interrupt
 from langchain_mcp_adapters.client import MultiServerMCPClient
-
+from langgraph.prebuilt import create_react_agent
 from src.agents import create_agent
-from src.tools.search import LoggedTavilySearch
 from src.tools import (
     crawl_tool,
     get_web_search_tool,
@@ -26,7 +25,7 @@ from src.config.agents import AGENT_LLM_MAP
 from src.config.configuration import Configuration
 from src.llms.llm import get_llm_by_type, invoke_llm_with_retry, ainvoke_llm_with_retry, get_agent_llm
 from src.prompts.planner_model import Plan, StepType
-from src.prompts.template import apply_prompt_template
+from src.prompts.template import apply_prompt_template, env
 from src.utils.json_utils import repair_json_output
 
 from .types import State
@@ -424,7 +423,7 @@ async def _execute_agent_step(
         },
         goto="research_team",
     )
-
+    
 
 async def _setup_and_execute_agent_step(
     state: State,
@@ -513,3 +512,79 @@ async def coder_node(
         "coder",
         [python_repl_tool],
     )
+
+
+async def enzyme_retriever_node(
+    state: State, config: RunnableConfig
+):
+    """Enzyme sequence retriever node that retrieve enzyme sequence."""
+    logger.info("Enzyme sequence retriever node is retrieving.")
+    _input_state = {
+        "messages": [],
+        "locale": state.get("locale", "en-US"),
+    }
+    agent_name = 'enzyme_retriever'
+    template = env.get_template(f"{agent_name}.md")
+    prompt = template.render(**_input_state)
+
+    final_report = state.get("final_report")
+    
+    input_ = {"messages":[
+        HumanMessage(content=final_report, name='human')
+    ]}
+
+    configurable = Configuration.from_runnable_config(config)
+    mcp_servers = {}
+    enabled_tools = {}
+
+    # Extract MCP server configuration for this agent type
+    if configurable.mcp_settings:
+        for server_name, server_config in configurable.mcp_settings["servers"].items():
+            if server_config["enabled_tools"]:
+                mcp_servers[server_name] = {
+                    k: v
+                    for k, v in server_config.items()
+                    if k in ("transport", "command", "args", "url", "env")
+                }
+                for tool_name in server_config["enabled_tools"]:
+                    enabled_tools[tool_name] = server_name
+
+    tools = [get_web_search_tool(configurable.max_search_results),crawl_tool]
+    # Create and execute agent with MCP tools if available
+    if mcp_servers:
+        async with MultiServerMCPClient(mcp_servers) as client:
+            for tool in client.get_tools():
+                if tool.name in enabled_tools:
+                    tool.description = (
+                        f"Powered by '{enabled_tools[tool.name]}'.\n{tool.description}"
+                    )
+                    tools.append(tool)
+            agent = create_react_agent(
+                name=agent_name,
+                model=get_llm_by_type(AGENT_LLM_MAP[agent_name]),
+                tools=tools,
+                prompt=prompt,
+            )
+            response = await ainvoke_llm_with_retry(agent, input_, config={"recursion_limit": 25})
+    else:
+        agent = create_react_agent(
+                name=agent_name,
+                model=get_llm_by_type(AGENT_LLM_MAP[agent_name]),
+                tools=tools,
+                prompt=prompt,
+            )
+        response = await ainvoke_llm_with_retry(agent, input_, config={"recursion_limit": 25})
+    response_content = response["messages"][-1].content
+    return {"enzyme_retriever_results": response_content}
+
+
+if __name__ == "__main__":
+    agent_name = 'enzyme_retriever'
+    _input_state = {
+            "messages": [],
+            "locale": "en-US",
+    }
+    agent_name = 'enzyme_retriever'
+    template = env.get_template(f"{agent_name}.md")
+    prompt = template.render(**_input_state)
+    print(prompt)

@@ -52,14 +52,14 @@ Your research plan must follow this structured workflow:
         *   Efficient heterologous expression in industrial hosts.
         *   Protein engineering and directed evolution for improved stability, activity, or specificity.
         *   Fermentation process optimization and scale-up.
-        *   Downstream purification process development (cost-effective, high recovery, impurity removal like endotoxins).
+        *   Downstream purification process development.
         *   Formulation and stabilization for storage, transport, and application conditions.
     *   **Core Experimental Methodologies:**
-        *   Host and vector construction methods (expression hosts, vectors, gene optimization, signal peptides, fusion tags).
-        *   Expression and purification methods (induction conditions, multi-step purification like affinity, ion-exchange, hydrophobic interaction, gel filtration chromatography).
-        *   Enzymatic property characterization methods (activity assays, optimal T/pH, stability, kinetic parameters).
-        *   Application performance testing methods (simulating actual use-cases).
-        *   Formulation technologies (stabilizers like polyols, salts; immobilization techniques like freeze-drying, spray-drying from patents).
+        *   Host and vector construction methods.
+        *   Expression and purification methods.
+        *   Enzymatic property characterization methods.
+        *   Application performance testing methods.
+        *   Formulation technologies.
 
 ## Information Quantity and Quality Standards
 

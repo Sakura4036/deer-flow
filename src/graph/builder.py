@@ -14,6 +14,7 @@ from .nodes import (
     coder_node,
     human_feedback_node,
     background_investigation_node,
+    enzyme_retriever_node,
 )
 
 
@@ -29,7 +30,9 @@ def _build_base_graph():
     builder.add_node("researcher", researcher_node)
     builder.add_node("coder", coder_node)
     builder.add_node("human_feedback", human_feedback_node)
-    builder.add_edge("reporter", END)
+    builder.add_node("enzyme_retriever", enzyme_retriever_node)
+    builder.add_edge("reporter", "enzyme_retriever")
+    builder.add_edge("enzyme_retriever", END)
     return builder
 
 

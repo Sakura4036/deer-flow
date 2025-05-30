@@ -181,7 +181,8 @@ function appendMessage(message: Message) {
   if (
     message.agent === "coder" ||
     message.agent === "reporter" ||
-    message.agent === "researcher"
+    message.agent === "researcher" ||
+    message.agent === "enzyme_retriever"
   ) {
     if (!getOngoingResearchId()) {
       const id = message.id;

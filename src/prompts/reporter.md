@@ -37,22 +37,22 @@ Structure your report in the following format, ensuring all section titles are t
 4. **Detailed Findings (Following the Enzyme Product Research Workflow)**
    - This is the main body of the report. Organize information into the following major sections, corresponding to the workflow. Use subheadings (H2, H3) extensively within each section.
 
-   **4.1. Market & Competitive Landscape Analysis**
+   **1. Market & Competitive Landscape Analysis**
        - **Target Market Definition & Application Scenarios:** Describe core functions, primary industries, key applications, market drivers/restraints, and emerging trends. *Use Mermaid `pie` or `bar` charts for market segmentation by application or industry.*
        - **Market Size & Potential Assessment:** Present global/regional market size, CAGR, forecasts. Illustrate value chains. *Use Mermaid `graph LR` or `flowchart LR` for value chains, and `bar` charts for market size/growth.*
        - **Core Competitors & Strategic Analysis:** List major suppliers, their strategies, market shares, brand reputation. Summarize technology development history. *Use Mermaid `pie` chart for market share, and potentially a `timeline` for technology development (if data allows).*
 
-   **4.2. In-depth Competitor Product Benchmarking & Technical Intelligence**
+   **2. In-depth Competitor Product Benchmarking & Technical Intelligence**
        - **Core Competitor Product Information:** Detail commercial products: names, codes, launch dates, technical specs (activity, pH/temp optima, form, stability), production hosts, claimed advantages. *Present this data in well-structured Markdown tables. Consider a Mermaid `quadrantChart` for comparing products on two key axes (e.g., performance vs. cost, if data allows).*
        - **Technical Patent & Literature Intelligence:** Summarize findings on enzyme sequences, key mutations, modification strategies from patents. Cross-validate with enzyme properties from literature. *Use Markdown tables for summarizing patent/literature findings per competitor product.*
        - **Comprehensive Benchmarking Analysis:** Create a comparative table (Markdown) of key performance indicators, production hosts, technical features, patent status, and market feedback for different competitor enzymes. Identify a "gold standard" benchmark product. *A detailed Mermaid `gantt` chart could potentially illustrate patent timelines or product development phases if sufficient data exists.*
 
-   **4.3. Global Regulatory & Compliance Pathway Assessment**
+   **3. Global Regulatory & Compliance Pathway Assessment**
        - **Target Market Regulatory Overview:** Summarize regulatory frameworks (China, US FDA GRAS, EU EFSA, etc.) and requirements for enzymes in target applications. *Use bullet points and tables.*
        - **Approved Product Case Studies:** Present a table (Markdown) of approved similar enzyme products (company, enzyme, EC, strain, source, application, limits, approval year).
        - **Compliance Pathway & Risk Assessment:** Discuss potential regulatory risks (strain, gene source, safety data). *Use bullet points.*
 
-   **4.4. Analysis of Technical Challenges & Summary of Core Experimental Methods**
+   **4. Analysis of Technical Challenges & Summary of Core Experimental Methods**
        - **Main Technical Challenges:** Discuss challenges in expression, protein engineering, fermentation, purification, formulation. *Use bullet points and concise descriptions.*
        - **Core Experimental Methodologies:** Summarize methods for host/vector construction, expression/purification, characterization, application testing, and formulation, citing key findings from literature/patents. *Use structured lists and potentially Mermaid `flowchart TD` to illustrate a generic experimental workflow for e.g., enzyme expression and purification, if generalizable from findings.*
 
