@@ -173,7 +173,7 @@ function MessageListItem({
             )}
           >
             <MessageBubble message={message}>
-              <div className="flex w-full flex-col">
+              <div className="flex w-full flex-col text-wrap break-words">
                 <Markdown>{message?.content}</Markdown>
               </div>
             </MessageBubble>
@@ -216,7 +216,7 @@ function MessageBubble({
       className={cn(
         `flex w-fit max-w-[85%] flex-col rounded-2xl px-4 py-3 shadow`,
         message.role === "user" &&
-          "text-primary-foreground bg-brand rounded-ee-none",
+        "text-primary-foreground bg-brand rounded-ee-none",
         message.role === "assistant" && "bg-card rounded-es-none",
         className,
       )}
@@ -329,11 +329,10 @@ function PlanCard({
       <CardHeader>
         <CardTitle>
           <Markdown animated>
-            {`### ${
-              plan.title !== undefined && plan.title !== ""
+            {`### ${plan.title !== undefined && plan.title !== ""
                 ? plan.title
                 : "Deep Research"
-            }`}
+              }`}
           </Markdown>
         </CardTitle>
       </CardHeader>

@@ -101,7 +101,9 @@ async function* chatReplayStream(
   const text = await fetchReplay(replayFilePath, {
     abortSignal: options.abortSignal,
   });
-  const chunks = text.split("\n\n");
+  // Normalize line endings by replacing Windows-style CRLF (\r\n) with Unix-style LF (\n)
+  const normalizedText = text.replace(/\r\n/g, "\n");
+  const chunks = normalizedText.split("\n\n");
   for (const chunk of chunks) {
     const [eventRaw, dataRaw] = chunk.split("\n") as [string, string];
     const [, event] = eventRaw.split("event: ", 2) as [string, string];
@@ -116,14 +118,14 @@ async function* chatReplayStream(
           await sleepInReplay(50);
         }
       } else if (chatEvent.type === "tool_call_result") {
-        await sleepInReplay(500);
+        await sleepInReplay(200);
       }
       yield chatEvent;
       if (chatEvent.type === "tool_call_result") {
-        await sleepInReplay(800);
+        await sleepInReplay(200);
       } else if (chatEvent.type === "message_chunk") {
         if (chatEvent.data.role === "user") {
-          await sleepInReplay(500);
+          await sleepInReplay(200);
         }
       }
     } catch (e) {
