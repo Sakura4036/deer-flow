@@ -19,6 +19,17 @@ import { cn } from "~/lib/utils";
 import Image from "./image";
 import { Tooltip } from "./tooltip";
 import { Link } from "./link";
+import MermaidDiagram from "./MermaidDiagram";
+
+// Define a type for the props of the custom code component
+interface CustomCodeProps {
+  node?: any; // Consider using a more specific type from ReactMarkdown if available
+  inline?: boolean;
+  className?: string;
+  children?: React.ReactNode;
+  // Include any other props that ReactMarkdown might pass to the code component
+  [key: string]: any;
+}
 
 export function Markdown({
   className,
@@ -37,9 +48,9 @@ export function Markdown({
 }) {
   const components: ReactMarkdownOptions["components"] = useMemo(() => {
     return {
-      a: ({ href, children }) => (
+      a: ({ href, children: linkChildren }) => ( // Renamed children to avoid conflict
         <Link href={href} checkLinkCredibility={checkLinkCredibility}>
-          {children}
+          {linkChildren}
         </Link>
       ),
       img: ({ src, alt }) => (
@@ -47,6 +58,31 @@ export function Markdown({
           <Image className="rounded" src={src as string} alt={alt ?? ""} />
         </a>
       ),
+      // Add custom renderer for code blocks
+      code({ node, inline, className: codeClassName, children: codeChildren, ...codeProps }: CustomCodeProps) {
+        const match = /language-(\w+)/.exec(codeClassName || '');
+        const lang = match && match[1];
+
+        // Check if it's a Mermaid code block
+        if (!inline && lang === 'mermaid') {
+          const chartCode = String(codeChildren).trim();
+          // For debugging, you can log the chartCode here to see what's being passed:
+          // console.log("Mermaid chart input:", JSON.stringify(chartCode));
+          return <MermaidDiagram chart={chartCode} />;
+        }
+
+        // For other code blocks (inline or not Mermaid), render them normally
+        // You could integrate a syntax highlighter here if needed for other languages
+        return inline ? (
+          <code className={codeClassName} {...codeProps}>
+            {codeChildren}
+          </code>
+        ) : (
+          <pre className={cn(codeClassName, "bg-gray-100 dark:bg-gray-800 p-4 rounded-md overflow-x-auto")} {...codeProps as React.HTMLAttributes<HTMLPreElement>}>
+            <code className="text-sm">{codeChildren}</code>
+          </pre>
+        );
+      },
     };
   }, [checkLinkCredibility]);
 
@@ -56,6 +92,12 @@ export function Markdown({
     }
     return [rehypeKatex];
   }, [animated]);
+
+  // Re-enable the original Markdown processing logic
+  const processedMarkdown = autoFixMarkdown(
+    dropMarkdownQuote(processKatexInMarkdown(children ?? "")) ?? "",
+  );
+
   return (
     <div className={cn(className, "prose dark:prose-invert")} style={style}>
       <ReactMarkdown
@@ -64,9 +106,7 @@ export function Markdown({
         components={components}
         {...props}
       >
-        {autoFixMarkdown(
-          dropMarkdownQuote(processKatexInMarkdown(children ?? "")) ?? "",
-        )}
+        {processedMarkdown}
       </ReactMarkdown>
       {enableCopy && typeof children === "string" && (
         <div className="flex">
@@ -124,9 +164,29 @@ function processKatexInMarkdown(markdown?: string | null) {
 
 function dropMarkdownQuote(markdown?: string | null) {
   if (!markdown) return markdown;
-  return markdown
-    .replace(/^```markdown\n/gm, "")
-    .replace(/^```text\n/gm, "")
-    .replace(/^```\n/gm, "")
-    .replace(/\n```$/gm, "");
+  // Only remove a ```markdown or ```text block if it truly wraps the entire content.
+  // This is a simplified check. A more robust solution might involve parsing.
+  let newMarkdown = markdown;
+  if (
+    (newMarkdown.startsWith("```markdown\n") && newMarkdown.endsWith("\n```")) ||
+    (newMarkdown.startsWith("```text\n") && newMarkdown.endsWith("\n```"))
+  ) {
+    if (newMarkdown.startsWith("```markdown\n")) {
+      newMarkdown = newMarkdown.substring("```markdown\n".length);
+    } else if (newMarkdown.startsWith("```text\n")) {
+      newMarkdown = newMarkdown.substring("```text\n".length);
+    }
+    if (newMarkdown.endsWith("\n```")) {
+      newMarkdown = newMarkdown.substring(0, newMarkdown.length - "\n```".length);
+    }
+    return newMarkdown;
+  }
+
+  // The original broader replacements, which might be problematic:
+  // return markdown
+  //   .replace(/^```markdown\n/gm, "")
+  //   .replace(/^```text\n/gm, "")
+  //   .replace(/^```\n/gm, "") // This was likely too broad
+  //   .replace(/\n```$/gm, ""); // This was also likely too broad
+  return markdown; // Return original markdown if not a full wrapper
 }
