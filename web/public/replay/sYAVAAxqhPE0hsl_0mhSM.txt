@@ -51791,9 +51791,6 @@ event: message_chunk
 data: {"thread_id": "sYAVAAxqhPE0hsl_0mhSM", "agent": "reporter", "id": "run-cc6d8c06-7d3f-48f4-904d-29b9ebae78f3", "role": "assistant", "content": "art"}
 
 event: message_chunk
-data: {"thread_id": "sYAVAAxqhPE0hsl_0mhSM", "agent": "reporter", "id": "run-cc6d8c06-7d3f-48f4-904d-29b9ebae78f3", "role": "assistant", "content": "-beta"}
-
-event: message_chunk
 data: {"thread_id": "sYAVAAxqhPE0hsl_0mhSM", "agent": "reporter", "id": "run-cc6d8c06-7d3f-48f4-904d-29b9ebae78f3", "role": "assistant", "content": "\n"}
 
 event: message_chunk

@@ -38,6 +38,7 @@ export function Markdown({
   enableCopy,
   animated = false,
   checkLinkCredibility = false,
+  isStreaming = false,
   ...props
 }: ReactMarkdownOptions & {
   className?: string;
@@ -45,6 +46,7 @@ export function Markdown({
   style?: React.CSSProperties;
   animated?: boolean;
   checkLinkCredibility?: boolean;
+  isStreaming?: boolean;
 }) {
   const processedMarkdown = useMemo(
     () =>
@@ -75,7 +77,12 @@ export function Markdown({
       }: CustomCodeProps) {
         const match = /language-(\w+)/.exec(codeClassName || "");
         if (!inline && match && match[1] === "mermaid") {
-          return <MermaidDiagram chart={String(codeChildren).trim()} />;
+          return (
+            <MermaidDiagram
+              chart={String(codeChildren).trim()}
+              isStreaming={isStreaming}
+            />
+          );
         }
         // For other code blocks (inline or not Mermaid), render them normally
         // You could integrate a syntax highlighter here if needed for other languages
@@ -87,7 +94,7 @@ export function Markdown({
           <pre
             className={cn(
               codeClassName,
-              "bg-gray-100 dark:bg-gray-800 p-4 rounded-md overflow-x-auto",
+              "p-4 rounded-md overflow-x-auto",
             )}
             {...(codeProps as React.HTMLAttributes<HTMLPreElement>)}
           >
@@ -96,7 +103,7 @@ export function Markdown({
         );
       },
     };
-  }, [checkLinkCredibility]);
+  }, [checkLinkCredibility, isStreaming]);
 
   const rehypePlugins = useMemo(() => {
     const plugins: any[] = [rehypeKatex];
