@@ -184,7 +184,7 @@ function appendMessage(message: Message) {
     message.agent === "researcher" ||
     message.agent === "enzyme_retriever"
   ) {
-    if (!getOngoingResearchId()) {
+    if (!getOngoingResearchId() && message.agent === "researcher") {
       const id = message.id;
       appendResearch(id);
       openResearch(id);

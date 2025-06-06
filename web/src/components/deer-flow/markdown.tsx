@@ -19,7 +19,7 @@ import { cn } from "~/lib/utils";
 import Image from "./image";
 import { Tooltip } from "./tooltip";
 import { Link } from "./link";
-import MermaidDiagram from "./MermaidDiagram";
+import MermaidDiagram from "./mermaid-diagram";
 
 // Define a type for the props of the custom code component
 interface CustomCodeProps {
@@ -46,6 +46,14 @@ export function Markdown({
   animated?: boolean;
   checkLinkCredibility?: boolean;
 }) {
+  const processedMarkdown = useMemo(
+    () =>
+      autoFixMarkdown(
+        dropMarkdownQuote(processKatexInMarkdown(children ?? "")) ?? "",
+      ),
+    [children],
+  );
+
   const components: ReactMarkdownOptions["components"] = useMemo(() => {
     return {
       a: ({ href, children: linkChildren }) => ( // Renamed children to avoid conflict
@@ -59,18 +67,16 @@ export function Markdown({
         </a>
       ),
       // Add custom renderer for code blocks
-      code({ node, inline, className: codeClassName, children: codeChildren, ...codeProps }: CustomCodeProps) {
-        const match = /language-(\w+)/.exec(codeClassName || '');
-        const lang = match && match[1];
-
-        // Check if it's a Mermaid code block
-        if (!inline && lang === 'mermaid') {
-          const chartCode = String(codeChildren).trim();
-          // For debugging, you can log the chartCode here to see what's being passed:
-          // console.log("Mermaid chart input:", JSON.stringify(chartCode));
-          return <MermaidDiagram chart={chartCode} />;
+      code({
+        inline,
+        className: codeClassName,
+        children: codeChildren,
+        ...codeProps
+      }: CustomCodeProps) {
+        const match = /language-(\w+)/.exec(codeClassName || "");
+        if (!inline && match && match[1] === "mermaid") {
+          return <MermaidDiagram chart={String(codeChildren).trim()} />;
         }
-
         // For other code blocks (inline or not Mermaid), render them normally
         // You could integrate a syntax highlighter here if needed for other languages
         return inline ? (
@@ -78,7 +84,13 @@ export function Markdown({
             {codeChildren}
           </code>
         ) : (
-          <pre className={cn(codeClassName, "bg-gray-100 dark:bg-gray-800 p-4 rounded-md overflow-x-auto")} {...codeProps as React.HTMLAttributes<HTMLPreElement>}>
+          <pre
+            className={cn(
+              codeClassName,
+              "bg-gray-100 dark:bg-gray-800 p-4 rounded-md overflow-x-auto",
+            )}
+            {...(codeProps as React.HTMLAttributes<HTMLPreElement>)}
+          >
             <code className="text-sm">{codeChildren}</code>
           </pre>
         );
@@ -87,16 +99,12 @@ export function Markdown({
   }, [checkLinkCredibility]);
 
   const rehypePlugins = useMemo(() => {
+    const plugins: any[] = [rehypeKatex];
     if (animated) {
-      return [rehypeKatex, rehypeSplitWordsIntoSpans];
+      plugins.splice(1, 0, rehypeSplitWordsIntoSpans);
     }
-    return [rehypeKatex];
+    return plugins;
   }, [animated]);
-
-  // Re-enable the original Markdown processing logic
-  const processedMarkdown = autoFixMarkdown(
-    dropMarkdownQuote(processKatexInMarkdown(children ?? "")) ?? "",
-  );
 
   return (
     <div className={cn(className, "prose dark:prose-invert")} style={style}>
