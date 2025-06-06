@@ -83,16 +83,6 @@ export async function sendMessage(
   } = {},
   options: { abortSignal?: AbortSignal } = {},
 ) {
-  if (content != null) {
-    appendMessage({
-      id: nanoid(),
-      threadId: THREAD_ID,
-      role: "user",
-      content: content,
-      contentChunks: [content],
-    });
-  }
-
   const settings = getChatStreamSettings();
   const stream = chatStream(
     content ?? "[REPLAY]",
@@ -110,16 +100,51 @@ export async function sendMessage(
   );
 
   setResponding(true);
-  let messageId: string | undefined;
+  const turnIdToMessageId = new Map<string, string>();
   try {
     for await (const event of stream) {
       const { type, data } = event;
-      messageId = data.id;
-      let message: Message | undefined;
+      const turnId = data.id;
+      let messageId = turnIdToMessageId.get(turnId) ?? turnId;
+
       if (type === "tool_call_result") {
-        message = findMessageByToolCallId(data.tool_call_id);
-      } else if (!existsMessage(messageId)) {
-        message = {
+        const message = findMessageByToolCallId(data.tool_call_id);
+        if (message) {
+          const updatedMessage = mergeMessage(message, event);
+          updateMessage(updatedMessage);
+        }
+        continue;
+      }
+
+      const existingMessage = getMessage(messageId);
+
+      if (existingMessage) {
+        const isAgentTakeover =
+          existingMessage.role === "user" && data.role === "assistant";
+
+        if (isAgentTakeover) {
+          const newMessageId = nanoid();
+          turnIdToMessageId.set(turnId, newMessageId);
+
+          const newMessage = {
+            id: newMessageId,
+            threadId: data.thread_id,
+            agent: data.agent,
+            role: data.role,
+            content: "",
+            contentChunks: [],
+            isStreaming: true,
+            interruptFeedback,
+          };
+
+          const mergedMessage = mergeMessage(newMessage, event);
+          appendMessage(mergedMessage);
+        } else {
+          const updatedMessage = mergeMessage(existingMessage, event);
+          updateMessage(updatedMessage);
+        }
+      } else {
+        const newMessage = {
           id: messageId,
           threadId: data.thread_id,
           agent: data.agent,
@@ -129,20 +154,17 @@ export async function sendMessage(
           isStreaming: true,
           interruptFeedback,
         };
-        appendMessage(message);
-      }
-      message ??= getMessage(messageId);
-      if (message) {
-        message = mergeMessage(message, event);
-        updateMessage(message);
+        const mergedMessage = mergeMessage(newMessage, event);
+        appendMessage(mergedMessage);
       }
     }
   } catch {
     toast("An error occurred while generating the response. Please try again.");
     // Update message status.
     // TODO: const isAborted = (error as Error).name === "AbortError";
-    if (messageId != null) {
-      const message = getMessage(messageId);
+    const lastMessageId = Array.from(turnIdToMessageId.values()).pop() ?? Array.from(turnIdToMessageId.keys()).pop();
+    if (lastMessageId) {
+      const message = getMessage(lastMessageId);
       if (message?.isStreaming) {
         message.isStreaming = false;
         useStore.getState().updateMessage(message);
