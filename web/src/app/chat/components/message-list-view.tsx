@@ -330,8 +330,8 @@ function PlanCard({
         <CardTitle>
           <Markdown animated>
             {`### ${plan.title !== undefined && plan.title !== ""
-                ? plan.title
-                : "Deep Research"
+              ? plan.title
+              : "Deep Research"
               }`}
           </Markdown>
         </CardTitle>

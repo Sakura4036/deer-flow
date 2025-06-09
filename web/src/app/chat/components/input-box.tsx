@@ -14,7 +14,7 @@ import {
 import { Detective } from "~/components/deer-flow/icons/detective";
 import { Tooltip } from "~/components/deer-flow/tooltip";
 import { Button } from "~/components/ui/button";
-import type { Interrupt, Option } from "~/core/messages";
+import type { Option } from "~/core/messages";
 import {
   setEnableBackgroundInvestigation,
   useSettingsStore,
@@ -25,23 +25,22 @@ export function InputBox({
   className,
   size,
   responding,
-  interrupt,
+  feedback,
   onSend,
   onCancel,
-  onClearInterrupt,
+  onRemoveFeedback,
 }: {
   className?: string;
   size?: "large" | "normal";
   responding?: boolean;
-  interrupt?: Interrupt | null;
+  feedback?: { option: Option } | null;
   onSend?: (message: string, options?: { interruptFeedback?: string }) => void;
   onCancel?: () => void;
-  onClearInterrupt?: () => void;
+  onRemoveFeedback?: () => void;
 }) {
   const [message, setMessage] = useState("");
   const [imeStatus, setImeStatus] = useState<"active" | "inactive">("inactive");
   const [indent, setIndent] = useState(0);
-  const [selectedOption, setSelectedOption] = useState<Option | null>(null);
   const backgroundInvestigation = useSettingsStore(
     (state) => state.general.enableBackgroundInvestigation,
   );
@@ -49,7 +48,7 @@ export function InputBox({
   const feedbackRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (selectedOption) {
+    if (feedback) {
       setMessage("");
 
       setTimeout(() => {
@@ -57,42 +56,28 @@ export function InputBox({
           setIndent(feedbackRef.current.offsetWidth);
         }
       }, 200);
-    } else {
-      setIndent(0);
     }
     setTimeout(() => {
       textareaRef.current?.focus();
     }, 0);
-  }, [selectedOption]);
-
-  useEffect(() => {
-    setSelectedOption(null);
-  }, [interrupt]);
+  }, [feedback]);
 
   const handleSendMessage = useCallback(() => {
     if (responding) {
       onCancel?.();
     } else {
-      if (message.trim() === "" && !selectedOption) {
+      if (message.trim() === "") {
         return;
       }
       if (onSend) {
         onSend(message, {
-          interruptFeedback: selectedOption?.value,
+          interruptFeedback: feedback?.option.value,
         });
         setMessage("");
-        setSelectedOption(null);
-        onClearInterrupt?.();
+        onRemoveFeedback?.();
       }
     }
-  }, [
-    responding,
-    onCancel,
-    message,
-    onSend,
-    selectedOption,
-    onClearInterrupt,
-  ]);
+  }, [responding, onCancel, message, onSend, feedback, onRemoveFeedback]);
 
   const handleKeyDown = useCallback(
     (event: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -115,41 +100,24 @@ export function InputBox({
 
   return (
     <div className={cn("bg-card relative rounded-[24px] border", className)}>
-      {interrupt?.options && interrupt.options.length > 0 && !selectedOption && (
-        <div className="flex flex-wrap items-center gap-2 border-b p-3">
-          <p className="text-muted-foreground mr-2 text-sm">
-            {interrupt.content}
-          </p>
-          {interrupt.options.map((option: Option) => (
-            <Button
-              key={option.value}
-              variant="outline"
-              size="sm"
-              onClick={() => setSelectedOption(option)}
-            >
-              {option.text}
-            </Button>
-          ))}
-        </div>
-      )}
       <div className="w-full">
         <AnimatePresence>
-          {selectedOption && (
+          {feedback && (
             <motion.div
               ref={feedbackRef}
-              className="bg-background border-brand absolute top-0 left-0 z-10 mt-3 ml-2 flex items-center justify-center gap-1 rounded-2xl border px-2 py-0.5"
+              className="bg-background border-brand absolute top-0 left-0 mt-3 ml-2 flex items-center justify-center gap-1 rounded-2xl border px-2 py-0.5"
               initial={{ opacity: 0, scale: 0 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0 }}
               transition={{ duration: 0.2, ease: "easeInOut" }}
             >
               <div className="text-brand flex h-full w-full items-center justify-center text-sm opacity-90">
-                {selectedOption.text}
+                {feedback.option.text}
               </div>
               <X
                 className="cursor-pointer opacity-60"
                 size={16}
-                onClick={() => setSelectedOption(null)}
+                onClick={onRemoveFeedback}
               />
             </motion.div>
           )}
@@ -157,16 +125,14 @@ export function InputBox({
         <textarea
           ref={textareaRef}
           className={cn(
-            "m-0 w-full resize-none border-none bg-transparent px-4 py-3 text-lg focus:outline-none",
+            "m-0 w-full resize-none border-none px-4 py-3 text-lg",
             size === "large" ? "min-h-32" : "min-h-4",
           )}
-          style={{ textIndent: selectedOption ? `${indent}px` : 0 }}
+          style={{ textIndent: feedback ? `${indent}px` : 0 }}
           placeholder={
-            selectedOption
-              ? `Provide details for '${selectedOption.text}'...`
-              : interrupt
-                ? "Select an option above or type your response"
-                : "What can I do for you?"
+            feedback
+              ? `Describe how you ${feedback.option.text.toLocaleLowerCase()}?`
+              : "What can I do for you?"
           }
           value={message}
           onCompositionStart={() => setImeStatus("active")}

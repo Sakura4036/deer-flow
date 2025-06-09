@@ -26,46 +26,47 @@ import { InputBox } from "./input-box";
 import { MessageListView } from "./message-list-view";
 import { Welcome } from "./welcome";
 
-// The Interrupt type is defined locally as a workaround for a presumed module resolution issue.
-interface Interrupt {
-  id: string;
-  role: "assistant";
-  content: string;
-  finish_reason: "interrupt";
-  options: Option[];
-}
-
 export function MessagesBlock({ className }: { className?: string }) {
   const messageIds = useMessageIds();
   const messageCount = messageIds.length;
   const responding = useStore((state) => state.responding);
-  const interrupt = useStore((state) => state.interrupt);
   const { isReplay } = useReplay();
   const { title: replayTitle, hasError: replayHasError } = useReplayMetadata();
   const [replayStarted, setReplayStarted] = useState(false);
   const abortControllerRef = useRef<AbortController | null>(null);
-
+  const [feedback, setFeedback] = useState<{ option: Option } | null>(null);
   const handleSend = useCallback(
     async (message: string, options?: { interruptFeedback?: string }) => {
       const abortController = new AbortController();
       abortControllerRef.current = abortController;
       try {
-        await sendMessage(message, {
-          interruptFeedback: options?.interruptFeedback,
-        });
+        await sendMessage(
+          message,
+          {
+            interruptFeedback:
+              options?.interruptFeedback ?? feedback?.option.value,
+          },
+          {
+            abortSignal: abortController.signal,
+          },
+        );
       } catch { }
     },
-    [],
+    [feedback],
   );
   const handleCancel = useCallback(() => {
     abortControllerRef.current?.abort();
     abortControllerRef.current = null;
   }, []);
-
-  const handleClearInterrupt = useCallback(() => {
-    useStore.getState().clearInterrupt();
-  }, []);
-
+  const handleFeedback = useCallback(
+    (feedback: { option: Option }) => {
+      setFeedback(feedback);
+    },
+    [setFeedback],
+  );
+  const handleRemoveFeedback = useCallback(() => {
+    setFeedback(null);
+  }, [setFeedback]);
   const handleStartReplay = useCallback(() => {
     setReplayStarted(true);
     void sendMessage();
@@ -79,6 +80,7 @@ export function MessagesBlock({ className }: { className?: string }) {
     <div className={cn("flex h-full flex-col", className)}>
       <MessageListView
         className="flex flex-grow"
+        onFeedback={handleFeedback}
         onSendMessage={handleSend}
       />
       {!isReplay ? (
@@ -92,10 +94,10 @@ export function MessagesBlock({ className }: { className?: string }) {
           <InputBox
             className="h-full w-full"
             responding={responding}
-            interrupt={interrupt}
+            feedback={feedback}
             onSend={handleSend}
             onCancel={handleCancel}
-            onClearInterrupt={handleClearInterrupt}
+            onRemoveFeedback={handleRemoveFeedback}
           />
         </div>
       ) : (

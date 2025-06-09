@@ -186,14 +186,14 @@ def human_feedback_node(
     # check if the plan is auto accepted
     auto_accepted_plan = state.get("auto_accepted_plan", False)
     if not auto_accepted_plan:
-        interrupt_data = {
-            "message": "Please Review the Plan.",
+        interrupt_payload = {
+            "content": "Please Review the Plan.",
             "options": [
                 {"text": "Edit plan", "value": "edit_plan"},
                 {"text": "Start research", "value": "accepted"},
             ],
         }
-        feedback = interrupt(json.dumps(interrupt_data))
+        feedback = interrupt(interrupt_payload)
 
         # if the feedback is not accepted, return the planner node
         if feedback and str(feedback).upper().startswith("[EDIT_PLAN]"):
@@ -610,7 +610,9 @@ async def enzyme_retriever_node(
     return {"enzyme_retriever_results": response_content}
 
 
-def human_select_node(state: State) -> None:
+def human_select_node(
+    state: State,
+) -> Command[Literal["enzyme_designer", "enzyme_retriever"]]:
     """
     Interrupts the workflow to allow the user to select enzymes for design
     or request more information. The user's response should start with:
@@ -618,11 +620,11 @@ def human_select_node(state: State) -> None:
     - [REQUEST_MORE_INFO] to ask for more details.
     """
     logger.info("Awaiting user selection for enzyme design.")
-    interrupt_data = {
-        "message": (
+
+    interrupt_payload = {
+        "content": (
             "Please review the enzyme information. \n"
-            "To proceed, please start your response with `[ACCEPT_SEQUENCES]` "
-            "followed by your instructions for the designer.\n"
+            "To proceed, please start your response with `[ACCEPT_SEQUENCES]` followed by your instructions for the designer.\n"
             "If you need more information, start your response with `[REQUEST_MORE_INFO]`."
         ),
         "options": [
@@ -630,7 +632,27 @@ def human_select_node(state: State) -> None:
             {"text": "Request More Info", "value": "request_more_info"},
         ],
     }
-    interrupt(json.dumps(interrupt_data))
+
+    feedback = interrupt(interrupt_payload)
+
+    # The user's response is prefixed with the option value, e.g., '[accept_sequences] ...'
+    # The prefix is added in app.py. The content of the user's response is also in `feedback`.
+    full_message = HumanMessage(content=str(feedback), name="human_selection")
+
+    if feedback and str(feedback).upper().startswith("[ACCEPT_SEQUENCES]"):
+        logger.info("User accepted sequences. Routing to enzyme designer.")
+        return Command(
+            update={"messages": state["messages"] + [full_message]},
+            goto="enzyme_designer",
+        )
+
+    # Default to requesting more info, which is the safer option.
+    # This also covers the `startswith("[REQUEST_MORE_INFO]")` case.
+    logger.info("User requested more information. Routing back to enzyme retriever.")
+    return Command(
+        update={"messages": state["messages"] + [full_message]},
+        goto="enzyme_retriever",
+    )
 
 
 async def enzyme_designer_node(state: State, config: RunnableConfig):
@@ -683,8 +705,7 @@ async def enzyme_designer_node(state: State, config: RunnableConfig):
         if not tool_to_call:
             # Handle error: tool not found
             return {
-                "messages": state["messages"]
-                + [AIMessage(content=f"Error: Tool '{tool_name}' not found.")]
+                "messages": state["messages"] + [AIMessage(content=f"Error: Tool '{tool_name}' not found.")]
             }
 
         # Call the tool and get the result
@@ -692,8 +713,7 @@ async def enzyme_designer_node(state: State, config: RunnableConfig):
 
         # Update state based on the tool called
         update_dict = {
-            "messages": state["messages"]
-            + [
+            "messages": state["messages"] + [
                 response,
                 ToolMessage(content=str(observation), tool_call_id=tool_call["id"]),
             ]
@@ -708,26 +728,6 @@ async def enzyme_designer_node(state: State, config: RunnableConfig):
 
     # If no tool is called, just return the text response
     return {"messages": state["messages"] + [response]}
-
-
-# Conditional Edges
-def route_human_selection(
-    state: State,
-) -> Literal["enzyme_designer", "enzyme_retriever"]:
-    """
-    Routes the workflow based on the user's feedback from the human_select_node.
-    """
-    last_message = state["messages"][-1]
-    if (
-        isinstance(last_message, HumanMessage)
-        and last_message.content
-        and last_message.content.upper().startswith("[ACCEPT_SEQUENCES]")
-    ):
-        logger.info("User accepted sequences. Routing to enzyme designer.")
-        return "enzyme_designer"
-
-    logger.info("User requested more information. Routing back to enzyme retriever.")
-    return "enzyme_retriever"
 
 
 if __name__ == "__main__":

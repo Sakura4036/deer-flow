@@ -127,23 +127,15 @@ async def _astream_workflow_generator(
             event_to_write = None
             if isinstance(event_data, dict):
                 if "__interrupt__" in event_data:
-                    interrupt_content = event_data["__interrupt__"][0].value
+                    interrupt_payload = event_data["__interrupt__"][0].value
+
                     content = ""
                     options = []
-                    try:
-                        # Try to parse as JSON for structured interrupt
-                        interrupt_data = json.loads(interrupt_content)
-                        content = interrupt_data.get("message", "Interrupt")
-                        options = interrupt_data.get("options", [])
-                    except (json.JSONDecodeError, TypeError):
-                        # Fallback for simple string interrupt
-                        content = interrupt_content
-                        # Default options for the old human_feedback_node
-                        if "Please Review the Plan" in content:
-                            options = [
-                                {"text": "Edit plan", "value": "edit_plan"},
-                                {"text": "Start research", "value": "accepted"},
-                            ]
+                    if isinstance(interrupt_payload, dict):
+                        content = interrupt_payload.get("content", "Interrupted")
+                        options = interrupt_payload.get("options", [])
+                    elif isinstance(interrupt_payload, str):
+                        content = interrupt_payload
 
                     event_to_write = _make_event(
                         "interrupt",
@@ -158,7 +150,7 @@ async def _astream_workflow_generator(
                     )
                     yield event_to_write
                 if event_to_write:
-                    await f.write(event_to_write) # Write the event to the file
+                    await f.write(event_to_write)  # Write the event to the file
                 continue
             message_chunk, message_metadata = cast(
                 tuple[BaseMessage, dict[str, any]], event_data

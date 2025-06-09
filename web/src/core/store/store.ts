@@ -2,141 +2,412 @@
 // SPDX-License-Identifier: MIT
 
 import { nanoid } from "nanoid";
+import { toast } from "sonner";
 import { create } from "zustand";
-import { devtools, persist } from "zustand/middleware";
-import { immer } from "zustand/middleware/immer";
+import { useShallow } from "zustand/react/shallow";
 
-import { chatStream } from "~/core/api";
-import { mergeMessage, type Interrupt, type Message } from "~/core/messages";
-import { useSettingsStore } from "./settings-store";
+import { chatStream, generatePodcast } from "../api";
+import type { Message } from "../messages";
+import { mergeMessage } from "../messages";
+import { parseJSON } from "../utils";
+
+import { getChatStreamSettings } from "./settings-store";
 
 const THREAD_ID = nanoid();
 
-export interface Store {
-  threadId: string;
-  messages: Record<string, Message>;
-  messageIds: string[];
+export const useStore = create<{
   responding: boolean;
-  interrupt: Interrupt | null;
-  sendMessage: (
-    message?: string,
-    options?: { interruptFeedback?: string },
-    streamOptions?: { abortSignal?: AbortSignal },
-  ) => Promise<void>;
+  threadId: string | undefined;
+  messageIds: string[];
+  messages: Map<string, Message>;
+  researchIds: string[];
+  researchPlanIds: Map<string, string>;
+  researchReportIds: Map<string, string>;
+  researchActivityIds: Map<string, string[]>;
+  ongoingResearchId: string | null;
+  openResearchId: string | null;
+
   appendMessage: (message: Message) => void;
   updateMessage: (message: Message) => void;
-  clearConversation: () => void;
-  clearInterrupt: () => void;
+  updateMessages: (messages: Message[]) => void;
+  openResearch: (researchId: string | null) => void;
+  closeResearch: () => void;
+  setOngoingResearch: (researchId: string | null) => void;
+}>((set) => ({
+  responding: false,
+  threadId: THREAD_ID,
+  messageIds: [],
+  messages: new Map<string, Message>(),
+  researchIds: [],
+  researchPlanIds: new Map<string, string>(),
+  researchReportIds: new Map<string, string>(),
+  researchActivityIds: new Map<string, string[]>(),
+  ongoingResearchId: null,
+  openResearchId: null,
+
+  appendMessage(message: Message) {
+    set((state) => ({
+      messageIds: [...state.messageIds, message.id],
+      messages: new Map(state.messages).set(message.id, message),
+    }));
+  },
+  updateMessage(message: Message) {
+    set((state) => ({
+      messages: new Map(state.messages).set(message.id, message),
+    }));
+  },
+  updateMessages(messages: Message[]) {
+    set((state) => {
+      const newMessages = new Map(state.messages);
+      messages.forEach((m) => newMessages.set(m.id, m));
+      return { messages: newMessages };
+    });
+  },
+  openResearch(researchId: string | null) {
+    set({ openResearchId: researchId });
+  },
+  closeResearch() {
+    set({ openResearchId: null });
+  },
+  setOngoingResearch(researchId: string | null) {
+    set({ ongoingResearchId: researchId });
+  },
+}));
+
+export async function sendMessage(
+  content?: string,
+  {
+    interruptFeedback,
+  }: {
+    interruptFeedback?: string;
+  } = {},
+  options: { abortSignal?: AbortSignal } = {},
+) {
+  const settings = getChatStreamSettings();
+  const stream = chatStream(
+    content ?? "[REPLAY]",
+    {
+      thread_id: THREAD_ID,
+      interrupt_feedback: interruptFeedback,
+      auto_accepted_plan: settings.autoAcceptedPlan,
+      enable_background_investigation:
+        settings.enableBackgroundInvestigation ?? true,
+      max_plan_iterations: settings.maxPlanIterations,
+      max_step_num: settings.maxStepNum,
+      mcp_settings: settings.mcpSettings,
+    },
+    options,
+  );
+
+  setResponding(true);
+  const turnIdToMessageId = new Map<string, string>();
+  try {
+    for await (const event of stream) {
+      const { type, data } = event;
+      const turnId = data.id;
+      let messageId = turnIdToMessageId.get(turnId) ?? turnId;
+
+      if (type === "tool_call_result") {
+        const message = findMessageByToolCallId(data.tool_call_id);
+        if (message) {
+          const updatedMessage = mergeMessage(message, event);
+          updateMessage(updatedMessage);
+        }
+        continue;
+      }
+
+      const existingMessage = getMessage(messageId);
+
+      if (existingMessage) {
+        const isAgentTakeover =
+          existingMessage.role === "user" && data.role === "assistant";
+
+        if (isAgentTakeover) {
+          const newMessageId = nanoid();
+          turnIdToMessageId.set(turnId, newMessageId);
+
+          const newMessage = {
+            id: newMessageId,
+            threadId: data.thread_id,
+            agent: data.agent,
+            role: data.role,
+            content: "",
+            contentChunks: [],
+            isStreaming: true,
+            interruptFeedback,
+          };
+
+          const mergedMessage = mergeMessage(newMessage, event);
+          appendMessage(mergedMessage);
+        } else {
+          const updatedMessage = mergeMessage(existingMessage, event);
+          updateMessage(updatedMessage);
+        }
+      } else {
+        const newMessage = {
+          id: messageId,
+          threadId: data.thread_id,
+          agent: data.agent,
+          role: data.role,
+          content: "",
+          contentChunks: [],
+          isStreaming: true,
+          interruptFeedback,
+        };
+        const mergedMessage = mergeMessage(newMessage, event);
+        appendMessage(mergedMessage);
+      }
+    }
+  } catch {
+    toast("An error occurred while generating the response. Please try again.");
+    // Update message status.
+    // TODO: const isAborted = (error as Error).name === "AbortError";
+    const lastMessageId = Array.from(turnIdToMessageId.values()).pop() ?? Array.from(turnIdToMessageId.keys()).pop();
+    if (lastMessageId) {
+      const message = getMessage(lastMessageId);
+      if (message?.isStreaming) {
+        message.isStreaming = false;
+        useStore.getState().updateMessage(message);
+      }
+    }
+    useStore.getState().setOngoingResearch(null);
+  } finally {
+    setResponding(false);
+  }
 }
 
-export const useStore = create<Store>()(
-  devtools(
-    persist(
-      immer((set, get) => ({
-        threadId: THREAD_ID,
-        messages: {},
-        messageIds: [],
-        responding: false,
-        interrupt: null,
-        appendMessage: (message: Message) => {
-          set((state) => {
-            if (!state.messageIds.includes(message.id)) {
-              state.messageIds.push(message.id);
-            }
-            state.messages[message.id] = message;
-          });
-        },
-        updateMessage: (message: Message) => {
-          set((state) => {
-            state.messages[message.id] = message;
-          });
-        },
-        clearInterrupt: () => {
-          set({ interrupt: null });
-        },
-        sendMessage: async (
-          message,
-          options,
-          streamOptions,
-        ): Promise<void> => {
-          if (get().responding) {
-            return;
-          }
+function setResponding(value: boolean) {
+  useStore.setState({ responding: value });
+}
 
-          if (message) {
-            get().appendMessage({
-              id: nanoid(),
-              role: "user",
-              content: message,
-              finishReason: "stop",
-              threadId: get().threadId,
-            });
-          }
+function existsMessage(id: string) {
+  return useStore.getState().messageIds.includes(id);
+}
 
-          const settings = useSettingsStore.getState();
-          const previousMessages = Object.values(get().messages);
-          set({ responding: true, interrupt: null });
+function getMessage(id: string) {
+  return useStore.getState().messages.get(id);
+}
 
-          try {
-            const stream = chatStream(
-              {
-                messages: previousMessages,
-                thread_id: get().threadId,
-                interrupt_feedback: options?.interruptFeedback,
-                auto_accepted_plan: settings.general.autoAccept,
-                max_plan_iterations: settings.agent.maxPlanIterations,
-                max_step_num: settings.agent.maxStepNum,
-                max_search_results: settings.agent.maxSearchResults,
-                mcp_settings: settings.general.mcp,
-                enable_background_investigation:
-                  settings.general.enableBackgroundInvestigation,
-              },
-              {
-                abortSignal: streamOptions?.abortSignal,
-              },
-            );
-            for await (const chunk of stream) {
-              if (chunk.event === "interrupt") {
-                set({ interrupt: chunk.data as Interrupt, responding: false });
-                continue;
-              }
-              const message = mergeMessage(
-                get().messages[chunk.data.id],
-                chunk,
-              );
-              get().updateMessage(message);
-            }
-          } catch (e) {
-            if (e instanceof Error && e.name === "AbortError") {
-              // do nothing
-            } else {
-              console.error(e);
-            }
-          } finally {
-            set({ responding: false });
-          }
-        },
-        clearConversation: () => {
-          set({ messages: {}, messageIds: [] });
-        },
-      })),
-      {
-        name: "deer-flow-storage",
-        partialize: (state) => ({
-          threadId: state.threadId,
-          messages: state.messages,
-          messageIds: state.messageIds,
-        }),
-      },
+function findMessageByToolCallId(toolCallId: string) {
+  return Array.from(useStore.getState().messages.values())
+    .reverse()
+    .find((message) => {
+      if (message.toolCalls) {
+        return message.toolCalls.some((toolCall) => toolCall.id === toolCallId);
+      }
+      return false;
+    });
+}
+
+function appendMessage(message: Message) {
+  if (
+    message.agent === "coder" ||
+    message.agent === "reporter" ||
+    message.agent === "researcher" ||
+    message.agent === "enzyme_retriever"
+  ) {
+    if (!getOngoingResearchId() && message.agent === "researcher") {
+      const id = message.id;
+      appendResearch(id);
+      openResearch(id);
+    }
+    appendResearchActivity(message);
+  }
+  useStore.getState().appendMessage(message);
+}
+
+function updateMessage(message: Message) {
+  if (
+    getOngoingResearchId() &&
+    message.agent === "reporter" &&
+    !message.isStreaming
+  ) {
+    useStore.getState().setOngoingResearch(null);
+  }
+  useStore.getState().updateMessage(message);
+}
+
+function getOngoingResearchId() {
+  return useStore.getState().ongoingResearchId;
+}
+
+function appendResearch(researchId: string) {
+  let planMessage: Message | undefined;
+  const reversedMessageIds = [...useStore.getState().messageIds].reverse();
+  for (const messageId of reversedMessageIds) {
+    const message = getMessage(messageId);
+    if (message?.agent === "planner") {
+      planMessage = message;
+      break;
+    }
+  }
+  const messageIds = [researchId];
+  messageIds.unshift(planMessage!.id);
+  useStore.setState({
+    ongoingResearchId: researchId,
+    researchIds: [...useStore.getState().researchIds, researchId],
+    researchPlanIds: new Map(useStore.getState().researchPlanIds).set(
+      researchId,
+      planMessage!.id,
     ),
-    {
-      name: "DeerFlow-Store",
-    },
-  ),
-);
+    researchActivityIds: new Map(useStore.getState().researchActivityIds).set(
+      researchId,
+      messageIds,
+    ),
+  });
+}
 
-export const useMessageIds = () => useStore((state) => state.messageIds);
-export const useMessage = (id: string) =>
-  useStore((state) => state.messages[id]);
-export const sendMessage = useStore.getState().sendMessage;
-export const clearConversation = useStore.getState().clearConversation;
+function appendResearchActivity(message: Message) {
+  const researchId = getOngoingResearchId();
+  if (researchId) {
+    const researchActivityIds = useStore.getState().researchActivityIds;
+    const current = researchActivityIds.get(researchId)!;
+    if (!current.includes(message.id)) {
+      useStore.setState({
+        researchActivityIds: new Map(researchActivityIds).set(researchId, [
+          ...current,
+          message.id,
+        ]),
+      });
+    }
+    if (message.agent === "reporter") {
+      useStore.setState({
+        researchReportIds: new Map(useStore.getState().researchReportIds).set(
+          researchId,
+          message.id,
+        ),
+      });
+    }
+  }
+}
+
+export function openResearch(researchId: string | null) {
+  useStore.getState().openResearch(researchId);
+}
+
+export function closeResearch() {
+  useStore.getState().closeResearch();
+}
+
+export async function listenToPodcast(researchId: string) {
+  const planMessageId = useStore.getState().researchPlanIds.get(researchId);
+  const reportMessageId = useStore.getState().researchReportIds.get(researchId);
+  if (planMessageId && reportMessageId) {
+    const planMessage = getMessage(planMessageId)!;
+    const title = parseJSON(planMessage.content, { title: "Untitled" }).title;
+    const reportMessage = getMessage(reportMessageId);
+    if (reportMessage?.content) {
+      appendMessage({
+        id: nanoid(),
+        threadId: THREAD_ID,
+        role: "user",
+        content: "Please generate a podcast for the above research.",
+        contentChunks: [],
+      });
+      const podCastMessageId = nanoid();
+      const podcastObject = { title, researchId };
+      const podcastMessage: Message = {
+        id: podCastMessageId,
+        threadId: THREAD_ID,
+        role: "assistant",
+        agent: "podcast",
+        content: JSON.stringify(podcastObject),
+        contentChunks: [],
+        isStreaming: true,
+      };
+      appendMessage(podcastMessage);
+      // Generating podcast...
+      let audioUrl: string | undefined;
+      try {
+        audioUrl = await generatePodcast(reportMessage.content);
+      } catch (e) {
+        console.error(e);
+        useStore.setState((state) => ({
+          messages: new Map(useStore.getState().messages).set(
+            podCastMessageId,
+            {
+              ...state.messages.get(podCastMessageId)!,
+              content: JSON.stringify({
+                ...podcastObject,
+                error: e instanceof Error ? e.message : "Unknown error",
+              }),
+              isStreaming: false,
+            },
+          ),
+        }));
+        toast("An error occurred while generating podcast. Please try again.");
+        return;
+      }
+      useStore.setState((state) => ({
+        messages: new Map(useStore.getState().messages).set(podCastMessageId, {
+          ...state.messages.get(podCastMessageId)!,
+          content: JSON.stringify({ ...podcastObject, audioUrl }),
+          isStreaming: false,
+        }),
+      }));
+    }
+  }
+}
+
+export function useResearchMessage(researchId: string) {
+  return useStore(
+    useShallow((state) => {
+      const messageId = state.researchPlanIds.get(researchId);
+      return messageId ? state.messages.get(messageId) : undefined;
+    }),
+  );
+}
+
+export function useMessage(messageId: string | null | undefined) {
+  return useStore(
+    useShallow((state) =>
+      messageId ? state.messages.get(messageId) : undefined,
+    ),
+  );
+}
+
+export function useMessageIds() {
+  return useStore(useShallow((state) => state.messageIds));
+}
+
+export function useLastInterruptMessage() {
+  return useStore(
+    useShallow((state) => {
+      if (state.messageIds.length >= 2) {
+        const lastMessage = state.messages.get(
+          state.messageIds[state.messageIds.length - 1]!,
+        );
+        return lastMessage?.finishReason === "interrupt" ? lastMessage : null;
+      }
+      return null;
+    }),
+  );
+}
+
+export function useLastFeedbackMessageId() {
+  const waitingForFeedbackMessageId = useStore(
+    useShallow((state) => {
+      if (state.messageIds.length >= 2) {
+        const lastMessage = state.messages.get(
+          state.messageIds[state.messageIds.length - 1]!,
+        );
+        if (lastMessage && lastMessage.finishReason === "interrupt") {
+          return state.messageIds[state.messageIds.length - 2];
+        }
+      }
+      return null;
+    }),
+  );
+  return waitingForFeedbackMessageId;
+}
+
+export function useToolCalls() {
+  return useStore(
+    useShallow((state) => {
+      return state.messageIds
+        ?.map((id) => getMessage(id)?.toolCalls)
+        .filter((toolCalls) => toolCalls != null)
+        .flat();
+    }),
+  );
+}

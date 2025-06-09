@@ -1,18 +1,7 @@
 // Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 // SPDX-License-Identifier: MIT
 
-import type {
-  Message,
-  MessageChunk,
-  MessageContent,
-  MessageContentChunk,
-  MessageMetadata,
-  ToolCall,
-  ToolCallChunk,
-  ToolCallResult,
-} from "~/core/messages";
-
-import type { GeneralSettings } from "../store";
+import type { Option } from "../messages";
 
 // Tool Calls
 
@@ -92,22 +81,3 @@ export type ChatEvent =
   | ToolCallChunksEvent
   | ToolCallResultEvent
   | InterruptEvent;
-
-export interface GenerateProseRequest {
-  prompt: string;
-  option: string;
-  command: string;
-}
-
-export interface Option {
-  text: string;
-  value: string;
-}
-
-export interface Interrupt {
-  id: string;
-  role: "assistant";
-  content: string;
-  finish_reason: "interrupt";
-  options: Option[];
-}
