@@ -174,6 +174,10 @@ const MermaidDiagram: React.FC<MermaidProps> = ({ chart, isStreaming = false }) 
                     return
                 }
                 try {
+                    // First, validate the Mermaid syntax.
+                    // The parse method will throw an error if the syntax is invalid.
+                    await mermaid.parse(fixedChart);
+
                     // Render SVG in memory and place it into the container
                     const { svg } = await mermaid.render(diagramId, fixedChart);
                     currentElement.innerHTML = svg;

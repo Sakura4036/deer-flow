@@ -84,8 +84,6 @@ export function Markdown({
             />
           );
         }
-        // For other code blocks (inline or not Mermaid), render them normally
-        // You could integrate a syntax highlighter here if needed for other languages
         return inline ? (
           <code className={codeClassName} {...codeProps}>
             {codeChildren}
