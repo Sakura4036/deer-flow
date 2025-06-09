@@ -88,7 +88,7 @@ class UnsuperviseTaskResult(APIResponse):
 @log_io
 def get_unsupervise_result(
     task_id: Annotated[str, "The task id to get the result."],
-) -> str:
+) -> str | List[UnsuperviseMutationResult]:
     """Use this to get the result of mutation: The top mutation sites."""
     try:
         url = f"{_api_url}/api/task/unsupervise/result/{task_id}"

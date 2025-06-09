@@ -1,0 +1,2904 @@
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "id": "run-9ff630ec-f7ca-4c10-93c7-9f1030469afc", "role": "user", "content": "撰写葡萄糖异构酶产品的调研报告", "finish_reason": "stop"}
+
+event: tool_calls
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "coordinator", "id": "run-9ff630ec-f7ca-4c10-93c7-9f1030469afc", "role": "assistant", "tool_calls": [{"name": "handoff_to_planner", "args": {}, "id": "call_x6ve3s5r7j0ivjo2wiip1uvj", "type": "tool_call"}], "tool_call_chunks": [{"name": "handoff_to_planner", "args": "", "id": "call_x6ve3s5r7j0ivjo2wiip1uvj", "index": 0, "type": "tool_call_chunk"}]}
+
+event: tool_calls
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "coordinator", "id": "run-9ff630ec-f7ca-4c10-93c7-9f1030469afc", "role": "assistant", "tool_calls": [{"name": "", "args": {}, "id": null, "type": "tool_call"}], "tool_call_chunks": [{"name": null, "args": "{\"", "id": null, "index": 0, "type": "tool_call_chunk"}]}
+
+event: tool_call_chunks
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "coordinator", "id": "run-9ff630ec-f7ca-4c10-93c7-9f1030469afc", "role": "assistant", "tool_call_chunks": [{"name": null, "args": "task", "id": null, "index": 0, "type": "tool_call_chunk"}]}
+
+event: tool_call_chunks
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "coordinator", "id": "run-9ff630ec-f7ca-4c10-93c7-9f1030469afc", "role": "assistant", "tool_call_chunks": [{"name": null, "args": "_title", "id": null, "index": 0, "type": "tool_call_chunk"}]}
+
+event: tool_call_chunks
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "coordinator", "id": "run-9ff630ec-f7ca-4c10-93c7-9f1030469afc", "role": "assistant", "tool_call_chunks": [{"name": null, "args": "\":\"", "id": null, "index": 0, "type": "tool_call_chunk"}]}
+
+event: tool_call_chunks
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "coordinator", "id": "run-9ff630ec-f7ca-4c10-93c7-9f1030469afc", "role": "assistant", "tool_call_chunks": [{"name": null, "args": "撰写", "id": null, "index": 0, "type": "tool_call_chunk"}]}
+
+event: tool_call_chunks
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "coordinator", "id": "run-9ff630ec-f7ca-4c10-93c7-9f1030469afc", "role": "assistant", "tool_call_chunks": [{"name": null, "args": "葡萄糖", "id": null, "index": 0, "type": "tool_call_chunk"}]}
+
+event: tool_call_chunks
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "coordinator", "id": "run-9ff630ec-f7ca-4c10-93c7-9f1030469afc", "role": "assistant", "tool_call_chunks": [{"name": null, "args": "异构", "id": null, "index": 0, "type": "tool_call_chunk"}]}
+
+event: tool_call_chunks
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "coordinator", "id": "run-9ff630ec-f7ca-4c10-93c7-9f1030469afc", "role": "assistant", "tool_call_chunks": [{"name": null, "args": "酶", "id": null, "index": 0, "type": "tool_call_chunk"}]}
+
+event: tool_call_chunks
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "coordinator", "id": "run-9ff630ec-f7ca-4c10-93c7-9f1030469afc", "role": "assistant", "tool_call_chunks": [{"name": null, "args": "产品的", "id": null, "index": 0, "type": "tool_call_chunk"}]}
+
+event: tool_call_chunks
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "coordinator", "id": "run-9ff630ec-f7ca-4c10-93c7-9f1030469afc", "role": "assistant", "tool_call_chunks": [{"name": null, "args": "调研", "id": null, "index": 0, "type": "tool_call_chunk"}]}
+
+event: tool_call_chunks
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "coordinator", "id": "run-9ff630ec-f7ca-4c10-93c7-9f1030469afc", "role": "assistant", "tool_call_chunks": [{"name": null, "args": "报告", "id": null, "index": 0, "type": "tool_call_chunk"}]}
+
+event: tool_call_chunks
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "coordinator", "id": "run-9ff630ec-f7ca-4c10-93c7-9f1030469afc", "role": "assistant", "tool_call_chunks": [{"name": null, "args": "\",\"", "id": null, "index": 0, "type": "tool_call_chunk"}]}
+
+event: tool_call_chunks
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "coordinator", "id": "run-9ff630ec-f7ca-4c10-93c7-9f1030469afc", "role": "assistant", "tool_call_chunks": [{"name": null, "args": "locale", "id": null, "index": 0, "type": "tool_call_chunk"}]}
+
+event: tool_call_chunks
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "coordinator", "id": "run-9ff630ec-f7ca-4c10-93c7-9f1030469afc", "role": "assistant", "tool_call_chunks": [{"name": null, "args": "\":\"", "id": null, "index": 0, "type": "tool_call_chunk"}]}
+
+event: tool_call_chunks
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "coordinator", "id": "run-9ff630ec-f7ca-4c10-93c7-9f1030469afc", "role": "assistant", "tool_call_chunks": [{"name": null, "args": "zh", "id": null, "index": 0, "type": "tool_call_chunk"}]}
+
+event: tool_call_chunks
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "coordinator", "id": "run-9ff630ec-f7ca-4c10-93c7-9f1030469afc", "role": "assistant", "tool_call_chunks": [{"name": null, "args": "-C", "id": null, "index": 0, "type": "tool_call_chunk"}]}
+
+event: tool_call_chunks
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "coordinator", "id": "run-9ff630ec-f7ca-4c10-93c7-9f1030469afc", "role": "assistant", "tool_call_chunks": [{"name": null, "args": "N", "id": null, "index": 0, "type": "tool_call_chunk"}]}
+
+event: tool_call_chunks
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "coordinator", "id": "run-9ff630ec-f7ca-4c10-93c7-9f1030469afc", "role": "assistant", "tool_call_chunks": [{"name": null, "args": "\"}", "id": null, "index": 0, "type": "tool_call_chunk"}]}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "coordinator", "id": "run-9ff630ec-f7ca-4c10-93c7-9f1030469afc", "role": "assistant", "finish_reason": "tool_calls"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "\n"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "```"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "json"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "\n"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "{\n"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " "}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " \""}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "locale"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "\":"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " \""}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "zh"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "-C"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "N"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "\",\n"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " "}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " \""}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "has"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "_en"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "ough"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "_context"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "\":"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " false"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": ",\n"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " "}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " \""}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "thought"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "\":"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " \""}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "用户"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "要求"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "撰写"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "葡萄糖"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "异构"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "酶"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "产品的"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "专业"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "调研"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "报告"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "。"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "葡萄糖"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "异构"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "酶"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "是"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "工业生产"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "高"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "果"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "糖"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "浆"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "的关键"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "酶"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "制剂"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "，"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "需"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "系统"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "调研"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "其"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "市场"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "应用"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "、"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "技术"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "特性"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "、"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "竞争"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "格局"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "和"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "法规"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "要求"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "。"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "当前"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "缺乏"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "具体"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "产品"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "参数"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "、"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "市场"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "数据和"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "竞争对手"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "信息"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "，"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "无法"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "直接"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "形成"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "完整"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "报告"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "。"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "\",\n"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " "}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " \""}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "title"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "\":"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " \""}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "葡萄糖"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "异构"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "酶"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "产品"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "综合"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "调研"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "计划"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "\",\n"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " "}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " \""}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "steps"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "\":"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " [\n"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "   "}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " {\n"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "     "}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " \""}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "need"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "_"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "web"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "_search"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "\":"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " true"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": ",\n"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "     "}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " \""}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "title"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "\":"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " \""}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "市场"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "格局"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "与"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "竞争"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "分析"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "\",\n"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "     "}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " \""}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "step"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "_type"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "\":"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " \""}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "research"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "\",\n"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "     "}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " \""}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "description"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "\":"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " \""}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "收集"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "葡萄糖"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "异构"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "酶"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "全球"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "市场"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "数据"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "："}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "1"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": ")"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " "}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "核心"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "功能"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "（"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "葡萄糖"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "转"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "果"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "糖"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "）"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "及"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "主要"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "应用"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "行业"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "（"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "食品"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "饮料"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "、"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "淀粉"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "糖"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "产业"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "）；"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "2"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": ")"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " "}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "全球"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "/"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "区域"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "市场规模"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "（"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "202"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "3"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "-"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "202"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "5"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "年"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "数据"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "）、"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "C"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "AGR"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "和"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "主要"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "厂商"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "（"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "诺"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "维"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "信"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "、"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "杰"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "能"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "科"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "、"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "天"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "野"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "酶"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "等"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "）"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "市场份额"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "；"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "3"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": ")"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " "}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "市场"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "驱动"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "因素"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "（"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "高"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "果"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "糖"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "浆"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "需求"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "增长"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "）"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "与技术"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "迭代"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "里程碑"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "；"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "4"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": ")"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " "}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "价值链"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "分析"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "（"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "原材料"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "供应商"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "、"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "分销"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "渠道"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "、"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "终端"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "客户"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "）；"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "5"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": ")"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " "}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "主要"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "厂商"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "战略"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "定位"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "与技术"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "路线"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "图"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "（"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "固定"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "化"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "酶"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "技术"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "进展"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "）"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "\"\n"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "   "}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " },\n"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "   "}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " {\n"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "     "}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " \""}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "need"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "_"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "web"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "_search"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "\":"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " true"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": ",\n"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "     "}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " \""}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "title"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "\":"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " \""}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "竞"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "品"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "技术与"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "专利"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "解析"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "\",\n"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "     "}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " \""}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "step"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "_type"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "\":"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " \""}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "research"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "\",\n"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "     "}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " \""}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "description"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "\":"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " \""}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "深度"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "分析"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "5"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "家"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "主要"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "竞争"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "产品"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "："}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "1"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": ")"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " "}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "产品"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "参数"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "（"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "诺"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "维"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "信"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "Sweet"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "zyme"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "®"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "、"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "天"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "野"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "酶"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "GL"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "UC"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "OS"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "ENSE"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "®"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "等"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "型号"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "的"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "活性"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "单位"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "定义"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "、"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "最"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "适"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "pH"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "/"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "温度"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "、"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "剂"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "型"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "、"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "保质"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "期"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "）；"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "2"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": ")"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " "}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "生产"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "宿主"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "（"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "如"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "链"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "霉菌"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "/"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "芽"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "孢"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "杆菌"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "改造"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "菌"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "株"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "）；"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "3"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": ")"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " "}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "专利"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "技术"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "（"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "关键"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "突变"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "位"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "点"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "如"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "Ther"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "mus"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " therm"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "ophilus"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "来源"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "酶的"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "Ther"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "mot"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "oga"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " mar"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "it"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "ima"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "改造"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "策略"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "）；"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "4"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": ")"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " Uni"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "Prot"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "序列"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "（"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "如"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "P"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "241"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "01"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "）"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "对应"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "商业化"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "产品"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "改进"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "点"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "；"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "5"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": ")"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " "}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "文献"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "验证"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "的"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "酶"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "学"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "性质"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "（"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "热"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "稳定性"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "、"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "金属"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "离子"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "依赖性"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "数据"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "）"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "\"\n"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "   "}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " },\n"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "   "}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " {\n"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "     "}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " \""}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "need"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "_"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "web"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "_search"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "\":"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " true"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": ",\n"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "     "}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " \""}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "title"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "\":"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " \""}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "法规"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "路径"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "与技术"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "挑战"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "\",\n"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "     "}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " \""}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "step"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "_type"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "\":"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " \""}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "research"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "\",\n"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "     "}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " \""}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "description"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "\":"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " \""}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "调研"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "全球"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "监管"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "要求"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "："}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "1"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": ")"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " "}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "主要"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "市场"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "法规"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "框架"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "（"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "中国"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "GB"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " "}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "188"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "6"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "."}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "174"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "、"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "欧盟"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "EC"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " "}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "133"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "2"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "/"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "200"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "8"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "、"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "美国"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "FDA"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " GR"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "AS"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "）；"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "2"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": ")"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " "}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "已"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "批准"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "产品"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "案例"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "（"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "生产"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "菌"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "株"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "、"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "基因"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "来源"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "、"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "批准"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "年份"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "）；"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "3"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": ")"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " "}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "技术"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "瓶颈"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "（"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "固定"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "化"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "载体"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "寿命"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "短"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "、"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "钙"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "离子"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "依赖性"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "等"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "共"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "性问题"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "）；"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "4"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": ")"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " "}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "核心"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "实验"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "方法"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "（"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "定向"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "进化"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "策略"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "、"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "固定"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "化"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "载体"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "筛选"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "方法"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "、"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "应用"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "场景"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "性能"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "测试"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "标准"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "）；"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "5"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": ")"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " "}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "新型"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "解决方案"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "（"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "融合"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "蛋白"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "技术"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "、"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "固定"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "化"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "新材料"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "专利"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "）"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "\"\n"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "   "}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " }\n"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " "}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": " ]\n"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "}\n"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "content": "```"}
+
+event: message_chunk
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "agent": "planner", "id": "run-09589616-6bd2-44d7-9514-279362b541ea", "role": "assistant", "finish_reason": "stop"}
+
+event: interrupt
+data: {"thread_id": "uA-9wfEG3kEuVJpLxW1-I", "id": "human_feedback:9df125fc-116b-c95b-3dbc-e51121f2d65c", "role": "assistant", "content": "Please Review the Plan.", "finish_reason": "interrupt", "options": [{"text": "Edit plan", "value": "edit_plan"}, {"text": "Start research", "value": "accepted"}]}
+

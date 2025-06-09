@@ -6,7 +6,7 @@ import logging
 import os
 from typing import Annotated, Literal
 
-from langchain_core.messages import AIMessage, HumanMessage
+from langchain_core.messages import AIMessage, HumanMessage, ToolMessage
 from langchain_core.runnables import RunnableConfig
 from langchain_core.tools import tool
 from langgraph.types import Command, interrupt
@@ -19,6 +19,11 @@ from src.tools import (
     python_repl_tool,
     get_patent_search_tool,
     get_literature_search_tool,
+)
+from src.tools.protein.unsupervise import (
+    get_unsupervise_result,
+    get_unsupervise_task_status,
+    submit_unsupervise_task,
 )
 
 from src.config.agents import AGENT_LLM_MAP
@@ -181,7 +186,14 @@ def human_feedback_node(
     # check if the plan is auto accepted
     auto_accepted_plan = state.get("auto_accepted_plan", False)
     if not auto_accepted_plan:
-        feedback = interrupt("Please Review the Plan.")
+        interrupt_data = {
+            "message": "Please Review the Plan.",
+            "options": [
+                {"text": "Edit plan", "value": "edit_plan"},
+                {"text": "Start research", "value": "accepted"},
+            ],
+        }
+        feedback = interrupt(json.dumps(interrupt_data))
 
         # if the feedback is not accepted, return the planner node
         if feedback and str(feedback).upper().startswith("[EDIT_PLAN]"):
@@ -487,51 +499,67 @@ async def _setup_and_execute_agent_step(
 async def researcher_node(
     state: State, config: RunnableConfig
 ) -> Command[Literal["research_team"]]:
-    """Researcher node that do research"""
-    logger.info("Researcher node is researching.")
+    """Researcher node that conducts research."""
+    logger.info("Researcher searching for information.")
     configurable = Configuration.from_runnable_config(config)
+    web_search_tool = get_web_search_tool(configurable.max_search_results)
+    patent_search_tool = get_patent_search_tool(configurable.max_search_results)
+    literture_search_tool = get_literature_search_tool(configurable.max_search_results)
+
+    default_tools = [
+        web_search_tool,
+        crawl_tool,
+        patent_search_tool,
+        literture_search_tool,
+    ]
     return await _setup_and_execute_agent_step(
-        state,
-        config,
-        "researcher",
-        [get_web_search_tool(configurable.max_search_results), 
-         crawl_tool,
-         get_patent_search_tool(configurable.max_search_results),
-         get_literature_search_tool(configurable.max_search_results)],
+        state, config, "researcher", default_tools
     )
 
 
 async def coder_node(
     state: State, config: RunnableConfig
 ) -> Command[Literal["research_team"]]:
-    """Coder node that do code analysis."""
-    logger.info("Coder node is coding.")
+    """Coder node that executes code."""
+    logger.info("Coder executing code.")
     return await _setup_and_execute_agent_step(
-        state,
-        config,
-        "coder",
-        [python_repl_tool],
+        state, config, "coder", [python_repl_tool]
     )
 
 
 async def enzyme_retriever_node(
     state: State, config: RunnableConfig
-):
+) -> dict[str, any]:
     """Enzyme sequence retriever node that retrieve enzyme sequence."""
     logger.info("Enzyme sequence retriever node is retrieving.")
+    
+    # Base prompt on the final report
+    final_report = state.get("final_report", "")
+    input_content = final_report
+
+    # Check for feedback from the user and add it to the prompt
+    last_message = state["messages"][-1]
+    if (
+        isinstance(last_message, HumanMessage)
+        and last_message.content
+        and last_message.content.upper().startswith("[REQUEST_MORE_INFO]")
+    ):
+        logger.info("Enzyme retriever has received feedback from the user.")
+        feedback_content = (
+            "\n\nThe user has requested more information. Please address this feedback:\n"
+            f"{last_message.content}"
+        )
+        input_content += feedback_content
+
     _input_state = {
-        "messages": [],
+        "messages": [HumanMessage(content=input_content)],
         "locale": state.get("locale", "en-US"),
     }
-    agent_name = 'enzyme_retriever'
+    agent_name = "enzyme_retriever"
     template = env.get_template(f"{agent_name}.md")
     prompt = template.render(**_input_state)
-
-    final_report = state.get("final_report")
     
-    input_ = {"messages":[
-        HumanMessage(content=final_report, name='human')
-    ]}
+    input_ = {"messages": [HumanMessage(content=input_content, name="human")]}
 
     configurable = Configuration.from_runnable_config(config)
     mcp_servers = {}
@@ -549,7 +577,7 @@ async def enzyme_retriever_node(
                 for tool_name in server_config["enabled_tools"]:
                     enabled_tools[tool_name] = server_name
 
-    tools = [get_web_search_tool(configurable.max_search_results),crawl_tool]
+    tools = [get_web_search_tool(configurable.max_search_results), crawl_tool]
     # Create and execute agent with MCP tools if available
     if mcp_servers:
         async with MultiServerMCPClient(mcp_servers) as client:
@@ -565,17 +593,141 @@ async def enzyme_retriever_node(
                 tools=tools,
                 prompt=prompt,
             )
-            response = await ainvoke_llm_with_retry(agent, input_, config={"recursion_limit": 25})
+            response = await ainvoke_llm_with_retry(
+                agent, input_, config={"recursion_limit": 25}
+            )
     else:
         agent = create_react_agent(
-                name=agent_name,
-                model=get_llm_by_type(AGENT_LLM_MAP[agent_name]),
-                tools=tools,
-                prompt=prompt,
-            )
-        response = await ainvoke_llm_with_retry(agent, input_, config={"recursion_limit": 25})
+            name=agent_name,
+            model=get_llm_by_type(AGENT_LLM_MAP[agent_name]),
+            tools=tools,
+            prompt=prompt,
+        )
+        response = await ainvoke_llm_with_retry(
+            agent, input_, config={"recursion_limit": 25}
+        )
     response_content = response["messages"][-1].content
     return {"enzyme_retriever_results": response_content}
+
+
+def human_select_node(state: State) -> None:
+    """
+    Interrupts the workflow to allow the user to select enzymes for design
+    or request more information. The user's response should start with:
+    - [ACCEPT_SEQUENCES] to proceed with design.
+    - [REQUEST_MORE_INFO] to ask for more details.
+    """
+    logger.info("Awaiting user selection for enzyme design.")
+    interrupt_data = {
+        "message": (
+            "Please review the enzyme information. \n"
+            "To proceed, please start your response with `[ACCEPT_SEQUENCES]` "
+            "followed by your instructions for the designer.\n"
+            "If you need more information, start your response with `[REQUEST_MORE_INFO]`."
+        ),
+        "options": [
+            {"text": "Accept Sequences", "value": "accept_sequences"},
+            {"text": "Request More Info", "value": "request_more_info"},
+        ],
+    }
+    interrupt(json.dumps(interrupt_data))
+
+
+async def enzyme_designer_node(state: State, config: RunnableConfig):
+    """
+    Handles protein design tasks. It can either submit a new task
+    or check the status of an existing task based on user input.
+    """
+    user_message = state["messages"][-1].content
+    retrieved_enzymes_str = state.get("enzyme_retriever_results", "")
+    task_id = state.get("design_task_id")
+
+    # Create a tool-augmented LLM to decide the next step
+    designer_llm = get_agent_llm("enzyme_designer")
+    tools = [
+        submit_unsupervise_task,
+        get_unsupervise_task_status,
+        get_unsupervise_result,
+    ]
+    agent_name = "enzyme_designer"
+    designer_agent = create_agent(
+        llm=designer_llm,
+        tools=tools,
+        agent_type=agent_name,
+        messages=apply_prompt_template(
+            agent_name,
+            {
+                "user_request": user_message,
+                "retrieved_enzymes": retrieved_enzymes_str,
+                "task_id": task_id,
+            },
+        ),
+    )
+
+    # Invoke the agent
+    response = await ainvoke_llm_with_retry(
+        designer_agent,
+        [HumanMessage(content=user_message)],
+    )
+
+    # If the agent calls a tool, we process it
+    if response.tool_calls:
+        # For now, we assume one tool call at a time for simplicity
+        tool_call = response.tool_calls[0]
+        tool_name = tool_call["name"]
+        tool_args = tool_call["args"]
+
+        tool_map = {tool.name: tool for tool in tools}
+        tool_to_call = tool_map.get(tool_name)
+
+        if not tool_to_call:
+            # Handle error: tool not found
+            return {
+                "messages": state["messages"]
+                + [AIMessage(content=f"Error: Tool '{tool_name}' not found.")]
+            }
+
+        # Call the tool and get the result
+        observation = tool_to_call.invoke(tool_args)
+
+        # Update state based on the tool called
+        update_dict = {
+            "messages": state["messages"]
+            + [
+                response,
+                ToolMessage(content=str(observation), tool_call_id=tool_call["id"]),
+            ]
+        }
+
+        if tool_name == "submit_unsupervise_task":
+            update_dict["design_task_id"] = str(observation)
+        elif tool_name == "get_unsupervise_result":
+            update_dict["enzyme_mutant_results"] = observation
+
+        return update_dict
+
+    # If no tool is called, just return the text response
+    return {"messages": state["messages"] + [response]}
+
+
+# Conditional Edges
+def route_human_selection(
+    state: State,
+) -> Literal["enzyme_designer", "enzyme_retriever"]:
+    """
+    Routes the workflow based on the user's feedback from the human_select_node.
+    """
+    last_message = state["messages"][-1]
+    if (
+        isinstance(last_message, HumanMessage)
+        and last_message.content
+        and last_message.content.upper().startswith("[ACCEPT_SEQUENCES]")
+    ):
+        logger.info("User accepted sequences. Routing to enzyme designer.")
+        return "enzyme_designer"
+
+    logger.info("User requested more information. Routing back to enzyme retriever.")
+    return "enzyme_retriever"
 
 
 if __name__ == "__main__":

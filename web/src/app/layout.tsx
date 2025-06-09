@@ -11,6 +11,7 @@ import { ThemeProviderWrapper } from "~/components/deer-flow/theme-provider-wrap
 import { env } from "~/env";
 
 import { Toaster } from "../components/deer-flow/toaster";
+import { StagewiseProvider } from "~/components/stagewise-provider";
 
 export const metadata: Metadata = {
   title: "🦌 DeerFlow",
@@ -45,6 +46,7 @@ export default function RootLayout({
       <body className="bg-app">
         <ThemeProviderWrapper>{children}</ThemeProviderWrapper>
         <Toaster />
+        <StagewiseProvider />
         {
           // NO USER BEHAVIOR TRACKING OR PRIVATE DATA COLLECTION BY DEFAULT
           //

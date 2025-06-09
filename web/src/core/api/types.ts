@@ -1,7 +1,18 @@
 // Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 // SPDX-License-Identifier: MIT
 
-import type { Option } from "../messages";
+import type {
+  Message,
+  MessageChunk,
+  MessageContent,
+  MessageContentChunk,
+  MessageMetadata,
+  ToolCall,
+  ToolCallChunk,
+  ToolCallResult,
+} from "~/core/messages";
+
+import type { GeneralSettings } from "../store";
 
 // Tool Calls
 
@@ -39,7 +50,7 @@ export interface MessageChunkEvent
     {
       content?: string;
     }
-  > {}
+  > { }
 
 export interface ToolCallsEvent
   extends GenericEvent<
@@ -48,7 +59,7 @@ export interface ToolCallsEvent
       tool_calls: ToolCall[];
       tool_call_chunks: ToolCallChunk[];
     }
-  > {}
+  > { }
 
 export interface ToolCallChunksEvent
   extends GenericEvent<
@@ -56,7 +67,7 @@ export interface ToolCallChunksEvent
     {
       tool_call_chunks: ToolCallChunk[];
     }
-  > {}
+  > { }
 
 export interface ToolCallResultEvent
   extends GenericEvent<
@@ -65,7 +76,7 @@ export interface ToolCallResultEvent
       tool_call_id: string;
       content?: string;
     }
-  > {}
+  > { }
 
 export interface InterruptEvent
   extends GenericEvent<
@@ -73,7 +84,7 @@ export interface InterruptEvent
     {
       options: Option[];
     }
-  > {}
+  > { }
 
 export type ChatEvent =
   | MessageChunkEvent
@@ -81,3 +92,22 @@ export type ChatEvent =
   | ToolCallChunksEvent
   | ToolCallResultEvent
   | InterruptEvent;
+
+export interface GenerateProseRequest {
+  prompt: string;
+  option: string;
+  command: string;
+}
+
+export interface Option {
+  text: string;
+  value: string;
+}
+
+export interface Interrupt {
+  id: string;
+  role: "assistant";
+  content: string;
+  finish_reason: "interrupt";
+  options: Option[];
+}

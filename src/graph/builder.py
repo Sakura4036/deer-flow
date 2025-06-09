@@ -15,6 +15,9 @@ from .nodes import (
     human_feedback_node,
     background_investigation_node,
     enzyme_retriever_node,
+    human_select_node,
+    enzyme_designer_node,
+    route_human_selection,
 )
 
 
@@ -31,8 +34,19 @@ def _build_base_graph():
     builder.add_node("coder", coder_node)
     builder.add_node("human_feedback", human_feedback_node)
     builder.add_node("enzyme_retriever", enzyme_retriever_node)
+    builder.add_node("human_select", human_select_node)
+    builder.add_node("enzyme_designer", enzyme_designer_node)
     builder.add_edge("reporter", "enzyme_retriever")
-    builder.add_edge("enzyme_retriever", END)
+    builder.add_edge("enzyme_retriever", "human_select")
+    builder.add_conditional_edges(
+        "human_select",
+        route_human_selection,
+        {
+            "enzyme_designer": "enzyme_designer",
+            "enzyme_retriever": "enzyme_retriever",
+        },
+    )
+    builder.add_edge("enzyme_designer", END)
     return builder
 
 

@@ -10,6 +10,13 @@ import { sleep } from "../utils";
 
 import { resolveServiceURL } from "./resolve-service-url";
 import type { ChatEvent } from "./types";
+import {
+  type ChatRequest,
+  type ChatStreamEvent,
+  type Interrupt,
+  type Message,
+  type ToolCallResult,
+} from "./types";
 
 export async function* chatStream(
   userMessage: string,
@@ -31,7 +38,18 @@ export async function* chatStream(
       >;
     };
   },
-  options: { abortSignal?: AbortSignal } = {},
+  options: {
+    abortSignal?: AbortSignal;
+    onMessageChunk?: (chunk: string, from: "assistant" | "tool") => void;
+    onToolCallResult?: (toolCallResult: ToolCallResult) => void;
+    onInterrupt?: (interrupt: Interrupt) => void;
+    onFinish?: (
+      message: Message,
+      metadata: {
+        // ... existing code ...
+      }
+    ) => void;
+  } = {},
 ) {
   if (
     env.NEXT_PUBLIC_STATIC_WEBSITE_ONLY ||
@@ -72,7 +90,18 @@ async function* chatReplayStream(
       max_search_results: 3,
       interrupt_feedback: undefined,
     },
-  options: { abortSignal?: AbortSignal } = {},
+  options: {
+    abortSignal?: AbortSignal;
+    onMessageChunk?: (chunk: string, from: "assistant" | "tool") => void;
+    onToolCallResult?: (toolCallResult: ToolCallResult) => void;
+    onInterrupt?: (interrupt: Interrupt) => void;
+    onFinish?: (
+      message: Message,
+      metadata: {
+        // ... existing code ...
+      }
+    ) => void;
+  } = {},
 ): AsyncIterable<ChatEvent> {
   const urlParams = new URLSearchParams(window.location.search);
   let replayFilePath = "";
@@ -117,8 +146,13 @@ async function* chatReplayStream(
         if (!chatEvent.data.finish_reason) {
           await sleepInReplay(50);
         }
+        onMessageChunk?.(chatEvent.data.content, chatEvent.data.role);
       } else if (chatEvent.type === "tool_call_result") {
         await sleepInReplay(200);
+        onToolCallResult?.(chatEvent.data);
+      } else if (chatEvent.type === "interrupt") {
+        const interrupt = chatEvent.data as Interrupt;
+        onInterrupt?.(interrupt);
       }
       yield chatEvent;
       if (chatEvent.type === "tool_call_result") {
@@ -132,6 +166,9 @@ async function* chatReplayStream(
       console.error(e);
     }
   }
+  onFinish?.(lastMessage, {
+    // ... existing code ...
+  });
 }
 
 const replayCache = new Map<string, string>();

@@ -1,0 +1,9 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+DeerFlow is a multi-agent system designed to automate complex research tasks by orchestrating specialized AI agents through a structured workflow. It combines language models with specialized tools for web search, crawling, and Python code execution to produce comprehensive research reports on a wide range of topics. 
+
+
+The system employs a streamlined workflow with specialized components working together to process user queries, conduct research, and generate detailed reports. DeerFlow is built on LangGraph for workflow orchestration and includes a sophisticated web UI for visualization and interaction.

@@ -32,3 +32,5 @@ class State(MessagesState):
     enable_background_investigation: bool = True
     background_investigation_results: str = None
     enzyme_retriever_results: str = ""
+    design_task_id: Optional[str] = None
+    enzyme_mutant_results: list[dict] = []

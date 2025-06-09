@@ -127,18 +127,33 @@ async def _astream_workflow_generator(
             event_to_write = None
             if isinstance(event_data, dict):
                 if "__interrupt__" in event_data:
+                    interrupt_content = event_data["__interrupt__"][0].value
+                    content = ""
+                    options = []
+                    try:
+                        # Try to parse as JSON for structured interrupt
+                        interrupt_data = json.loads(interrupt_content)
+                        content = interrupt_data.get("message", "Interrupt")
+                        options = interrupt_data.get("options", [])
+                    except (json.JSONDecodeError, TypeError):
+                        # Fallback for simple string interrupt
+                        content = interrupt_content
+                        # Default options for the old human_feedback_node
+                        if "Please Review the Plan" in content:
+                            options = [
+                                {"text": "Edit plan", "value": "edit_plan"},
+                                {"text": "Start research", "value": "accepted"},
+                            ]
+
                     event_to_write = _make_event(
                         "interrupt",
                         {
                             "thread_id": thread_id,
                             "id": event_data["__interrupt__"][0].ns[0],
                             "role": "assistant",
-                            "content": event_data["__interrupt__"][0].value,
+                            "content": content,
                             "finish_reason": "interrupt",
-                            "options": [
-                                {"text": "Edit plan", "value": "edit_plan"},
-                                {"text": "Start research", "value": "accepted"},
-                            ],
+                            "options": options,
                         },
                     )
                     yield event_to_write
