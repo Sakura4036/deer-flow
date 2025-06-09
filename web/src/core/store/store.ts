@@ -83,6 +83,15 @@ export async function sendMessage(
   } = {},
   options: { abortSignal?: AbortSignal } = {},
 ) {
+  if (content) {
+    appendMessage({
+      id: nanoid(),
+      threadId: THREAD_ID,
+      role: "user",
+      content,
+      contentChunks: [],
+    });
+  }
   const settings = getChatStreamSettings();
   const stream = chatStream(
     content ?? "[REPLAY]",
@@ -204,7 +213,8 @@ function appendMessage(message: Message) {
     message.agent === "coder" ||
     message.agent === "reporter" ||
     message.agent === "researcher" ||
-    message.agent === "enzyme_retriever"
+    message.agent === "enzyme_retriever" ||
+    message.agent === "enzyme_designer"
   ) {
     if (!getOngoingResearchId() && message.agent === "researcher") {
       const id = message.id;
@@ -222,7 +232,8 @@ function updateMessage(message: Message) {
     message.agent === "reporter" &&
     !message.isStreaming
   ) {
-    useStore.getState().setOngoingResearch(null);
+    //
+    // useStore.getState().setOngoingResearch(null);
   }
   useStore.getState().updateMessage(message);
 }

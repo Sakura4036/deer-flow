@@ -168,6 +168,11 @@ const MermaidDiagram: React.FC<MermaidProps> = ({ chart, isStreaming = false }) 
             setZoomLevel(defaultZoom);
 
             if (fixedChart && fixedChart.trim() !== "" && currentElement) {
+                if (isStreaming) {
+                    // During streaming, we can expect incomplete diagrams. Show something less intrusive.
+                    currentElement.innerHTML = `<pre class="text-yellow-500">Waiting for complete Mermaid code...\n\n${fixedChart}</pre>`;
+                    return
+                }
                 try {
                     // Render SVG in memory and place it into the container
                     const { svg } = await mermaid.render(diagramId, fixedChart);
@@ -188,13 +193,8 @@ const MermaidDiagram: React.FC<MermaidProps> = ({ chart, isStreaming = false }) 
                     }
                 } catch (error) {
                     console.error("Mermaid rendering error:", error);
-                    if (isStreaming) {
-                        // During streaming, we can expect incomplete diagrams. Show something less intrusive.
-                        currentElement.innerHTML = `<pre class="text-yellow-500">Waiting for complete Mermaid code...\n\n${fixedChart}</pre>`;
-                    } else {
-                        const errorMessage = error instanceof Error ? error.message : String(error);
-                        currentElement.innerHTML = `<pre class="text-red-500">Error rendering Mermaid diagram:\n${errorMessage}\n\n${fixedChart}</pre>`;
-                    }
+                    const errorMessage = error instanceof Error ? error.message : String(error);
+                    currentElement.innerHTML = `<pre class="text-red-500">Error rendering Mermaid diagram:\n${errorMessage}\n\n${fixedChart}</pre>`;
                 }
             } else if (currentElement) {
                 currentElement.innerHTML = ""; // Clear if no chart code

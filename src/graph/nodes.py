@@ -6,7 +6,7 @@ import logging
 import os
 from typing import Annotated, Literal
 
-from langchain_core.messages import AIMessage, HumanMessage, ToolMessage
+from langchain_core.messages import AIMessage, HumanMessage, ToolMessage, SystemMessage
 from langchain_core.runnables import RunnableConfig
 from langchain_core.tools import tool
 from langgraph.types import Command, interrupt
@@ -25,6 +25,7 @@ from src.tools.protein.unsupervise import (
     get_unsupervise_task_status,
     submit_unsupervise_task,
 )
+from src.graph.types import ProteinSequenceList
 
 from src.config.agents import AGENT_LLM_MAP
 from src.config.configuration import Configuration
@@ -606,8 +607,29 @@ async def enzyme_retriever_node(
         response = await ainvoke_llm_with_retry(
             agent, input_, config={"recursion_limit": 25}
         )
-    response_content = response["messages"][-1].content
-    return {"enzyme_retriever_results": response_content}
+    enzyme_retriever_content_md = response["messages"][-1].content
+
+    # Parse the response content to extract the enzyme sequences
+    
+    try:
+        parser_agent_name = "enzyme_parser"
+        parser_template_str = env.get_template(f"{parser_agent_name}.md").render()
+        parser_llm = get_llm_by_type(AGENT_LLM_MAP[parser_agent_name]).with_structured_output(ProteinSequenceList)
+        messages = [
+            SystemMessage(content=parser_template_str),
+            HumanMessage(content=enzyme_retriever_content_md)
+        ]
+        logger.info("Parsing enzyme retriever results.")
+        parsed_results = await ainvoke_llm_with_retry(parser_llm, messages, config=config)
+        logger.info("Successfully parsed enzyme results into structured data.")
+        enzyme_retriever_sequences = parsed_results.protein_sequences
+
+    except Exception as e:
+        logger.error(f"Failed to parse enzyme retriever results, falling back to markdown. Error: {e}")
+        # Fallback to returning the original markdown content if parsing fails
+        enzyme_retriever_sequences = []
+
+    return {"enzyme_retriever_content": enzyme_retriever_content_md, "enzyme_retriever_sequences": enzyme_retriever_sequences}
 
 
 def human_select_node(
@@ -621,16 +643,22 @@ def human_select_node(
     """
     logger.info("Awaiting user selection for enzyme design.")
 
+    sequences = state.get("enzyme_retriever_sequences", [])
+    # Convert Pydantic objects to dicts for JSON serialization
+    sequences_as_dicts = [seq.model_dump() for seq in sequences]
+
     interrupt_payload = {
+        "type": "enzyme_selection",
         "content": (
             "Please review the enzyme information. \n"
-            "To proceed, please start your response with `[ACCEPT_SEQUENCES]` followed by your instructions for the designer.\n"
+            "To proceed, please select the sequences and start your response with `[ACCEPT_SEQUENCES]` followed by your instructions for the designer.\n"
             "If you need more information, start your response with `[REQUEST_MORE_INFO]`."
         ),
         "options": [
-            {"text": "Accept Sequences", "value": "accept_sequences"},
+            {"text": "Design Mutants", "value": "accept_sequences"},
             {"text": "Request More Info", "value": "request_more_info"},
         ],
+        "sequences": sequences_as_dicts,
     }
 
     feedback = interrupt(interrupt_payload)
@@ -661,7 +689,16 @@ async def enzyme_designer_node(state: State, config: RunnableConfig):
     or check the status of an existing task based on user input.
     """
     user_message = state["messages"][-1].content
-    retrieved_enzymes_str = state.get("enzyme_retriever_results", "")
+    retrieved_enzymes = state.get("enzyme_retriever_sequences", [])
+    retrieved_enzymes_str = ""
+    for seq in retrieved_enzymes:
+        retrieved_enzymes_str += f"### {seq.protein_name}\n"
+        retrieved_enzymes_str += f"Sequence: {seq.sequence}\n"
+        retrieved_enzymes_str += f"Organism: {seq.organism_name}\n"
+        retrieved_enzymes_str += f"Accession: {seq.accession}\n"
+        retrieved_enzymes_str += f"Gene Name: {seq.gene_name}\n"
+        retrieved_enzymes_str += "\n"
+
     task_id = state.get("design_task_id")
 
     # Create a tool-augmented LLM to decide the next step

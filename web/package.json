@@ -83,6 +83,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
+    "@stagewise/toolbar": "^0.4.4",
     "@tailwindcss/postcss": "^4.0.15",
     "@types/hast": "^3.0.4",
     "@types/node": "^20.14.10",

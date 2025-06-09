@@ -129,13 +129,11 @@ async def _astream_workflow_generator(
                 if "__interrupt__" in event_data:
                     interrupt_payload = event_data["__interrupt__"][0].value
 
-                    content = ""
-                    options = []
+                    data_to_send = {}
                     if isinstance(interrupt_payload, dict):
-                        content = interrupt_payload.get("content", "Interrupted")
-                        options = interrupt_payload.get("options", [])
+                        data_to_send = interrupt_payload
                     elif isinstance(interrupt_payload, str):
-                        content = interrupt_payload
+                        data_to_send["content"] = interrupt_payload
 
                     event_to_write = _make_event(
                         "interrupt",
@@ -143,9 +141,8 @@ async def _astream_workflow_generator(
                             "thread_id": thread_id,
                             "id": event_data["__interrupt__"][0].ns[0],
                             "role": "assistant",
-                            "content": content,
                             "finish_reason": "interrupt",
-                            "options": options,
+                            **data_to_send,
                         },
                     )
                     yield event_to_write
