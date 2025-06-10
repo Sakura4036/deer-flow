@@ -140,7 +140,7 @@ export const GeneralTab: Tab = ({
                     />
                   </FormControl>
                   <FormDescription>
-                    By default, each research plan has 3 steps.
+                    By default, each research plan has 4 steps.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

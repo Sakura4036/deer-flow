@@ -105,10 +105,13 @@ async function* chatReplayStream(
   const normalizedText = text.replace(/\r\n/g, "\n");
   const chunks = normalizedText.split("\n\n");
   for (const chunk of chunks) {
-    const [eventRaw, dataRaw] = chunk.split("\n") as [string, string];
-    const [, event] = eventRaw.split("event: ", 2) as [string, string];
-    const [, data] = dataRaw.split("data: ", 2) as [string, string];
     try {
+      if (!chunk.trim()) {
+        continue;
+      }
+      const [eventRaw, dataRaw] = chunk.split("\n") as [string, string];
+      const [, event] = eventRaw.split("event: ", 2) as [string, string];
+      const [, data] = dataRaw.split("data: ", 2) as [string, string];
       const chatEvent = {
         type: event,
         data: JSON.parse(data),
@@ -129,7 +132,7 @@ async function* chatReplayStream(
         }
       }
     } catch (e) {
-      console.error(e);
+      console.error("Failed to parse or process replay chunk:", { chunk, e });
     }
   }
 }

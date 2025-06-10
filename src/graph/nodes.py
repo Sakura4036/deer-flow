@@ -607,21 +607,30 @@ async def enzyme_retriever_node(
         response = await ainvoke_llm_with_retry(
             agent, input_, config={"recursion_limit": 25}
         )
-    enzyme_retriever_content_md = response["messages"][-1].content
+    enzyme_retriever_content = response["messages"][-1].content
+    logger.info(f"Enzyme retriever content: {enzyme_retriever_content}")
 
-    # Parse the response content to extract the enzyme sequences
-    
+    return {"enzyme_retriever_content": enzyme_retriever_content}
+
+async def enzyme_parser_node(
+    state: State, config: RunnableConfig
+) -> dict[str, any]:
+    """Enzyme parser node that parses the enzyme retriever content."""
+    logger.info("Enzyme parser node is parsing.")
+    enzyme_retriever_content = state.get("enzyme_retriever_content", "")
+
     try:
         parser_agent_name = "enzyme_parser"
         parser_template_str = env.get_template(f"{parser_agent_name}.md").render()
         parser_llm = get_llm_by_type(AGENT_LLM_MAP[parser_agent_name]).with_structured_output(ProteinSequenceList)
         messages = [
             SystemMessage(content=parser_template_str),
-            HumanMessage(content=enzyme_retriever_content_md)
+            HumanMessage(content=enzyme_retriever_content)
         ]
         logger.info("Parsing enzyme retriever results.")
         parsed_results = await ainvoke_llm_with_retry(parser_llm, messages, config=config)
         logger.info("Successfully parsed enzyme results into structured data.")
+        logger.info(f"Parsed results: {parsed_results}")
         enzyme_retriever_sequences = parsed_results.protein_sequences
 
     except Exception as e:
@@ -629,7 +638,7 @@ async def enzyme_retriever_node(
         # Fallback to returning the original markdown content if parsing fails
         enzyme_retriever_sequences = []
 
-    return {"enzyme_retriever_content": enzyme_retriever_content_md, "enzyme_retriever_sequences": enzyme_retriever_sequences}
+    return {"enzyme_retriever_sequences": enzyme_retriever_sequences}
 
 
 def human_select_node(

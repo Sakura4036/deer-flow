@@ -126,6 +126,16 @@ export async function sendMessage(
       }
 
       const existingMessage = getMessage(messageId);
+      const messageToAppend = {
+        id: messageId,
+        threadId: data.thread_id,
+        agent: data.agent,
+        role: data.role,
+        content: "",
+        contentChunks: [],
+        isStreaming: true,
+        interruptFeedback,
+      };
 
       if (existingMessage) {
         const isAgentTakeover =
@@ -134,37 +144,21 @@ export async function sendMessage(
         if (isAgentTakeover) {
           const newMessageId = nanoid();
           turnIdToMessageId.set(turnId, newMessageId);
+          messageToAppend.id = newMessageId;
 
-          const newMessage = {
-            id: newMessageId,
-            threadId: data.thread_id,
-            agent: data.agent,
-            role: data.role,
-            content: "",
-            contentChunks: [],
-            isStreaming: true,
-            interruptFeedback,
-          };
-
-          const mergedMessage = mergeMessage(newMessage, event);
-          appendMessage(mergedMessage);
+          const mergedMessage = mergeMessage(messageToAppend, event);
+          if (mergedMessage.content) {
+            appendMessage(mergedMessage);
+          }
         } else {
           const updatedMessage = mergeMessage(existingMessage, event);
           updateMessage(updatedMessage);
         }
       } else {
-        const newMessage = {
-          id: messageId,
-          threadId: data.thread_id,
-          agent: data.agent,
-          role: data.role,
-          content: "",
-          contentChunks: [],
-          isStreaming: true,
-          interruptFeedback,
-        };
-        const mergedMessage = mergeMessage(newMessage, event);
-        appendMessage(mergedMessage);
+        const mergedMessage = mergeMessage(messageToAppend, event);
+        if (mergedMessage.content) {
+          appendMessage(mergedMessage);
+        }
       }
     }
   } catch {
@@ -216,7 +210,10 @@ function appendMessage(message: Message) {
     message.agent === "enzyme_retriever" ||
     message.agent === "enzyme_designer"
   ) {
-    if (!getOngoingResearchId() && message.agent === "researcher") {
+    if (
+      !getOngoingResearchId() &&
+      (message.agent === "researcher" || message.agent === "enzyme_retriever")
+    ) {
       const id = message.id;
       appendResearch(id);
       openResearch(id);
@@ -232,8 +229,7 @@ function updateMessage(message: Message) {
     message.agent === "reporter" &&
     !message.isStreaming
   ) {
-    //
-    // useStore.getState().setOngoingResearch(null);
+    useStore.getState().setOngoingResearch(null);
   }
   useStore.getState().updateMessage(message);
 }

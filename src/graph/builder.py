@@ -15,6 +15,7 @@ from .nodes import (
     human_feedback_node,
     background_investigation_node,
     enzyme_retriever_node,
+    enzyme_parser_node,
     human_select_node,
     enzyme_designer_node,
 )
@@ -33,10 +34,12 @@ def _build_base_graph():
     builder.add_node("coder", coder_node)
     builder.add_node("human_feedback", human_feedback_node)
     builder.add_node("enzyme_retriever", enzyme_retriever_node)
+    builder.add_node("enzyme_parser", enzyme_parser_node)
     builder.add_node("human_select", human_select_node)
     builder.add_node("enzyme_designer", enzyme_designer_node)
     builder.add_edge("reporter", "enzyme_retriever")
-    builder.add_edge("enzyme_retriever", "human_select")
+    builder.add_edge("enzyme_retriever", "enzyme_parser")
+    builder.add_edge("enzyme_parser", "human_select")
     builder.add_edge("human_select", "enzyme_designer")
     builder.add_edge("human_select", "enzyme_retriever")
     builder.add_edge("enzyme_designer", END)

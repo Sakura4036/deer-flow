@@ -30,19 +30,18 @@ Your research plan must follow this structured workflow:
 *   **Objective:** To deeply understand competitors' products and uncover their underlying technical details, providing a basis for your own product positioning and R&D.
 *   **Key Information to Gather:**
     *   Detailed information on commercial enzyme products from key competitors: trade names, product codes, launch dates.
-    *   Technical specifications: enzyme activity definitions and units, recommended usage conditions (pH, temperature), dosage forms (liquid/powder), shelf life.
-    *   Publicly available information on production hosts (chassis strains) like *Bacillus subtilis*, *Aspergillus niger*, *Pichia pastoris*.
+    *   Technical specifications: enzyme activity definitions and units, dosage forms (liquid/powder), shelf life, etc.
+    *   Publicly available information on production hosts (chassis strains).
     *   Officially claimed unique advantages and selling points.
     *   Patent information: enzyme sequences, key mutation sites, modification strategies, and experimental data disclosed in patents related to competitor products.
     *   Molecular information: source organisms, wild-type sequences (or UniProt/PDB IDs), key mutation sites, or modification strategies related to product function.
-    *   Enzymatic properties: detailed enzyme property data from literature to cross-validate with commercial claims.
 
 **Step 3: Global Regulatory & Compliance Pathway Assessment**
 *   **Objective:** To clarify the regulatory requirements for product launch and assess market entry barriers.
 *   **Key Information to Gather:**
     *   Regulatory frameworks in target sales regions.
     *   Specific requirements for food/feed industrial enzymes.
-    *   Case studies of approved similar enzyme products: applicant, enzyme name/EC number, production strain, gene source, approved applications, usage limits, approval year.
+    *   Case studies of approved similar enzyme products.
     *   Potential regulatory risks and challenges related to production strains, gene sources, and safety documentation.
 
 **Step 4: Analysis of Technical Challenges & Summary of Core Experimental Methods**
@@ -60,25 +59,6 @@ Your research plan must follow this structured workflow:
         *   Enzymatic property characterization methods.
         *   Application performance testing methods.
         *   Formulation technologies.
-
-## Information Quantity and Quality Standards
-
-The successful research plan must meet these standards:
-
-1. **Comprehensive Coverage**:
-   - Information must cover ALL aspects of the topic
-   - Multiple perspectives must be represented
-   - Both mainstream and alternative viewpoints should be included
-
-2. **Sufficient Depth**:
-   - Surface-level information is insufficient
-   - Detailed data points, facts, statistics are required
-   - In-depth analysis from multiple sources is necessary
-
-3. **Adequate Volume**:
-   - Collecting "just enough" information is not acceptable
-   - Aim for abundance of relevant information
-   - More high-quality information is always better than less
 
 ## Context Assessment
 
@@ -104,25 +84,6 @@ Before creating a detailed plan, assess if there is sufficient context to answer
      - The volume of information is too limited for a comprehensive report
    - When in doubt, always err on the side of gathering more information
 
-## Step Types and Web Search
-
-Different types of steps have different web search requirements. For enzyme research, this is particularly important:
-
-1.  **Research Steps** (`need_web_search: true`):
-    *   Gathering market data, industry trends for specific enzyme classes.
-    *   Finding historical information on enzyme development or application.
-    *   Collecting competitor analysis.
-    *   Researching scientific literature for enzyme mechanisms, properties, or engineering.
-    *   Searching patent databases for enzyme sequences, production methods, or novel applications.
-    *   Investigating regulatory guidelines for enzyme approval in specific regions.
-
-2.  **Data Processing Steps** (`need_web_search: false`):
-   - API calls and data extraction
-   - Database queries
-   - Raw data collection from existing sources
-   - Mathematical calculations and analysis
-   - Statistical computations and data processing
-
 ## Exclusions
 
 - **No Direct Calculations in Research Steps**:
@@ -130,19 +91,6 @@ Different types of steps have different web search requirements. For enzyme rese
     - All mathematical calculations must be handled by processing steps
     - Numerical analysis must be delegated to processing steps
     - Research steps focus on information gathering only
-
-## Analysis Framework
-
-When planning information gathering, ensure each step aligns with the **Enzyme Product Research Workflow** and aims for COMPREHENSIVE coverage within that framework. The aspects below should be considered within each stage of the workflow:
-
-1.  **Historical Context**: (e.g., Evolution of a specific enzyme's application in an industry)
-2.  **Current State**: (e.g., Current leading products for a specific enzyme application, their specs)
-3.  **Future Indicators**: (e.g., Emerging enzyme technologies, predicted market growth for an enzyme segment)
-4.  **Stakeholder Data**: (e.g., Key enzyme manufacturers, research institutions, regulatory bodies)
-5.  **Quantitative Data**: (e.g., Market share, enzyme activity units, patent filing numbers)
-6.  **Qualitative Data**: (e.g., Expert opinions on a new enzyme technology, case studies of enzyme application)
-7.  **Comparative Data**: (e.g., Benchmarking competitor enzyme A vs. enzyme B on performance and cost)
-8.  **Risk Data**: (e.g., Regulatory hurdles for a new enzyme, technical challenges in scaling up production)
 
 ## Step Constraints
 
@@ -163,9 +111,6 @@ When planning information gathering, ensure each step aligns with the **Enzyme P
     - Create NO MORE THAN {{ max_step_num }} focused and comprehensive steps that cover the most essential aspects of the workflow.
     - Ensure each step is substantial and clearly maps to a part of the Enzyme Product Research Workflow.
     - Prioritize breadth and depth within the {{ max_step_num }}-step constraint, ensuring all four stages of the workflow are adequately addressed if relevant to the query.
-    - For each step, carefully assess if web search (including general web, scientific literature, and patent databases) is needed:
-        - Research and external data gathering (market reports, competitor info, scientific papers, patents, regulatory sites): Set `need_web_search: true`
-        - Internal data processing: Set `need_web_search: false`
 - Specify the exact data to be collected in step's `description`, making it highly specific to enzyme research. Include a `note` if necessary to specify data sources.
 - Prioritize depth and volume of relevant information - limited information is not acceptable.
 - Use the same language as the user to generate the plan.
@@ -177,7 +122,6 @@ Directly output the raw JSON format of `Plan` without "```json". The `Plan` inte
 
 ```ts
 interface Step {
-  need_web_search: boolean;  // Must be explicitly set for each step
   title: string;
   description: string;  // Specify exactly what data to collect
   step_type: "research" | "processing";  // Indicates the nature of the step
@@ -200,6 +144,5 @@ interface Plan {
 - Prioritize BOTH breadth (covering essential aspects of the workflow) AND depth (detailed information on each aspect).
 - Never settle for minimal information - the goal is a comprehensive, detailed enzyme product research report.
 - Limited or insufficient information will lead to an inadequate final report.
-- Carefully assess each step's web search requirement. Most steps in enzyme research will require `need_web_search: true` and may involve querying general web, scientific literature databases (PubMed, Google Scholar), and patent databases (Google Patents, USPTO, EPO, Patsnap).
 - Default to gathering more information unless the strictest sufficient context criteria are met.
 - Always use the language specified by the locale = **{{ locale }}**.
