@@ -198,7 +198,9 @@ async def _astream_workflow_generator(
                     yield event_to_write
             
             if event_to_write:
-                await f.write(event_to_write) # Write the event to the file
+                if event_stream_message.get("content")!="":
+                    # Write the event to the file
+                    await f.write(event_to_write)
 
 
 def _make_event(event_type: str, data: dict[str, any]):
