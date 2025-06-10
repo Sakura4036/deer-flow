@@ -84,11 +84,29 @@ export function Markdown({
             />
           );
         }
-        return inline ? (
-          <code className={codeClassName} {...codeProps}>
-            {codeChildren}
-          </code>
-        ) : (
+
+        // Check if the code block should be rendered inline.
+        // It's considered inline if the 'inline' prop is true, or if it doesn't contain any newline characters.
+        // This handles cases where the markdown parser might incorrectly flag single-line code blocks as not inline.
+        const isInline = inline || !String(codeChildren).includes("\n");
+
+        if (isInline) {
+          // Render as an inline code element with specific styling.
+          return (
+            <code
+              className={cn(
+                "bg-muted text-muted-foreground font-mono px-1.5 py-1 rounded-sm",
+                codeClassName,
+              )}
+              {...codeProps}
+            >
+              {codeChildren}
+            </code>
+          );
+        }
+
+        // Render as a block-level code element.
+        return (
           <pre
             className={cn(
               codeClassName,
