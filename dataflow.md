@@ -34,7 +34,8 @@ stateDiagram-v2
     coder_node --> research_team_node
     reporter_node --> enzyme_retriever_node
 
-    enzyme_retriever_node --> human_select_node
+    enzyme_retriever_node --> ezyme_parser_node
+    ezyme_parser_node --> human_select_node
 
     state if_selection <<choice>>
     human_select_node --> if_selection: "Wait for Human Input"
@@ -72,8 +73,9 @@ The state object in LangGraph contains:
 | `auto_accepted_plan`               | Whether to automatically accept plans           |
 | `enable_background_investigation`  | Whether to perform background searches          |
 | `background_investigation_results` | Results from background investigations          |
-| `enzyme_retriever_results`         | Results from enzyme retriever node              |
-| `enzyme_selection`                 | User's natural language selection for design    |
+| `enzyme_retriever_content`         | Results from enzyme retriever node              |
+| `enzyme_retriever_sequences`       | Enzyme infos parsed by enzyme parser node       |
+| `enzyme_selection_feedback`        | User's natural language selection for design    |
 | `design_task_id`                   | The ID of the submitted protein design task     |
 | `enzyme_mutant_results`            | Mutant results from enzyme_designer_node        |
 

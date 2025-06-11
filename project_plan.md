@@ -34,6 +34,7 @@ graph TB
             CoderNode["coder_node()"]
             ReporterNode["reporter_node()"]
             EnzymeRetrieverNode["enzyme_retriever_node()"]
+            EnzymeParserNode["enzeme_parser_node()"]
             HumanSelectNode["human_select_node()"]
             EnzymeDesignerNode["enzyme_designer_node()"]
         end
@@ -77,7 +78,8 @@ graph TB
     ResearchTeamNode -- "All steps completed" --> ReporterNode
     
     ReporterNode --> EnzymeRetrieverNode
-    EnzymeRetrieverNode --> HumanSelectNode
+    EnzymeRetrieverNode --> EnzymeParserNode
+    EnzymeParserNode --> HumanSelectNode
     
     HumanSelectNode -- "Selection provided" --> EnzymeDesignerNode
     HumanSelectNode -- "More info requested" --> EnzymeRetrieverNode
