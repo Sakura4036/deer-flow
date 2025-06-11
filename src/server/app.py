@@ -142,7 +142,7 @@ async def _astream_workflow_generator(
                             "id": event_data["__interrupt__"][0].ns[0],
                             "role": "assistant",
                             "finish_reason": "interrupt",
-                            **data_to_send,
+                            **data_to_send
                         },
                     )
                     yield event_to_write

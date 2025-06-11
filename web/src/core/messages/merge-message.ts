@@ -92,5 +92,8 @@ function mergeToolCallResultMessage(
 
 function mergeInterruptMessage(message: Message, event: InterruptEvent) {
   message.isStreaming = false;
+  message.content = event.data.content;
+  message.interrupt_type = event.data.interrupt_type;
   message.options = event.data.options;
+  message.extra_data = event.data.extra_data;
 }

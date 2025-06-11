@@ -5,6 +5,7 @@ import { LoadingOutlined } from "@ant-design/icons";
 import { motion } from "framer-motion";
 import { Download, Headphones } from "lucide-react";
 import { useCallback, useMemo, useRef, useState } from "react";
+import { useShallow } from "zustand/react/shallow";
 
 import { LoadingAnimation } from "~/components/deer-flow/loading-animation";
 import { Markdown } from "~/components/deer-flow/markdown";
@@ -35,6 +36,7 @@ import {
   useMessageIds,
   useResearchMessage,
   useStore,
+  listenToPodcast,
 } from "~/core/store";
 import { parseJSON } from "~/core/utils";
 import { cn } from "~/lib/utils";
@@ -143,7 +145,8 @@ function MessageListItem({
       message.agent === "coordinator" ||
       message.agent === "planner" ||
       message.agent === "podcast" ||
-      startOfResearch
+      startOfResearch ||
+      interruptMessage?.id === messageId
     ) {
       let content: React.ReactNode;
       if (message.agent === "planner") {
@@ -175,7 +178,7 @@ function MessageListItem({
         );
       } else if (
         interruptMessage?.id === messageId &&
-        (interruptMessage as any)?.type === "enzyme_selection"
+        (interruptMessage?.interrupt as any)?.type === "enzyme_selection"
       ) {
         content = (
           <div className="w-full px-4">
@@ -262,59 +265,81 @@ function ResearchCard({
   researchId: string;
   onToggleResearch?: () => void;
 }) {
-  const reportId = useStore((state) => state.researchReportIds.get(researchId));
-  const hasReport = reportId !== undefined;
-  const reportGenerating = useStore(
-    (state) => hasReport && state.messages.get(reportId)!.isStreaming,
+  const researchMessage = useResearchMessage(researchId);
+  const researchStarterMessage = useMessage(researchId);
+  const { messages, openResearch, closeResearch } = useStore(
+    useShallow((state) => ({
+      messages: state.researchActivityIds.get(researchId),
+      openResearch: state.openResearch,
+      closeResearch: state.closeResearch,
+    })),
   );
-  const openResearchId = useStore((state) => state.openResearchId);
-  const isOngoing = useStore((state) => state.ongoingResearchId === researchId);
-  const state = useMemo(() => {
-    if (hasReport) {
-      if (reportGenerating) {
-        return "Generating report...";
-      }
-      if (isOngoing) {
-        return "Continuing research...";
-      }
-      return "Report generated";
+  const isOpen = useStore((state) => state.openResearchId === researchId);
+  const ongoingResearchId = useStore((state) => state.ongoingResearchId);
+  const isOngoing = ongoingResearchId === researchId;
+
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+  const handleListen = useCallback(async (researchId: string) => {
+    setIsGenerating(true);
+    try {
+      await listenToPodcast(researchId);
+      setIsListening(true);
+    } catch (error) {
+      console.error("Failed to generate or play podcast", error);
+      // Optionally, show a toast notification to the user
+    } finally {
+      setIsGenerating(false);
     }
-    return "Researching...";
-  }, [hasReport, reportGenerating, isOngoing]);
-  const msg = useResearchMessage(researchId);
-  const title = useMemo(() => {
-    if (msg) {
-      return parseJSON(msg.content ?? "", { title: "" }).title;
-    }
-    return undefined;
-  }, [msg]);
-  const handleOpen = useCallback(() => {
-    if (openResearchId === researchId) {
+  }, []);
+
+  const handleToggle = useCallback(() => {
+    if (isOpen) {
       closeResearch();
     } else {
       openResearch(researchId);
     }
     onToggleResearch?.();
-  }, [openResearchId, researchId, onToggleResearch]);
+  }, [isOpen, researchId, onToggleResearch, openResearch, closeResearch]);
+  if (!researchMessage) {
+    return null;
+  }
+  const status = useMemo(() => {
+    if (isOngoing) {
+      return "Researching...";
+    }
+    if (researchMessage?.agent === "reporter") {
+      return "Report generated";
+    }
+    return "";
+  }, [isOngoing, researchMessage]);
+
+  const title = useMemo(() => {
+    if (researchStarterMessage?.agent === "enzyme_retriever") {
+      return "酶挖掘任务";
+    }
+    return researchMessage?.plan?.title;
+  }, [researchStarterMessage, researchMessage]);
+
   return (
     <Card className={cn("w-full", className)}>
       <CardHeader>
         <CardTitle>
-          <RainbowText animated={state !== "Report generated"}>
-            {title !== undefined && title !== "" ? title : "Deep Research"}
+          <RainbowText animated={status !== "Report generated"}>
+            {title ?? "Deep Research"}
           </RainbowText>
         </CardTitle>
       </CardHeader>
       <CardFooter>
         <div className="flex w-full">
           <RollingText className="text-muted-foreground flex-grow text-sm">
-            {state}
+            {status}
           </RollingText>
           <Button
-            variant={!openResearchId ? "default" : "outline"}
-            onClick={handleOpen}
+            variant={!isOpen ? "default" : "outline"}
+            onClick={handleToggle}
           >
-            {researchId !== openResearchId ? "Open" : "Close"}
+            {isOpen ? "Close" : "Open"}
           </Button>
         </div>
       </CardFooter>

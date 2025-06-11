@@ -3,27 +3,44 @@
 
 export type MessageRole = "user" | "assistant" | "tool";
 
+export interface ProteinSequence {
+  protein_name: string;
+  accession?: string;
+  organism_name?: string;
+  sequence: string;
+  gene_name?: string;
+}
+
+// export interface Interrupt {
+//   interrupt_type: "plan_review" | "enzyme_selection";
+//   content: string;
+//   options: Option[];
+//   extra_data: {
+//     sequences?: ProteinSequence[];  // for enzyme_selection interrupt
+//     [key: string]: any;
+//   };
+// }
+
+export type Agent = "coordinator" | "planner" | "researcher" | "coder" | "reporter" | "enzyme_retriever" | "enzyme_designer" | "podcast";
+
 export interface Message {
   id: string;
   threadId: string;
-  agent?:
-  | "coordinator"
-  | "planner"
-  | "researcher"
-  | "coder"
-  | "reporter"
-  | "enzyme_retriever"
-  | "enzyme_designer"
-  | "podcast";
+  agent?: Agent;
   role: MessageRole;
   isStreaming?: boolean;
   content: string;
   contentChunks: string[];
   toolCalls?: ToolCallRuntime[];
-  options?: Option[];
   finishReason?: "stop" | "interrupt" | "tool_calls";
   interruptFeedback?: string;
   resources?: Array<Resource>;
+  interrupt_type?: "plan_review" | "enzyme_selection";
+  options?: Option[];
+  extra_data?: {
+    sequences?: ProteinSequence[];  // for enzyme_selection interrupt
+    [key: string]: any;
+  };
 }
 
 export interface Option {

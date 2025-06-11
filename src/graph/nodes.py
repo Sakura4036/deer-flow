@@ -34,7 +34,7 @@ from src.prompts.planner_model import Plan, StepType
 from src.prompts.template import apply_prompt_template, env
 from src.utils.json_utils import repair_json_output
 
-from .types import State
+from .types import State, Interrupt
 
 logger = logging.getLogger(__name__)
 
@@ -187,12 +187,14 @@ def human_feedback_node(
     # check if the plan is auto accepted
     auto_accepted_plan = state.get("auto_accepted_plan", False)
     if not auto_accepted_plan:
-        interrupt_payload = {
+        interrupt_payload: Interrupt = {
+            "interrupt_type": "plan_review",
             "content": "Please Review the Plan.",
             "options": [
                 {"text": "Edit plan", "value": "edit_plan"},
                 {"text": "Start research", "value": "accepted"},
             ],
+            "extra_data": {}
         }
         feedback = interrupt(interrupt_payload)
 
@@ -656,8 +658,8 @@ def human_select_node(
     # Convert Pydantic objects to dicts for JSON serialization
     sequences_as_dicts = [seq.model_dump() for seq in sequences]
 
-    interrupt_payload = {
-        "type": "enzyme_selection",
+    interrupt_payload: Interrupt = {
+        "interrupt_type": "enzyme_selection",
         "content": (
             "Please review the enzyme information. \n"
             "To proceed, please select the sequences and start your response with `[ACCEPT_SEQUENCES]` followed by your instructions for the designer.\n"
@@ -667,7 +669,9 @@ def human_select_node(
             {"text": "Design Mutants", "value": "accept_sequences"},
             {"text": "Request More Info", "value": "request_more_info"},
         ],
-        "sequences": sequences_as_dicts,
+        "extra_data": {
+            "sequences": sequences_as_dicts
+        }
     }
 
     feedback = interrupt(interrupt_payload)

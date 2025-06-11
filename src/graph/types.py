@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MIT
 
 import operator
-from typing import Annotated, Optional
+from typing import Annotated, Optional, TypedDict
 
 from langgraph.graph import MessagesState
 from pydantic import BaseModel
@@ -22,6 +22,13 @@ class ProteinSequenceList(BaseModel):
     protein_sequences: list[ProteinSequence]
 
 
+class Interrupt(TypedDict):
+    interrupt_type:str
+    content:str
+    options:list[dict]
+    extra_data:dict = {}
+
+
 class State(MessagesState):
     """State for the agent system, extends MessagesState with next field."""
 
@@ -37,6 +44,6 @@ class State(MessagesState):
     background_investigation_results: str = None
     enzyme_retriever_content: str = ""
     enzyme_retriever_sequences: list[ProteinSequence] = []
-    user_selected_enzyme_sequences: list[ProteinSequence] = []
+    # user_selected_enzyme_sequences: list[ProteinSequence] = []
     design_task_id: Optional[str] = None
     enzyme_mutant_results: list[dict] = []
