@@ -41,6 +41,17 @@ export function ResearchActivitiesBlock({
     state.researchActivityIds.get(researchId),
   )!;
   const ongoing = useStore((state) => state.ongoingResearchId === researchId);
+  const researchType = useStore(
+    (state) => {
+      const firstMessageId = activityIds[0];
+      if (firstMessageId) {
+        const message = state.messages.get(firstMessageId);
+        return message?.agent === "enzyme_retriever" ? "enzyme_retrieval" : "research";
+      }
+      return "research";
+    }
+  );
+
   return (
     <>
       <ul className={cn("flex flex-col py-4", className)}>

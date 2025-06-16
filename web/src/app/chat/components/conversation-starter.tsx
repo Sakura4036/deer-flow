@@ -8,10 +8,10 @@ import { cn } from "~/lib/utils";
 import { Welcome } from "./welcome";
 
 const questions = [
-  "How many times taller is the Eiffel Tower than the tallest building in the world?",
-  "How many years does an average Tesla battery last compared to a gasoline engine?",
-  "How many liters of water are required to produce 1 kg of beef?",
-  "How many times faster is the speed of light compared to the speed of sound?",
+  "高温淀粉酶在食品加工中有哪些商业化产品？它们如何优化淀粉液化工艺？",
+  "纤维素酶在生物燃料生产中的关键作用是什么？目前市场上有哪些高效的纤维素酶制剂？",
+  "撰写洗涤剂用碱性蛋白酶的市场研究报告，详细介绍主流的工业产品",
+  "写一份ProteinA的详细研究报告，包括市场、产品、文献和相关专利",
 ];
 export function ConversationStarter({
   className,

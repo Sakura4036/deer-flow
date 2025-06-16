@@ -7,6 +7,7 @@ import logging
 from langchain_core.language_models import BaseChatModel
 from langchain_openai import ChatOpenAI
 from langchain.chat_models import init_chat_model
+from langchain_core.messages import ToolMessage
 from tenacity import retry, stop_after_attempt
 from src.config import load_yaml_config
 from src.config.agents import LLMType, AgentType, AGENT_LLM_MAP
@@ -57,17 +58,35 @@ def get_agent_llm(agent_type: str | AgentType = None) -> ChatOpenAI:
     return get_llm_by_type(llm_type)
 
 
-@retry(stop=stop_after_attempt(3))
-def invoke_llm_with_retry(llm, messages, stream:bool=False, **kwargs):
-    if stream:
-        return llm.stream(messages, **kwargs)
-    else:
-        return llm.invoke(messages, **kwargs)
+class NoToolCallsError(Exception):
+    """Raised when a response is expected to contain tool calls but doesn't"""
+    pass
+
 
 @retry(stop=stop_after_attempt(3))
-async def ainvoke_llm_with_retry(llm, messages, **kwargs):
-    response = await llm.ainvoke(messages, **kwargs)
-    return response
+def invoke_llm_with_retry(llm:ChatOpenAI, llm_input, stream:bool=False, must_used_tool:bool=False, **kwargs):
+    if stream:
+        return llm.stream(llm_input, **kwargs)
+    else:
+        response = llm.invoke(llm_input, **kwargs)
+        if not must_used_tool:
+            return response
+        messages = response.get("messages")
+        for msg in messages:
+            if isinstance(msg, ToolMessage):
+                return response
+        raise NoToolCallsError("LLM response does not contain required tool calls")
+
+@retry(stop=stop_after_attempt(3))
+async def ainvoke_llm_with_retry(llm:ChatOpenAI, llm_input, must_used_tool:bool=False, **kwargs):
+    response = await llm.ainvoke(llm_input, **kwargs)
+    if not must_used_tool:
+        return response
+    messages = response.get("messages")
+    for msg in messages:
+        if isinstance(msg, ToolMessage):
+            return response
+    raise NoToolCallsError("LLM response does not contain required tool calls")
 
 # Initialize LLMs for different purposes - now these will be cached
 basic_llm = get_llm_by_type("basic")

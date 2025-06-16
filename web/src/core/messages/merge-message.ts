@@ -93,7 +93,9 @@ function mergeToolCallResultMessage(
 function mergeInterruptMessage(message: Message, event: InterruptEvent) {
   message.isStreaming = false;
   message.content = event.data.content;
-  message.interrupt_type = event.data.interrupt_type;
-  message.options = event.data.options;
-  message.extra_data = event.data.extra_data;
+  // Backward compatibility: some server versions use `type` field instead of `interrupt_type`
+  const interruptType = (event.data as any).interrupt_type ?? (event.data as any).type;
+  message.interrupt_type = interruptType;
+  message.options = (event.data as any).options ?? [];
+  message.extra_data = (event.data as any).extra_data;
 }

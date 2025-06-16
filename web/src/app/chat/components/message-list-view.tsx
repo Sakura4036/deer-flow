@@ -168,26 +168,35 @@ function MessageListItem({
           </div>
         );
       } else if (startOfResearch) {
-        content = (
-          <div className="w-full px-4">
-            <ResearchCard
-              researchId={message.id}
-              onToggleResearch={onToggleResearch}
-            />
-          </div>
-        );
+        if (message.agent === "enzyme_retriever") {
+          content = (
+            <div className="w-full px-4">
+              <EnzymeRetrieverCard
+                researchId={message.id}
+                onToggleResearch={onToggleResearch}
+              />
+            </div>
+          );
+        } else {
+          content = (
+            <div className="w-full px-4">
+              <ResearchCard
+                researchId={message.id}
+                onToggleResearch={onToggleResearch}
+              />
+            </div>
+          );
+        }
       } else if (
         interruptMessage?.id === messageId &&
-        (interruptMessage?.interrupt as any)?.type === "enzyme_selection"
+        (interruptMessage as any)?.interrupt_type === "enzyme_selection"
       ) {
         content = (
           <div className="w-full px-4">
             <EnzymeSelectionCard
-              message={interruptMessage}
-              waitForFeedback={waitForFeedback}
+              waitForFeedback={true}
               interruptMessage={interruptMessage}
               onFeedback={onFeedback}
-              onSendMessage={onSendMessage}
             />
           </div>
         );
@@ -277,6 +286,9 @@ function ResearchCard({
   const isOpen = useStore((state) => state.openResearchId === researchId);
   const ongoingResearchId = useStore((state) => state.ongoingResearchId);
   const isOngoing = ongoingResearchId === researchId;
+  const hasEnzymeRetriever = useStore((state) =>
+    Array.from(state.messages.values()).some(m => m.agent === "enzyme_retriever")
+  );
 
   const [isGenerating, setIsGenerating] = useState(false);
   const [isListening, setIsListening] = useState(false);
@@ -304,21 +316,32 @@ function ResearchCard({
   if (!researchMessage) {
     return null;
   }
+
   const status = useMemo(() => {
+    // 如果存在酶挖掘活动，说明研究报告已生成
+    if (hasEnzymeRetriever) {
+      return "Report generated";
+    }
+
     if (isOngoing) {
       return "Researching...";
     }
+
     if (researchMessage?.agent === "reporter") {
       return "Report generated";
     }
+
     return "";
-  }, [isOngoing, researchMessage]);
+  }, [isOngoing, researchMessage, hasEnzymeRetriever]);
 
   const title = useMemo(() => {
     if (researchStarterMessage?.agent === "enzyme_retriever") {
       return "酶挖掘任务";
     }
-    return researchMessage?.plan?.title;
+
+    // 安全地获取计划标题
+    const planData = parseJSON(researchMessage?.content ?? "", { title: "" });
+    return planData?.title || "Deep Research";
   }, [researchStarterMessage, researchMessage]);
 
   return (
@@ -326,7 +349,7 @@ function ResearchCard({
       <CardHeader>
         <CardTitle>
           <RainbowText animated={status !== "Report generated"}>
-            {title ?? "Deep Research"}
+            {title}
           </RainbowText>
         </CardTitle>
       </CardHeader>
@@ -449,131 +472,77 @@ function PlanCard({
 
 function EnzymeSelectionCard({
   className,
-  message,
   interruptMessage,
-  onFeedback,
-  onSendMessage,
   waitForFeedback,
+  onFeedback,
 }: {
   className?: string;
-  message: Message;
-  interruptMessage?: Message | null;
-  onFeedback?: (feedback: { option: Option }) => void;
-  onSendMessage?: (
-    message: string,
-    options?: { interruptFeedback?: string },
-  ) => void;
+  interruptMessage: Message;
   waitForFeedback?: boolean;
+  onFeedback?: (feedback: { option: Option }) => void;
 }) {
-  const [selectedSequences, setSelectedSequences] = useState<string[]>([]);
-
-  const handleSequenceSelection = (sequenceId: string) => {
-    setSelectedSequences((prev) =>
-      prev.includes(sequenceId)
-        ? prev.filter((id) => id !== sequenceId)
-        : [...prev, sequenceId],
-    );
-  };
-
-  const handleAccept = useCallback(async () => {
-    if (onSendMessage) {
-      const selected = (interruptMessage as any)?.sequences?.filter(
-        (s: ProteinSequence) => s.id && selectedSequences.includes(s.id),
-      );
-      const sequenceNames = selected?.map((s: ProteinSequence) => s.name).join(", ");
-      onSendMessage(
-        `Please proceed with designing mutants for the following sequences: ${sequenceNames}. Selected IDs: ${selectedSequences.join(
-          ", ",
-        )}`,
-        {
-          interruptFeedback: "accept_sequences",
-        },
-      );
+  // Extract sequences from extra_data
+  const sequences = useMemo(() => {
+    try {
+      return interruptMessage.extra_data?.sequences ?? [];
+    } catch {
+      return [];
     }
-  }, [onSendMessage, selectedSequences, interruptMessage]);
-
-  const sequences: ProteinSequence[] =
-    (interruptMessage as any)?.sequences ?? [];
+  }, [interruptMessage.extra_data]);
 
   return (
     <Card className={cn("w-full", className)}>
       <CardHeader>
-        <CardTitle>Enzyme Selection</CardTitle>
+        <CardTitle>
+          <Markdown animated>{`### 🧬 Review Enzyme Sequences`}</Markdown>
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <Markdown className="opacity-80" animated>
-          {interruptMessage?.content}
+          {interruptMessage.content}
         </Markdown>
-        {sequences.length > 0 && (
-          <div className="my-4 space-y-4">
-            <h3 className="text-lg font-medium">Available Sequences:</h3>
-            <div className="max-h-60 overflow-y-auto rounded-md border p-2">
-              <ul className="space-y-3 p-2">
-                {sequences.map((seq: ProteinSequence) => (
-                  <li
-                    key={seq.id}
-                    className="flex items-start space-x-3 rounded-md border p-4"
-                  >
-                    <Checkbox
-                      id={seq.id}
-                      checked={selectedSequences.includes(seq.id!)}
-                      onCheckedChange={() => handleSequenceSelection(seq.id!)}
-                    />
-                    <div className="grid gap-1.5 leading-none">
-                      <Label htmlFor={seq.id} className="font-bold">
-                        {seq.name}
-                      </Label>
-                      <p className="text-sm text-muted-foreground">
-                        {seq.description}
-                      </p>
-                      <p className="font-mono text-sm break-all">
-                        {seq.sequence}
-                      </p>
-                      {seq.source && (
-                        <a
-                          href={seq.source}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-sm text-blue-500 hover:underline"
-                        >
-                          Source
-                        </a>
-                      )}
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
+        {Array.isArray(sequences) && sequences.length > 0 && (
+          <ul className="mt-4 flex max-h-[320px] flex-col gap-4 overflow-y-auto pr-2">
+            {sequences.map((seq: any, i: number) => (
+              <li
+                key={`enzyme-seq-${i}`}
+                className="bg-accent/20 rounded-md p-3 text-sm"
+              >
+                {seq.protein_name && (
+                  <div className="font-medium">{seq.protein_name}</div>
+                )}
+                {seq.sequence && (
+                  <div className="font-mono break-all text-xs">
+                    {seq.sequence}
+                  </div>
+                )}
+                <div className="text-muted-foreground mt-1 flex flex-wrap gap-2 text-xs">
+                  {seq.organism_name && (
+                    <span>Organism: {seq.organism_name}</span>
+                  )}
+                  {seq.accession && <span>Accession: {seq.accession}</span>}
+                  {seq.gene_name && <span>Gene: {seq.gene_name}</span>}
+                </div>
+              </li>
+            ))}
+          </ul>
         )}
       </CardContent>
       <CardFooter className="flex justify-end">
-        {!message.isStreaming && interruptMessage?.options?.length && (
+        {!interruptMessage.isStreaming && interruptMessage?.options?.length && (
           <motion.div
             className="flex gap-2"
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.3 }}
           >
-            {interruptMessage?.options.map((option) => (
+            {interruptMessage.options.map((option) => (
               <Button
                 key={option.value}
-                variant={
-                  option.value === "accept_sequences" ? "default" : "outline"
-                }
-                disabled={
-                  !waitForFeedback ||
-                  (option.value === "accept_sequences" &&
-                    selectedSequences.length === 0)
-                }
+                variant={option.value === "accept_sequences" ? "default" : "outline"}
+                disabled={!waitForFeedback}
                 onClick={() => {
-                  if (option.value === "accept_sequences") {
-                    void handleAccept();
-                  } else {
-                    onFeedback?.({
-                      option,
-                    });
-                  }
+                  onFeedback?.({ option });
                 }}
               >
                 {option.text}
@@ -581,6 +550,78 @@ function EnzymeSelectionCard({
             ))}
           </motion.div>
         )}
+      </CardFooter>
+    </Card>
+  );
+}
+
+function EnzymeRetrieverCard({
+  className,
+  researchId,
+  onToggleResearch,
+}: {
+  className?: string;
+  researchId: string;
+  onToggleResearch?: () => void;
+}) {
+  const researchStarterMessage = useMessage(researchId);
+  const isOpen = useStore((state) => state.openResearchId === researchId);
+  const ongoingResearchId = useStore((state) => state.ongoingResearchId);
+  const isOngoing = ongoingResearchId === researchId;
+
+  // 检查是否存在酶选择中断消息，如果存在则表明酶挖掘任务已完成
+  const hasEnzymeSelectionInterrupt = useStore((state) =>
+    Array.from(state.messages.values()).some(m =>
+      (m as any)?.interrupt_type === "enzyme_selection" ||
+      m.agent === "enzyme_designer")
+  );
+
+  const handleToggle = useCallback(() => {
+    if (isOpen) {
+      closeResearch();
+    } else {
+      openResearch(researchId);
+    }
+    onToggleResearch?.();
+  }, [isOpen, researchId, onToggleResearch]);
+
+  if (!researchStarterMessage) {
+    return null;
+  }
+
+  const status = useMemo(() => {
+    if (hasEnzymeSelectionInterrupt) {
+      return "Retrieval completed";
+    }
+
+    if (isOngoing) {
+      return "Retrieving...";
+    }
+
+    return "Retrieval completed";
+  }, [isOngoing, hasEnzymeSelectionInterrupt]);
+
+  return (
+    <Card className={cn("w-full", className)}>
+      <CardHeader>
+        <CardTitle>
+          <RainbowText animated={isOngoing}>
+            🧬 酶挖掘任务
+          </RainbowText>
+        </CardTitle>
+      </CardHeader>
+      <CardFooter>
+        <div className="flex w-full">
+          <RollingText className="text-muted-foreground flex-grow text-sm">
+            {status}
+          </RollingText>
+          <Button
+            variant={!isOpen ? "default" : "outline"}
+            onClick={handleToggle}
+          >
+            {isOpen ? "Close" : "Open"}
+          </Button>
+        </div>
       </CardFooter>
     </Card>
   );

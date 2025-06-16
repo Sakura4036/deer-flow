@@ -506,13 +506,13 @@ async def researcher_node(
     logger.info("Researcher searching for information.")
     configurable = Configuration.from_runnable_config(config)
     web_search_tool = get_web_search_tool(configurable.max_search_results)
-    patent_search_tool = get_patent_search_tool(configurable.max_search_results)
+    # patent_search_tool = get_patent_search_tool(configurable.max_search_results)
     literture_search_tool = get_literature_search_tool(configurable.max_search_results)
 
     default_tools = [
         web_search_tool,
         crawl_tool,
-        patent_search_tool,
+        # patent_search_tool,
         literture_search_tool,
     ]
     return await _setup_and_execute_agent_step(
@@ -597,7 +597,7 @@ async def enzyme_retriever_node(
                 prompt=prompt,
             )
             response = await ainvoke_llm_with_retry(
-                agent, input_, config={"recursion_limit": 25}
+                agent, input_, must_used_tool=True, config={"recursion_limit": 25}
             )
     else:
         agent = create_react_agent(
@@ -607,7 +607,7 @@ async def enzyme_retriever_node(
             prompt=prompt,
         )
         response = await ainvoke_llm_with_retry(
-            agent, input_, config={"recursion_limit": 25}
+            agent, input_, must_used_tool=True, config={"recursion_limit": 25}
         )
     enzyme_retriever_content = response["messages"][-1].content
     logger.info(f"Enzyme retriever content: {enzyme_retriever_content}")
@@ -624,7 +624,7 @@ async def enzyme_parser_node(
     try:
         parser_agent_name = "enzyme_parser"
         parser_template_str = env.get_template(f"{parser_agent_name}.md").render()
-        parser_llm = get_llm_by_type(AGENT_LLM_MAP[parser_agent_name]).with_structured_output(ProteinSequenceList)
+        parser_llm = get_llm_by_type(AGENT_LLM_MAP[parser_agent_name]).with_structured_output(ProteinSequenceList, method="json_mode")
         messages = [
             SystemMessage(content=parser_template_str),
             HumanMessage(content=enzyme_retriever_content)
@@ -662,11 +662,9 @@ def human_select_node(
         "interrupt_type": "enzyme_selection",
         "content": (
             "Please review the enzyme information. \n"
-            "To proceed, please select the sequences and start your response with `[ACCEPT_SEQUENCES]` followed by your instructions for the designer.\n"
-            "If you need more information, start your response with `[REQUEST_MORE_INFO]`."
         ),
         "options": [
-            {"text": "Design Mutants", "value": "accept_sequences"},
+            {"text": "Accept Sequences", "value": "accept_sequences"},
             {"text": "Request More Info", "value": "request_more_info"},
         ],
         "extra_data": {
@@ -722,6 +720,11 @@ async def enzyme_designer_node(state: State, config: RunnableConfig):
         get_unsupervise_result,
     ]
     agent_name = "enzyme_designer"
+    enzyme_retriever_content = state.get("enzyme_retriever_content", "")
+    messges = [
+        AIMessage(content=enzyme_retriever_content),
+    ]
+    
     designer_agent = create_agent(
         llm=designer_llm,
         tools=tools,
@@ -732,6 +735,7 @@ async def enzyme_designer_node(state: State, config: RunnableConfig):
                 "user_request": user_message,
                 "retrieved_enzymes": retrieved_enzymes_str,
                 "task_id": task_id,
+                "messages": messges
             },
         ),
     )
@@ -739,7 +743,8 @@ async def enzyme_designer_node(state: State, config: RunnableConfig):
     # Invoke the agent
     response = await ainvoke_llm_with_retry(
         designer_agent,
-        [HumanMessage(content=user_message)],
+        llm_input=[HumanMessage(content=user_message)],
+        # must_used_tool=True,
     )
 
     # If the agent calls a tool, we process it
@@ -786,7 +791,4 @@ if __name__ == "__main__":
             "messages": [],
             "locale": "en-US",
     }
-    agent_name = 'enzyme_retriever'
-    template = env.get_template(f"{agent_name}.md")
-    prompt = template.render(**_input_state)
-    print(prompt)
+    pass

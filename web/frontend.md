@@ -18,45 +18,49 @@
 graph TD
     subgraph "UI Components (React)"
         direction LR
-        A["main.tsx (Layout)"] --> B["MessagesBlock"];
-        B --> C["MessageListView"];
-        C --> D["PlanCard"];
-        C --> E["EnzymeSelectionCard"];
-        C --> F["DefaultMessageBubble"];
-        B --> G["InputBox"];
+        A["main.tsx (Layout)"] --> B["MessagesBlock"]
+        B --> C["MessageListView"]
+        C --> D["PlanCard"]
+        C --> E["ResearchCard"]
+        C --> F["ResearchActivitiesBlock"]
+        C --> G["EnzymeRetrieverCard"]
+        C --> H["EnzymeSelectionCard"]
+        C --> I["EnzymeDesignerResultCard"]
+        C --> J["DefaultMessageBubble"]
+        B --> K["InputBox"]
     end
 
     subgraph "State Management (Zustand)"
         direction TB
-        H["store.ts"];
-        I["useStore Hook"];
-        H -- "Defines state & actions" --> I;
-        J["sendMessage() Action"];
-        H -- "Contains" --> J;
+        L["store.ts"]
+        M["useStore Hook"]
+        L -- "Defines state & actions" --> M
+        N["sendMessage() Action"]
+        L -- "Contains" --> N
     end
     
     subgraph "API Layer"
         direction TB
-        K["chat.ts"];
-        L["chatStream()"];
-        K -- "Contains" --> L;
+        O["chat.ts"]
+        P["chatStream()"]
+        O -- "Contains" --> P
     end
     
     subgraph "Backend (FastAPI)"
-        M["/api/chat/stream"];
+        Q["/api/chat/stream"]
     end
 
     %% Connections
-    G -- "User input" --> J;
-    D -- "User feedback (e.g., 'accept plan')" --> J;
-    E -- "User selection" --> J;
+    K -- "User input" --> N
+    D -- "User feedback (accept/modify plan)" --> N
+    H -- "User selection (accept sequences / more info)" --> N
 
-    J -- "Calls API" --> L;
-    L -- "Sends SSE request" --> M;
-    M -- "Streams events back" --> L;
-    L -- "Yields events" --> J;
-    J -- "Updates state" --> I;
-    I -- "Triggers re-render" --> B;
+    N -- "Calls API" --> P
+    P -- "Sends SSE request" --> Q
+    Q -- "Streams events back" --> P
+    P -- "Yields events" --> N
+    N -- "Updates state" --> M
+    M -- "Triggers re-render" --> B
 ```
 
 ### 2.1. 数据流与人机交互
@@ -83,6 +87,22 @@ graph TD
     *   后端工作流接收到这个反馈后，从暂停处继续执行。
 
 这个设计形成了一个完整的、由数据驱动的异步反馈闭环，具有很强的可扩展性。
+
+### 2.2. 前端 UI 交互全流程
+
+下面的步骤展示了在一次完整的研究会话中，前端如何与后端 LangGraph 状态机 (见 `dataflow.md`) 对应并逐步呈现 UI 组件。
+
+1. **用户提问** – `InputBox` 捕获输入并立即在界面生成一条 _user_ 消息。
+2. **PlanCard** – 后端 `planner_node` 返回计划并通过 `human_feedback_node` 触发 `interrupt`；前端渲染 `PlanCard`，附带 "Edit plan / Start research" 按钮。
+3. **用户反馈** – 用户点击按钮后，`InputBox` 将选项值作为 `interrupt_feedback` 发送给后端。
+4. **ResearchCard & ResearchActivitiesBlock** – 计划被接受后 `research_team_node` 开始执行，第一条 `researcher`/`coder` 消息触发新的研究面板：顶部 `ResearchCard` 显示研究标题与状态，下方 `ResearchActivitiesBlock` 实时展示各工具调用。
+5. **Reporter 输出** – 当 `reporter_node` 完成报告时，`ResearchCard` 状态更新为 "Report generated"，并在 `ResearchReportBlock` 页签中展示完整报告。
+6. **EnzymeRetrieverCard** – 报告生成后工作流进入 `enzyme_retriever_node`，新的研究上下文被创建，UI 顶部显示 `EnzymeRetrieverCard`，Activities 区域继续追加抓取过程。
+7. **EnzymeSelectionCard** – `enzyme_parser_node` 解析序列表并通过 `human_select_node` 触发第二个 `interrupt`；前端渲染 `EnzymeSelectionCard`，展示候选酶信息及 "Accept Sequences / Request More Info" 按钮。
+8. **用户反馈** – 用户点击按钮，前端再次携带 `interrupt_feedback` 调用 `sendMessage`。
+9. **EnzymeDesignerResultCard（规划中）** – 若用户接受序列，`enzyme_designer_node` 启动。当前实现会以普通消息形式返回结果，未来将通过 `EnzymeDesignerResultCard` 进行结构化展示（参见第 4.2 节改进计划）。
+
+> 注：步骤 9 的卡片仍在开发中，现阶段会回退到默认 `MessageBubble` 渲染，但逻辑路径已全部贯通。
 
 ## 3. 与项目计划的符合度分析
 

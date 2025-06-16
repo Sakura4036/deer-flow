@@ -46,7 +46,7 @@ export default function RootLayout({
       <body className="bg-app">
         <ThemeProviderWrapper>{children}</ThemeProviderWrapper>
         <Toaster />
-        <StagewiseProvider />
+        {/* <StagewiseProvider /> */}
         {
           // NO USER BEHAVIOR TRACKING OR PRIVATE DATA COLLECTION BY DEFAULT
           //

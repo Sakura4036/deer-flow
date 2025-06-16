@@ -176,6 +176,7 @@ async def _astream_workflow_generator(
                 event_to_write = _make_event("tool_call_result", event_stream_message)
                 yield event_to_write
             elif isinstance(message_chunk, AIMessageChunk):
+                is_message_chunk = False
                 # AI Message - Raw message tokens
                 if message_chunk.tool_calls:
                     # AI Message - Tool Call
@@ -195,10 +196,11 @@ async def _astream_workflow_generator(
                 else:
                     # AI Message - Raw message tokens
                     event_to_write = _make_event("message_chunk", event_stream_message)
+                    is_message_chunk = True
                     yield event_to_write
             
             if event_to_write:
-                if event_stream_message.get("content")!="":
+                if is_message_chunk and event_stream_message.get("content"):
                     # Write the event to the file
                     await f.write(event_to_write)
 
