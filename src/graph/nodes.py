@@ -687,14 +687,12 @@ def human_select_node(
             update={"messages": state["messages"] + [full_message]},
             goto="enzyme_designer",
         )
-
-    # Default to requesting more info, which is the safer option.
-    # This also covers the `startswith("[REQUEST_MORE_INFO]")` case.
-    logger.info("User requested more information. Routing back to enzyme retriever.")
-    return Command(
-        update={"messages": state["messages"] + [full_message]},
-        goto="enzyme_retriever",
-    )
+    else:
+        logger.info("User requested more information. Routing back to enzyme retriever.")
+        return Command(
+            update={"messages": state["messages"] + [full_message]},
+            goto="enzyme_retriever",
+        )
 
 
 async def enzyme_designer_node(state: State):

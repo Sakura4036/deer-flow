@@ -76,7 +76,7 @@ class Mutation(TypedDict):
 
 
 class UnsuperviseMutationResult(TypedDict):
-    fasta: str  # The fasta sequence of the protein
+    # fasta: str  # The fasta sequence of the protein
     id: str  # The id of the protein
     pdb: str  # The pdb file content of the protein
     select: List[Mutation]  # The top mutation sites and corresponding scores
@@ -98,7 +98,11 @@ def get_unsupervise_result(
         response.raise_for_status()
         response_json = response.json()
         if response_json["code"] == 200:
-            return response_json["data"]
+            results = []
+            for r in response_json["data"]:
+                r.pop("fasta")
+                results.append(r)
+            return results
         else:
             return response_json["message"]
     except Exception as e:
