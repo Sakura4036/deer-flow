@@ -4,7 +4,7 @@ from enum import Enum
 from typing import Literal
 
 # Define available LLM types
-LLMType = Literal["basic", "reasoning", "vision"]
+LLMType = Literal["basic", "reasoning", "vision", "tool_call"]
 
 class AgentType(str, Enum):
     COORDINATOR = "coordinator"
@@ -31,5 +31,5 @@ AGENT_LLM_MAP: dict[str, LLMType] = {
     "prose_writer": "basic",
     "enzyme_retriever": "reasoning",
     "enzyme_parser": "basic",
-    "enzyme_designer": "basic",
+    "enzyme_designer": "tool_call",
 }

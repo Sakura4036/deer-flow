@@ -99,12 +99,17 @@ async def _astream_workflow_generator(
         "auto_accepted_plan": auto_accepted_plan,
         "enable_background_investigation": enable_background_investigation,
     }
-    if not auto_accepted_plan and interrupt_feedback:
-        resume_msg = f"[{interrupt_feedback}]"
-        # add the last message to the resume message
-        if messages:
-            resume_msg += f" {messages[-1]['content']}"
-        input_ = Command(resume=resume_msg)
+    print(f"interrupt_feedback: {interrupt_feedback}")
+    # 处理中断反馈，现在允许非计划类中断反馈即使在auto_accepted_plan为true时也能被处理
+    if interrupt_feedback:
+        # 只有当auto_accepted_plan为false时才忽略计划相关的中断
+        is_plan_feedback = interrupt_feedback in ["edit_plan", "accepted"]
+        if not (is_plan_feedback and auto_accepted_plan):
+            resume_msg = f"[{interrupt_feedback}]"
+            # add the last message to the resume message
+            if messages:
+                resume_msg += f" {messages[-1]['content']}"
+            input_ = Command(resume=resume_msg)
     
     user_input = messages[-1]['content']
     add_first_message = True
@@ -160,6 +165,7 @@ async def _astream_workflow_generator(
                 "role": "assistant",
                 "content": message_chunk.content,
             }
+            is_message_chunk = False
             if add_first_message:
                 # add the first user message to the replay file
                 first_message = {"thread_id": thread_id, "id": message_chunk.id, "role": "user", "content": f"{user_input}", "finish_reason": "stop"}
@@ -176,7 +182,6 @@ async def _astream_workflow_generator(
                 event_to_write = _make_event("tool_call_result", event_stream_message)
                 yield event_to_write
             elif isinstance(message_chunk, AIMessageChunk):
-                is_message_chunk = False
                 # AI Message - Raw message tokens
                 if message_chunk.tool_calls:
                     # AI Message - Tool Call
@@ -200,8 +205,10 @@ async def _astream_workflow_generator(
                     yield event_to_write
             
             if event_to_write:
-                if is_message_chunk and event_stream_message.get("content"):
-                    # Write the event to the file
+                # Write the event to the file
+                if not is_message_chunk:
+                    await f.write(event_to_write)
+                elif event_stream_message.get("content"):
                     await f.write(event_to_write)
 
 

@@ -50,8 +50,9 @@ Your task involves a multi-step process for each enzyme found in the input text:
 
 ### Your Output MUST BE:
 ```json
-[
-  {
+{
+  "protein_sequences":
+  [{
     "protein_name": "SuperEnzyme A",
     "accession": "P12345",
     "organism_name": "E. coli",
@@ -59,5 +60,5 @@ Your task involves a multi-step process for each enzyme found in the input text:
     "gene_name": "supA"
   },
   ...
-]
+  ]}
 ```

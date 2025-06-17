@@ -1,6 +1,8 @@
 # Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 # SPDX-License-Identifier: MIT
 
+import asyncio
+from datetime import datetime
 import json
 import logging
 import os
@@ -243,9 +245,11 @@ def human_feedback_node(
 
 def coordinator_node(
     state: State,
-) -> Command[Literal["planner", "background_investigator", "__end__"]]:
+) -> Command[Literal["planner", "background_investigator", "enzyme_designer","__end__"]]:
     """Coordinator node that communicate with customers."""
     logger.info("Coordinator talking.")
+    if state.get("unsupervise_task_id"):
+        return Command(goto="enzyme_designer")
     messages = apply_prompt_template("coordinator", state)
     user_query = messages[-1].content
     llm = (
@@ -415,7 +419,7 @@ async def _execute_agent_step(
         )
         recursion_limit = default_recursion_limit
 
-    result = await ainvoke_llm_with_retry(agent, agent_input, config={"recursion_limit": recursion_limit}
+    result = await ainvoke_llm_with_retry(agent, agent_input, must_used_tool=False, config={"recursion_limit": recursion_limit}
     )
 
     # Process the result
@@ -555,14 +559,13 @@ async def enzyme_retriever_node(
         input_content += feedback_content
 
     _input_state = {
-        "messages": [HumanMessage(content=input_content)],
         "locale": state.get("locale", "en-US"),
     }
     agent_name = "enzyme_retriever"
     template = env.get_template(f"{agent_name}.md")
     prompt = template.render(**_input_state)
     
-    input_ = {"messages": [HumanMessage(content=input_content, name="human")]}
+    _input = {"messages": [HumanMessage(content=input_content, name="human")]}
 
     configurable = Configuration.from_runnable_config(config)
     mcp_servers = {}
@@ -597,7 +600,7 @@ async def enzyme_retriever_node(
                 prompt=prompt,
             )
             response = await ainvoke_llm_with_retry(
-                agent, input_, must_used_tool=True, config={"recursion_limit": 25}
+                agent, _input, must_used_tool=True, config={"recursion_limit": 25}
             )
     else:
         agent = create_react_agent(
@@ -607,14 +610,14 @@ async def enzyme_retriever_node(
             prompt=prompt,
         )
         response = await ainvoke_llm_with_retry(
-            agent, input_, must_used_tool=True, config={"recursion_limit": 25}
+            agent, _input, must_used_tool=True, config={"recursion_limit": 25}
         )
     enzyme_retriever_content = response["messages"][-1].content
     logger.info(f"Enzyme retriever content: {enzyme_retriever_content}")
 
     return {"enzyme_retriever_content": enzyme_retriever_content}
 
-async def enzyme_parser_node(
+def enzyme_parser_node(
     state: State, config: RunnableConfig
 ) -> dict[str, any]:
     """Enzyme parser node that parses the enzyme retriever content."""
@@ -630,10 +633,10 @@ async def enzyme_parser_node(
             HumanMessage(content=enzyme_retriever_content)
         ]
         logger.info("Parsing enzyme retriever results.")
-        parsed_results = await ainvoke_llm_with_retry(parser_llm, messages, config=config)
+        parsed_results = invoke_llm_with_retry(parser_llm, messages, config=config)
         logger.info("Successfully parsed enzyme results into structured data.")
         logger.info(f"Parsed results: {parsed_results}")
-        enzyme_retriever_sequences = parsed_results.protein_sequences
+        enzyme_retriever_sequences = parsed_results.protein_sequences.model_dump()
 
     except Exception as e:
         logger.error(f"Failed to parse enzyme retriever results, falling back to markdown. Error: {e}")
@@ -694,23 +697,24 @@ def human_select_node(
     )
 
 
-async def enzyme_designer_node(state: State, config: RunnableConfig):
+async def enzyme_designer_node(state: State):
     """
     Handles protein design tasks. It can either submit a new task
     or check the status of an existing task based on user input.
     """
-    user_message = state["messages"][-1].content
+    user_message = state["messages"][-1]
     retrieved_enzymes = state.get("enzyme_retriever_sequences", [])
     retrieved_enzymes_str = ""
     for seq in retrieved_enzymes:
-        retrieved_enzymes_str += f"### {seq.protein_name}\n"
-        retrieved_enzymes_str += f"Sequence: {seq.sequence}\n"
-        retrieved_enzymes_str += f"Organism: {seq.organism_name}\n"
-        retrieved_enzymes_str += f"Accession: {seq.accession}\n"
-        retrieved_enzymes_str += f"Gene Name: {seq.gene_name}\n"
+        retrieved_enzymes_str += f"### {seq.get("protein_name")}\n"
+        retrieved_enzymes_str += f"Sequence: {seq.get("sequence")}\n"
+        retrieved_enzymes_str += f"Organism: {seq.get("organism_name")}\n"
+        retrieved_enzymes_str += f"Accession: {seq.get("accession")}\n"
+        retrieved_enzymes_str += f"Gene Name: {seq.get("gene_name")}\n"
         retrieved_enzymes_str += "\n"
 
-    task_id = state.get("design_task_id")
+    task_id = state.get("unsupervise_task_id", "")
+    task_status = state.get("unsupervise_task_status", "")
 
     # Create a tool-augmented LLM to decide the next step
     designer_llm = get_agent_llm("enzyme_designer")
@@ -722,73 +726,110 @@ async def enzyme_designer_node(state: State, config: RunnableConfig):
     agent_name = "enzyme_designer"
     enzyme_retriever_content = state.get("enzyme_retriever_content", "")
     messges = [
-        AIMessage(content=enzyme_retriever_content),
+        AIMessage(content=enzyme_retriever_content, name="enzyme_retriever"),
+        user_message,
     ]
-    
-    designer_agent = create_agent(
-        llm=designer_llm,
-        tools=tools,
-        agent_type=agent_name,
-        messages=apply_prompt_template(
-            agent_name,
-            {
-                "user_request": user_message,
+    template = env.get_template(f"{agent_name}.md")
+    _input_state = {
+                "CURRENT_TIME": datetime.now().strftime("%a %b %d %Y %H:%M:%S %z"),
                 "retrieved_enzymes": retrieved_enzymes_str,
                 "task_id": task_id,
-                "messages": messges
-            },
-        ),
+                "task_status": task_status,
+                "locale": state.get("locale", "en-US"),
+            }
+    system_prompt = template.render(**_input_state)
+    print("render done: ", system_prompt[:100])
+    designer_agent = create_react_agent(
+        name=agent_name,
+        model=designer_llm,
+        tools=tools,
+        prompt=system_prompt,
+        debug=True
     )
-
+    print("create agent done")
     # Invoke the agent
     response = await ainvoke_llm_with_retry(
         designer_agent,
-        llm_input=[HumanMessage(content=user_message)],
-        # must_used_tool=True,
+        llm_input={"messages": messges},
+        must_used_tool=True,
     )
-
-    # If the agent calls a tool, we process it
-    if response.tool_calls:
-        # For now, we assume one tool call at a time for simplicity
-        tool_call = response.tool_calls[0]
-        tool_name = tool_call["name"]
-        tool_args = tool_call["args"]
-
-        tool_map = {tool.name: tool for tool in tools}
-        tool_to_call = tool_map.get(tool_name)
-
-        if not tool_to_call:
-            # Handle error: tool not found
-            return {
-                "messages": state["messages"] + [AIMessage(content=f"Error: Tool '{tool_name}' not found.")]
-            }
-
-        # Call the tool and get the result
-        observation = tool_to_call.invoke(tool_args)
-
-        # Update state based on the tool called
-        update_dict = {
-            "messages": state["messages"] + [
-                response,
-                ToolMessage(content=str(observation), tool_call_id=tool_call["id"]),
-            ]
+    print(response)
+    update_dict = {
+            "messages": state["messages"] + [response["messages"][-1]]
         }
 
-        if tool_name == "submit_unsupervise_task":
-            update_dict["design_task_id"] = str(observation)
-        elif tool_name == "get_unsupervise_result":
-            update_dict["enzyme_mutant_results"] = observation
+    # If the agent calls a tool, we process it
+    for msg in response["messages"]:
+        if isinstance(msg, ToolMessage):
+            # For now, we assume one tool call at a time for simplicity
+            tool_name = msg.name
+            if tool_name == "submit_unsupervise_task":
+                update_dict["unsupervise_task_id"] = str(msg.content)
+            elif tool_name == "get_unsupervise_task_status":
+                update_dict["unsupervise_task_status"] = str(msg.content)
+            elif tool_name == "get_unsupervise_result":
+                update_dict["enzyme_mutant_results"] = msg.content
 
-        return update_dict
-
-    # If no tool is called, just return the text response
-    return {"messages": state["messages"] + [response]}
+    return update_dict
 
 
 if __name__ == "__main__":
-    agent_name = 'enzyme_retriever'
-    _input_state = {
-            "messages": [],
-            "locale": "en-US",
+    agent_name = 'enzyme_designer'
+    state = {
+        "messages": [HumanMessage(content="使用P06278 和P06279进行蛋白质改造")],
+        "locale": "zh-CN",
+        "enzyme_retriever_content": """
+根据工具检索结果，我将整理高温Alpha淀粉酶序列信息：
+
+### Identified Enzymes
+1. 诺维信Termamyl® SC
+2. 帝斯曼高温α-淀粉酶
+3. 杜邦Fermenzyme® HTA
+
+### Sequence Retrieval Findings
+
+#### 诺维信Termamyl® SC
+- **酶名称**：Termamyl® SC
+- **UniProt Accession**：P06278
+- **来源生物**：地衣芽孢杆菌（*Bacillus licheniformis*）
+- **基因名称**：amyS
+- **氨基酸序列**：
+```
+MKQQKRLYARLLTLLFALIFLLPHSAAAAANLNGTLMQYFEWYMPNDGQHWKRLQNDSAYLAEHGITAVWIPPAYKGTSQADVGYGAYDLYDLGEFHQKGTVRTKYGTKGELQSAIKSLHSRDINVYGDVVINHKGGADATEDVTAVEVDPADRNRVISGEHRIKAWTHFHFPGRGSTYSDFKWHWYHFDGTDWDESRKLNRIYKFQGKAWDWEVSNENGNYDYLMYADIDYDHPDVAAEIKRWGTWYANELQLDGFRLDAVKHIKFSFLRDWVNHVREKTGKEMFTVAEYWQNDLGALENYLNKTNFNHSVFDVPLHYQFHAASTQGGGYDMRKLLNSTVVSKHPLKAVTFVDNHDTQPGQSLESTVQTWFKPLAYAFILTRESGYPQVFYGDMYGTKGDSQREIPALKHKIEPILKARKQYAYGAQHDYFDHHDIVGWTREGDSSVANSGLAALITDGPGGAKRMYVGRQNAGETWHDITGNRSEPVVINSEGWGEFHVNGGSVSIYVQR
+```
+- **备注**：成功通过UniProt检索到序列，与报告中提到的*Bacillus licheniformis*来源一致
+
+#### 帝斯曼高温α-淀粉酶
+- **酶名称**：高温α-淀粉酶
+- **UniProt Accession**：P06279
+- **来源生物**：嗜热脂肪地芽孢杆菌（*Geobacillus stearothermophilus*）
+- **基因名称**：amyS
+- **氨基酸序列**：
+```
+MLTFHRIIRKGWMFLLAFLLTALLFCPTGQPAKAAAPFNGTMMQYFEWYLPDDGTLWTKVANEANNLSSLGITALWLPPAYKGTSRSDVGYGVYDLYDLGEFNQKGAVRTKYGTKAQYLQAIQAAHAAGMQVYADVVFDHKGGADGTEWVDAVEVNPSDRNQEISGTYQIQAWTKFDFPGRGNTYSSFKWRWYHFDGVDWDESRKLSRIYKFRGIGKAWDWEVDTENGNYDYLMYADLDMDHPEVVTELKSWGKWYVNTTNIDGFRLDAVKHIKFSFFPDWLSDVRSQTGKPLFTVGEYWSYDINKLHNYIMKTNGTMSLFDAPLHNKFYTASKSGGTFDMRTLMTNTLMKDQPTLAVTFVDNHDTEPGQALQSWVDPWFKPLAYAFILTRQEGYPCVFYGDYYGIPQYNIPSLKSKIDPLLIARRDYAYGTQHDYLDHSDIIGWTREGVTEKPGSGLAALITDGPGGSKWMYVGKQHAGKVFYDLTGNRSDTVTINSDGWGEFKVNGGSVSVWVPRKTTVSTIAWSITTRPWTDEFVRWTEPRLVAWP
+```
+- **备注**：检索到嗜热菌来源的高温淀粉酶序列，符合报告中高温操作特性（报告未明确帝斯曼具体菌株）
+
+#### 杜邦Fermenzyme® HTA
+- **酶名称**：Fermenzyme® HTA
+- **UniProt Accession**：未找到
+- **来源生物**：未明确
+- **氨基酸序列**：未检索到
+- **备注**：
+  1. 通过web_search检索未找到公开技术参数表
+  2. UniProt中无"Fermenzyme HTA"直接匹配条目
+  3. 报告中提及"公开资料中未检索到详细技术参数"，与工具结果一致
+
+### 来源
+- UniProt数据库（通过search_proteins和get_protein_sequences工具）
+- Web搜索：
+  - [Dupont Enzyme | PDF | Brewing | Beer - Scribd](https://www.scribd.com/document/617554002/dupont-enzyme)
+  - [Resource Center - DuPont](https://www.dupont.com/resource-center.html?BU=PBS)
+  - [Advantages of novel hyperthermoacidic archaeal proteases for...](https://www.sciencedirect.com/science/article/pii/S1874391923001811?via%3Dihub)
+
+**注**：杜邦产品序列无法获取的原因是报告中明确说明"公开资料中未检索到详细技术参数"，且通过工具搜索也未发现可靠序列信息。""",
+        "enzyme_retriever_sequences": [{"protein_name": "Termamyl® SC", "accession": "P06278", "organism_name": "Bacillus licheniformis", "sequence": "MKQQKRLYARLLTLLFALIFLLPHSAAAAANLNGTLMQYFEWYMPNDGQHWKRLQNDSAYLAEHGITAVWIPPAYKGTSQADVGYGAYDLYDLGEFHQKGTVRTKYGTKGELQSAIKSLHSRDINVYGDVVINHKGGADATEDVTAVEVDPADRNRVISGEHRIKAWTHFHFPGRGSTYSDFKWHWYHFDGTDWDESRKLNRIYKFQGKAWDWEVSNENGNYDYLMYADIDYDHPDVAAEIKRWGTWYANELQLDGFRLDAVKHIKFSFLRDWVNHVREKTGKEMFTVAEYWQNDLGALENYLNKTNFNHSVFDVPLHYQFHAASTQGGGYDMRKLLNSTVVSKHPLKAVTFVDNHDTQPGQSLESTVQTWFKPLAYAFILTRESGYPQVFYGDMYGTKGDSQREIPALKHKIEPILKARKQYAYGAQHDYFDHHDIVGWTREGDSSVANSGLAALITDGPGGAKRMYVGRQNAGETWHDITGNRSEPVVINSEGWGEFHVNGGSVSIYVQR", "gene_name": "amyS"}, {"protein_name": "高温α-淀粉酶", "accession": "P06279", "organism_name": "Geobacillus stearothermophilus", "sequence": "MLTFHRIIRKGWMFLLAFLLTALLFCPTGQPAKAAAPFNGTMMQYFEWYLPDDGTLWTKVANEANNLSSLGITALWLPPAYKGTSRSDVGYGVYDLYDLGEFNQKGAVRTKYGTKAQYLQAIQAAHAAGMQVYADVVFDHKGGADGTEWVDAVEVNPSDRNQEISGTYQIQAWTKFDFPGRGNTYSSFKWRWYHFDGVDWDESRKLSRIYKFRGIGKAWDWEVDTENGNYDYLMYADLDMDHPEVVTELKSWGKWYVNTTNIDGFRLDAVKHIKFSFFPDWLSDVRSQTGKPLFTVGEYWSYDINKLHNYIMKTNGTMSLFDAPLHNKFYTASKSGGTFDMRTLMTNTLMKDQPTLAVTFVDNHDTEPGQALQSWVDPWFKPLAYAFILTRQEGYPCVFYGDYYGIPQYNIPSLKSKIDPLLIARRDYAYGTQHDYLDHSDIIGWTREGVTEKPGSGLAALITDGPGGSKWMYVGKQHAGKVFYDLTGNRSDTVTINSDGWGEFKVNGGSVSVWVPRKTTVSTIAWSITTRPWTDEFVRWTEPRLVAWP", "gene_name": "amyS"}],
+        "unsupervise_task_id": "",
+        "enzyme_mutant_results": "",
     }
-    pass
+    asyncio.run(enzyme_designer_node(state))

@@ -44,6 +44,6 @@ class State(MessagesState):
     background_investigation_results: str = None
     enzyme_retriever_content: str = ""
     enzyme_retriever_sequences: list[ProteinSequence] = []
-    # user_selected_enzyme_sequences: list[ProteinSequence] = []
-    design_task_id: Optional[str] = None
+    unsupervise_task_id: Optional[str] = None
+    unsupervise_task_status: Optional[str] = None
     enzyme_mutant_results: list[dict] = []

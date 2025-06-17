@@ -7,7 +7,8 @@ import logging
 from langchain_core.language_models import BaseChatModel
 from langchain_openai import ChatOpenAI
 from langchain.chat_models import init_chat_model
-from langchain_core.messages import ToolMessage
+from langchain_core.messages import ToolMessage, HumanMessage
+from langgraph.graph.graph import CompiledGraph
 from tenacity import retry, stop_after_attempt
 from src.config import load_yaml_config
 from src.config.agents import LLMType, AgentType, AGENT_LLM_MAP
@@ -23,6 +24,7 @@ def _create_llm_use_conf(llm_type: LLMType, conf: Dict[str, Any]) -> ChatOpenAI:
         "reasoning": conf.get("REASONING_MODEL"),
         "basic": conf.get("BASIC_MODEL"),
         "vision": conf.get("VISION_MODEL"),
+        "tool_call": conf.get("TOOL_CALL_MODEL"),
     }
     llm_conf = llm_type_map.get(llm_type)
     if not llm_conf:
@@ -78,15 +80,23 @@ def invoke_llm_with_retry(llm:ChatOpenAI, llm_input, stream:bool=False, must_use
         raise NoToolCallsError("LLM response does not contain required tool calls")
 
 @retry(stop=stop_after_attempt(3))
-async def ainvoke_llm_with_retry(llm:ChatOpenAI, llm_input, must_used_tool:bool=False, **kwargs):
+async def ainvoke_llm_with_retry(llm:BaseChatModel|CompiledGraph, llm_input, must_used_tool:bool=False, **kwargs):
     response = await llm.ainvoke(llm_input, **kwargs)
     if not must_used_tool:
         return response
-    messages = response.get("messages")
-    for msg in messages:
-        if isinstance(msg, ToolMessage):
-            return response
-    raise NoToolCallsError("LLM response does not contain required tool calls")
+    else:
+        messages = response.get("messages")
+        for msg in messages:
+            if isinstance(msg, ToolMessage):
+                return response
+        if isinstance(llm_input, str):
+            llm_input = llm_input + "\n\nYou must use the tool to complete the task!"
+        elif isinstance(llm_input, list):
+            llm_input = llm_input + [HumanMessage(content="You must use the tool to complete the task!")]
+        elif isinstance(llm_input, dict):
+            llm_input["messages"] = llm_input["messages"] + [HumanMessage(content="You must use the tool to complete the task!")]
+        logger.error(f"LLM response does not contain required tool calls: {response}\n\n")
+        raise NoToolCallsError("LLM response does not contain required tool calls")
 
 # Initialize LLMs for different purposes - now these will be cached
 basic_llm = get_llm_by_type("basic")

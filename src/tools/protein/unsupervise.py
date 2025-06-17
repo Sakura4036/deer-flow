@@ -1,5 +1,6 @@
 
 import logging
+import traceback
 from typing import Annotated, List
 import requests
 import os
@@ -35,11 +36,12 @@ def submit_unsupervise_task(
         response.raise_for_status()
         response_json = response.json()
         if response_json["code"] == 200:
-            return response_json["data"]["task_id"]
+            return response_json["data"]
         else:
             return response_json["message"]
     except Exception as e:
         logger.error(f"Error generating unsupervise mutation: {e}")
+        traceback.print_exc()
         return f"Error: {e}"
 
 @tool
@@ -54,7 +56,7 @@ def get_unsupervise_task_status(
         response.raise_for_status()
         response_json = response.json()
         if response_json["code"] == 200:
-            status = response_json["data"]["status"]
+            status = response_json["data"]
             status_mapping = {
                 1: "pending",
                 2: "running",
