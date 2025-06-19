@@ -112,7 +112,7 @@ async def _astream_workflow_generator(
             input_ = Command(resume=resume_msg)
     
     user_input = messages[-1]['content']
-    add_first_message = True
+    write_first_message = True  # Always persist
     # Open the replay file in append mode for asynchronous writing
     async with aiofiles.open(replay_file_path, mode="a", encoding="utf-8") as f:
 
@@ -166,12 +166,22 @@ async def _astream_workflow_generator(
                 "content": message_chunk.content,
             }
             is_message_chunk = False
-            if add_first_message:
-                # add the first user message to the replay file
-                first_message = {"thread_id": thread_id, "id": message_chunk.id, "role": "user", "content": f"{user_input}", "finish_reason": "stop"}
+            if write_first_message:
+                # Construct the event for the latest user input.
+                first_message = {
+                    "thread_id": thread_id,
+                    "id": message_chunk.id,
+                    "role": "user",
+                    "content": f"{user_input}",
+                    "finish_reason": "stop",
+                }
                 event_to_write = _make_event("message_chunk", first_message)
-                await f.write(event_to_write) # Write the event to the file
-                add_first_message = False
+                await f.write(event_to_write)
+                write_first_message = False
+
+            if message_chunk.additional_kwargs.get("reasoning_content"):
+                # TODO: display reasoning content in the frontend
+                event_stream_message["reasoning_content"] = message_chunk.additional_kwargs["reasoning_content"]
             if message_chunk.response_metadata.get("finish_reason"):
                 event_stream_message["finish_reason"] = message_chunk.response_metadata.get(
                     "finish_reason"
@@ -206,7 +216,7 @@ async def _astream_workflow_generator(
             
             if event_to_write:
                 # Write the event to the file
-                if not is_message_chunk:
+                if not is_message_chunk or event_stream_message.get("finish_reason"):
                     await f.write(event_to_write)
                 elif event_stream_message.get("content"):
                     await f.write(event_to_write)

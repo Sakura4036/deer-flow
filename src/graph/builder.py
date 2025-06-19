@@ -40,8 +40,6 @@ def _build_base_graph():
     builder.add_edge("reporter", "enzyme_retriever")
     builder.add_edge("enzyme_retriever", "enzyme_parser")
     builder.add_edge("enzyme_parser", "human_select")
-    builder.add_edge("human_select", "enzyme_retriever")
-    builder.add_edge("human_select", "enzyme_designer")
     builder.add_edge("enzyme_designer", END)
     return builder
 

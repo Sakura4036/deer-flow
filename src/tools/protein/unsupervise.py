@@ -100,7 +100,8 @@ def get_unsupervise_result(
         if response_json["code"] == 200:
             results = []
             for r in response_json["data"]:
-                r.pop("fasta")
+                if "pdb" in r:
+                    r.pop("pdb")
                 results.append(r)
             return results
         else:

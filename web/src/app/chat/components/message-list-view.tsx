@@ -139,6 +139,35 @@ function MessageListItem({
   const startOfResearch = useMemo(() => {
     return researchIds.includes(messageId);
   }, [researchIds, messageId]);
+
+  // 检查消息是否是enzyme_designer的最后一条消息
+  const isEnzymeDesignerFinalMessage = useMemo(() => {
+    if (message?.agent !== "enzyme_designer") return false;
+    // 获取该研究中的所有enzyme_designer消息
+    const allMessages = useStore.getState().messages;
+    const researchActivityIds = useStore.getState().researchActivityIds;
+
+    // 找到此消息所属的研究
+    let belongingResearchId = null;
+    for (const [researchId, activityIds] of researchActivityIds.entries()) {
+      if (activityIds.includes(messageId)) {
+        belongingResearchId = researchId;
+        break;
+      }
+    }
+
+    if (!belongingResearchId) return false;
+
+    // 检查是否是该研究中最后一条enzyme_designer消息
+    const activityIds = researchActivityIds.get(belongingResearchId) || [];
+    const designerMessages = activityIds
+      .map(id => allMessages.get(id))
+      .filter(msg => msg?.agent === "enzyme_designer");
+
+    return designerMessages.length > 0 &&
+      designerMessages[designerMessages.length - 1]?.id === messageId;
+  }, [message, messageId]);
+
   if (message) {
     if (
       message.role === "user" ||
@@ -146,7 +175,8 @@ function MessageListItem({
       message.agent === "planner" ||
       message.agent === "podcast" ||
       startOfResearch ||
-      interruptMessage?.id === messageId
+      interruptMessage?.id === messageId ||
+      isEnzymeDesignerFinalMessage
     ) {
       let content: React.ReactNode;
       if (message.agent === "planner") {
@@ -569,11 +599,16 @@ function EnzymeRetrieverCard({
   const ongoingResearchId = useStore((state) => state.ongoingResearchId);
   const isOngoing = ongoingResearchId === researchId;
 
-  // 检查是否存在酶选择中断消息，如果存在则表明酶挖掘任务已完成
-  const hasEnzymeSelectionInterrupt = useStore((state) =>
+  // 检查是否存在酶选择中断消息或酶设计师消息，如果存在则表明酶挖掘任务已进行到下一阶段
+  const hasEnzymeSelectionOrDesigner = useStore((state) =>
     Array.from(state.messages.values()).some(m =>
       (m as any)?.interrupt_type === "enzyme_selection" ||
       m.agent === "enzyme_designer")
+  );
+
+  // 检查是否有酶设计师的消息
+  const hasEnzymeDesigner = useStore((state) =>
+    Array.from(state.messages.values()).some(m => m.agent === "enzyme_designer")
   );
 
   const handleToggle = useCallback(() => {
@@ -590,7 +625,11 @@ function EnzymeRetrieverCard({
   }
 
   const status = useMemo(() => {
-    if (hasEnzymeSelectionInterrupt) {
+    if (hasEnzymeDesigner) {
+      return "Design completed";
+    }
+
+    if (hasEnzymeSelectionOrDesigner) {
       return "Retrieval completed";
     }
 
@@ -599,7 +638,7 @@ function EnzymeRetrieverCard({
     }
 
     return "Retrieval completed";
-  }, [isOngoing, hasEnzymeSelectionInterrupt]);
+  }, [isOngoing, hasEnzymeSelectionOrDesigner, hasEnzymeDesigner]);
 
   return (
     <Card className={cn("w-full", className)}>

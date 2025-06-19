@@ -125,10 +125,10 @@ async function* chatReplayStream(
       }
       yield chatEvent;
       if (chatEvent.type === "tool_call_result") {
-        await sleepInReplay(1);
+        await sleepInReplay(100);
       } else if (chatEvent.type === "message_chunk") {
         if (chatEvent.data.role === "user") {
-          await sleepInReplay(10);
+          await sleepInReplay(100);
         }
       }
     } catch (e) {

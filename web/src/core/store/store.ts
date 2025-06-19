@@ -226,7 +226,7 @@ function appendMessage(message: Message) {
 function updateMessage(message: Message) {
   if (
     getOngoingResearchId() &&
-    message.agent === "reporter" &&
+    (message.agent === "reporter") &&
     !message.isStreaming
   ) {
     useStore.getState().setOngoingResearch(null);
@@ -277,7 +277,7 @@ function appendResearchActivity(message: Message) {
         ]),
       });
     }
-    if (message.agent === "reporter") {
+    if (message.agent === "reporter" || message.agent === "enzyme_designer") {
       useStore.setState({
         researchReportIds: new Map(useStore.getState().researchReportIds).set(
           researchId,

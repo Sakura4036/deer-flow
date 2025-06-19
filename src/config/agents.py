@@ -30,6 +30,6 @@ AGENT_LLM_MAP: dict[str, LLMType] = {
     "ppt_composer": "basic",
     "prose_writer": "basic",
     "enzyme_retriever": "reasoning",
-    "enzyme_parser": "basic",
+    "enzyme_parser": "vision",
     "enzyme_designer": "tool_call",
 }

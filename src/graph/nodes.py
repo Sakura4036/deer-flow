@@ -617,6 +617,7 @@ async def enzyme_retriever_node(
 
     return {"enzyme_retriever_content": enzyme_retriever_content}
 
+
 def enzyme_parser_node(
     state: State, config: RunnableConfig
 ) -> dict[str, any]:

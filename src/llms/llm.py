@@ -6,6 +6,7 @@ from typing import Any, Dict
 import logging
 from langchain_core.language_models import BaseChatModel
 from langchain_openai import ChatOpenAI
+from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.chat_models import init_chat_model
 from langchain_core.messages import ToolMessage, HumanMessage
 from langgraph.graph.graph import CompiledGraph
@@ -31,6 +32,8 @@ def _create_llm_use_conf(llm_type: LLMType, conf: Dict[str, Any]) -> ChatOpenAI:
         raise ValueError(f"Unknown LLM type: {llm_type}")
     if not isinstance(llm_conf, dict):
         raise ValueError(f"Invalid LLM Conf: {llm_type}")
+    # if "gemini" in llm_conf.get("model"):
+        # return ChatGoogleGenerativeAI(**llm_conf)
     return ChatOpenAI(**llm_conf)
 
 
